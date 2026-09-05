@@ -56,7 +56,7 @@ export default function NavbarHero() {
 
     navContainer: {
       width: "100%",
-      maxWidth: "1280px",
+      maxWidth: "1180px",
       margin: "0 auto",
       padding: isMobile ? "0 20px" : isTablet ? "0 32px" : "0 48px",
       boxSizing: "border-box",
@@ -184,7 +184,7 @@ export default function NavbarHero() {
     },
 
     hero: {
-      maxWidth: "1280px",
+      maxWidth: "1180px",
       margin: "0 auto",
       padding: isMobile
         ? "125px 20px 60px"
@@ -358,7 +358,7 @@ export default function NavbarHero() {
     },
 
     tools: {
-      maxWidth: "1280px",
+      maxWidth: "1180px",
       margin: "0 auto",
       padding: isMobile ? "26px 20px" : "28px 48px",
       boxSizing: "border-box",

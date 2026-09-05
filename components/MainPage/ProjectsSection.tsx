@@ -38,7 +38,7 @@ export default function SelectedWork() {
 
     container: {
       width: "100%",
-      maxWidth: "1180px",
+      maxWidth: "1280px",
       margin: "0 auto",
     },
 
