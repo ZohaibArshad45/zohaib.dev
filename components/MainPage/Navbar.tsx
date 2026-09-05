@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 
 export default function NavbarHero() {
   const [scrolled, setScrolled] = useState(false);
@@ -36,7 +36,7 @@ export default function NavbarHero() {
   const isMobile = width <= 768;
   const isTablet = width <= 1050;
 
-  const styles = {
+  const styles: Record<string, CSSProperties> = {
     page: {
       minHeight: "100vh",
       background: "#0c0e0d",

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 
 export default function SelectedWork() {
   const [width, setWidth] = useState(1440);
@@ -23,7 +23,7 @@ export default function SelectedWork() {
   const isMobile = width <= 700;
   const isTablet = width > 700 && width <= 1024;
 
-  const styles = {
+  const styles: Record<string, CSSProperties> = {
     section: {
       width: "100%",
       background: "#0c0e0d",
@@ -33,7 +33,7 @@ export default function SelectedWork() {
         : isTablet
         ? "100px 32px 90px"
         : "120px 48px 100px",
-      boxSizing: "borderBox",
+      boxSizing: "border-box",
     },
 
     container: {
@@ -104,7 +104,7 @@ export default function SelectedWork() {
       minHeight: isMobile ? "330px" : "430px",
       background: "#c9dbb6",
       padding: isMobile ? "18px" : "38px",
-      boxSizing: "borderBox",
+      boxSizing: "border-box",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
@@ -123,7 +123,7 @@ export default function SelectedWork() {
     inboxTop: {
       padding: "18px",
       display: "flex",
-      justifyContent: "spaceBetween",
+      justifyContent: "space-between",
       alignItems: "center",
       borderBottom: "1px solid #daddd5",
     },
@@ -242,7 +242,7 @@ export default function SelectedWork() {
     projectLink: {
       color: "#ffffff",
       textDecoration: "none",
-      width: "fitContent",
+      width: "fit-content",
       marginTop: "28px",
       paddingBottom: "8px",
       borderBottom: "1px solid #76805e",
@@ -253,7 +253,7 @@ export default function SelectedWork() {
       minHeight: isMobile ? "330px" : "390px",
       background: "#181e25",
       padding: isMobile ? "34px 22px" : "45px 38px",
-      boxSizing: "borderBox",
+      boxSizing: "border-box",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
