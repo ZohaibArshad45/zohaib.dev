@@ -394,7 +394,7 @@ export default function NavbarHero() {
         <div style={styles.navContainer}>
           <div style={styles.navInner}>
             <Link href="/" style={styles.logo}>
-              zohaib<span style={styles.dot}>.</span>
+              Zohaib<span style={styles.dot}>.</span>
             </Link>
 
             <div style={styles.navLinks}>
