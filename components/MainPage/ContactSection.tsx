@@ -8,8 +8,6 @@ import {
   type FormEvent,
 } from "react";
 
-import { useSearchParams } from "next/navigation";
-
 type ProjectType =
   | "Web App"
   | "AI Agents & Features"
@@ -37,8 +35,6 @@ type Social = {
 };
 
 export default function ContactSection() {
-  const searchParams = useSearchParams();
-
   const [width, setWidth] = useState<number>(1440);
 
   const [sending, setSending] = useState(false);
@@ -66,51 +62,15 @@ export default function ContactSection() {
 
     handleResize();
 
-    window.addEventListener(
-      "resize",
-      handleResize
-    );
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener(
-        "resize",
-        handleResize
-      );
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
-  // useEffect(() => {
-  //   const service =
-  //     searchParams.get("service");
-
-  //   if (service === "webapp") {
-  //     setForm((current) => ({
-  //       ...current,
-  //       projectType: "Web App",
-  //     }));
-  //   }
-
-  //   if (service === "ai") {
-  //     setForm((current) => ({
-  //       ...current,
-  //       projectType:
-  //         "AI Agents & Features",
-  //     }));
-  //   }
-
-  //   if (service === "automation") {
-  //     setForm((current) => ({
-  //       ...current,
-  //       projectType:
-  //         "Automation & Integrations",
-  //     }));
-  //   }
-  // }, [searchParams]);
-
   const isMobile = width <= 700;
-
-  const isTablet =
-    width > 700 && width <= 1024;
+  const isTablet = width > 700 && width <= 1024;
 
   const socials: Social[] = [
     {
@@ -137,13 +97,10 @@ export default function ContactSection() {
 
   const handleChange = (
     event: ChangeEvent<
-      | HTMLInputElement
-      | HTMLSelectElement
-      | HTMLTextAreaElement
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >
   ): void => {
-    const { name, value } =
-      event.target;
+    const { name, value } = event.target;
 
     setForm((current) => ({
       ...current,
@@ -161,23 +118,18 @@ export default function ContactSection() {
     setSubmitError(false);
 
     try {
-      const response = await fetch(
-        "/api/contact",
-        {
-          method: "POST",
+      const response = await fetch("/api/contact", {
+        method: "POST",
 
-          headers: {
-  "Content-Type": "application/json",
-},
+        headers: {
+          "Content-Type": "application/json",
+        },
 
-          body: JSON.stringify(form),
-        }
-      );
+        body: JSON.stringify(form),
+      });
 
       if (!response.ok) {
-        throw new Error(
-          "Unable to send message"
-        );
+        throw new Error("Unable to send message");
       }
 
       setSent(true);
@@ -204,16 +156,12 @@ export default function ContactSection() {
     }
   };
 
-  const styles: Record<
-    string,
-    CSSProperties
-  > = {
+  const styles: Record<string, CSSProperties> = {
     page: {
       minHeight: "100vh",
       background: "#0c0e0d",
       color: "#f5f5f3",
-      fontFamily:
-        "Arial, Helvetica, sans-serif",
+      fontFamily: "Arial, Helvetica, sans-serif",
     },
 
     container: {
@@ -259,22 +207,16 @@ export default function ContactSection() {
     },
 
     left: {
-      paddingTop: isMobile
-        ? "0"
-        : "4px",
+      paddingTop: isMobile ? "0" : "4px",
     },
 
     eyebrow: {
       color: "#caff46",
-      fontSize: isMobile
-        ? "11px"
-        : "12px",
+      fontSize: isMobile ? "11px" : "12px",
       lineHeight: "1.5",
       fontWeight: "700",
       letterSpacing: "1px",
-      marginBottom: isMobile
-        ? "22px"
-        : "26px",
+      marginBottom: isMobile ? "22px" : "26px",
     },
 
     heading: {
@@ -316,8 +258,7 @@ export default function ContactSection() {
     profileInfo: {
       marginTop: "34px",
       paddingTop: "26px",
-      borderTop:
-        "1px solid #303530",
+      borderTop: "1px solid #303530",
       maxWidth: "430px",
     },
 
@@ -356,15 +297,13 @@ export default function ContactSection() {
       textDecoration: "none",
       fontSize: "13px",
       paddingBottom: "5px",
-      borderBottom:
-        "1px solid #69705f",
+      borderBottom: "1px solid #69705f",
     },
 
     nextSteps: {
       marginTop: "32px",
       paddingTop: "24px",
-      borderTop:
-        "1px solid #303530",
+      borderTop: "1px solid #303530",
       maxWidth: "430px",
     },
 
@@ -401,8 +340,7 @@ export default function ContactSection() {
     card: {
       width: "100%",
       background: "#171b16",
-      border:
-        "1px solid #343a31",
+      border: "1px solid #343a31",
       borderRadius: "11px",
 
       padding: isMobile
@@ -436,9 +374,7 @@ export default function ContactSection() {
           ? "1fr"
           : "1fr 1fr",
 
-      gap: isMobile
-        ? "0"
-        : "14px",
+      gap: isMobile ? "0" : "14px",
     },
 
     label: {
@@ -452,10 +388,7 @@ export default function ContactSection() {
       width: "100%",
       minHeight: "46px",
       background: "#11140f",
-
-      border:
-        "1px solid #3b4236",
-
+      border: "1px solid #3b4236",
       borderRadius: "6px",
       padding: "0 13px",
       color: "#ffffff",
@@ -468,10 +401,7 @@ export default function ContactSection() {
       width: "100%",
       minHeight: "46px",
       background: "#11140f",
-
-      border:
-        "1px solid #3b4236",
-
+      border: "1px solid #3b4236",
       borderRadius: "6px",
       padding: "0 13px",
       color: "#ffffff",
@@ -484,12 +414,8 @@ export default function ContactSection() {
       width: "100%",
       minHeight: "96px",
       resize: "vertical",
-
       background: "#11140f",
-
-      border:
-        "1px solid #3b4236",
-
+      border: "1px solid #3b4236",
       borderRadius: "6px",
       padding: "13px",
       color: "#ffffff",
@@ -519,14 +445,11 @@ export default function ContactSection() {
         ? "not-allowed"
         : "pointer",
 
-      opacity: sending
-        ? 0.7
-        : 1,
+      opacity: sending ? 0.7 : 1,
 
       marginTop: "2px",
 
-      transition:
-        "0.2s ease",
+      transition: "0.2s ease",
 
       transform:
         buttonHover && !sending
@@ -558,9 +481,7 @@ export default function ContactSection() {
     directContact: {
       marginTop: "20px",
       paddingTop: "18px",
-
-      borderTop:
-        "1px solid #303530",
+      borderTop: "1px solid #303530",
     },
 
     directTitle: {
@@ -578,8 +499,7 @@ export default function ContactSection() {
     },
 
     footer: {
-      borderTop:
-        "1px solid #313630",
+      borderTop: "1px solid #313630",
 
       padding: isMobile
         ? "30px 0"
@@ -643,16 +563,14 @@ export default function ContactSection() {
       fontSize: "12px",
       fontWeight: "700",
 
-      transition:
-        "0.2s ease",
+      transition: "0.2s ease",
     },
 
     footerBottom: {
       marginTop: "26px",
       paddingTop: "22px",
 
-      borderTop:
-        "1px solid #242924",
+      borderTop: "1px solid #242924",
 
       display: "grid",
 
@@ -708,10 +626,7 @@ export default function ContactSection() {
   });
 
   return (
-    <main
-      style={styles.page}
-      id="top"
-    >
+    <main style={styles.page} id="top">
       <div style={styles.container}>
         <div style={styles.topLine} />
 
@@ -724,16 +639,13 @@ export default function ContactSection() {
             <h1 style={styles.heading}>
               Bring the idea.
 
-              <span
-                style={styles.headingAccent}
-              >
+              <span style={styles.headingAccent}>
                 Let&apos;s map the build.
               </span>
             </h1>
 
             <p style={styles.intro}>
-              Tell me what you want to build,
-              what&apos;s getting in the way
+              Tell me what you want to build, what&apos;s getting in the way
               and when you&apos;d like to start.
             </p>
 
@@ -769,9 +681,7 @@ export default function ContactSection() {
 
               <div style={styles.nextList}>
                 <div style={styles.nextItem}>
-                  <span
-                    style={styles.nextNumber}
-                  >
+                  <span style={styles.nextNumber}>
                     01
                   </span>
 
@@ -781,9 +691,7 @@ export default function ContactSection() {
                 </div>
 
                 <div style={styles.nextItem}>
-                  <span
-                    style={styles.nextNumber}
-                  >
+                  <span style={styles.nextNumber}>
                     02
                   </span>
 
@@ -793,9 +701,7 @@ export default function ContactSection() {
                 </div>
 
                 <div style={styles.nextItem}>
-                  <span
-                    style={styles.nextNumber}
-                  >
+                  <span style={styles.nextNumber}>
                     03
                   </span>
 
@@ -961,21 +867,18 @@ export default function ContactSection() {
             </button>
 
             <p style={styles.note}>
-              Your project details will be sent
-              directly to Zohaib.
+              Your project details will be sent directly to Zohaib.
             </p>
 
             {sent && (
               <p style={styles.success}>
-                Thanks. Your project inquiry was
-                sent successfully.
+                Thanks. Your project inquiry was sent successfully.
               </p>
             )}
 
             {submitError && (
               <p style={styles.error}>
-                Your message could not be sent.
-                Please try again or email me
+                Your message could not be sent. Please try again or email me
                 directly.
               </p>
             )}
@@ -986,8 +889,7 @@ export default function ContactSection() {
               </p>
 
               <p style={styles.directText}>
-                Send your project details directly
-                to zohaibfta@gmail.com
+                Send your project details directly to zohaibfta@gmail.com
               </p>
             </div>
           </form>
@@ -1003,9 +905,7 @@ export default function ContactSection() {
                 </span>
               </div>
 
-              <div
-                style={styles.footerFounder}
-              >
+              <div style={styles.footerFounder}>
                 Web Developer &amp; AI Builder
                 {" • "}
                 Founder of Codingskillup
@@ -1023,13 +923,9 @@ export default function ContactSection() {
                   rel="noopener noreferrer"
                   aria-label={social.name}
                   title={social.name}
-                  style={getSocialStyle(
-                    social.name
-                  )}
+                  style={getSocialStyle(social.name)}
                   onMouseEnter={() =>
-                    setHoveredSocial(
-                      social.name
-                    )
+                    setHoveredSocial(social.name)
                   }
                   onMouseLeave={() =>
                     setHoveredSocial(null)

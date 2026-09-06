@@ -21,18 +21,8 @@ export default function Home() {
       <ProjectsSection/>
       <ServicesSection/>
       <WorkingTogether/>
-            <Suspense
-        fallback={
-          <section
-            style={{
-              minHeight: "500px",
-              background: "#0c0e0d",
-            }}
-          />
-        }
-      >
+            
         <ContactSection />
-      </Suspense>
     </main>
   );
 }
