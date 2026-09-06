@@ -38,7 +38,7 @@ export default function SelectedWork() {
 
     container: {
       width: "100%",
-      maxWidth: "1280px",
+      maxWidth: "1180px",
       margin: "0 auto",
     },
 
@@ -462,7 +462,7 @@ export default function SelectedWork() {
                       </div>
 
                       <div style={styles.inboxRowText}>
-                        Your team's progress, in one place.
+                        Your team&apos;s progress, in one place.
                       </div>
                     </div>
 
