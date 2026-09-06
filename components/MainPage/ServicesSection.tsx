@@ -9,14 +9,26 @@ import {
 
 type Service = {
   number: string;
+  category: string;
   title: string;
   description: string;
   items: string[];
+  bestFor: string;
   stack: string;
+  cta: string;
+  href: string;
 };
 
 export default function ServicesSection() {
   const [width, setWidth] = useState<number>(1440);
+
+  const [hoveredCard, setHoveredCard] = useState<
+    string | null
+  >(null);
+
+  const [hoveredLink, setHoveredLink] = useState<
+    string | null
+  >(null);
 
   useEffect(() => {
     const handleResize = (): void => {
@@ -28,7 +40,10 @@ export default function ServicesSection() {
     window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener(
+        "resize",
+        handleResize
+      );
     };
   }, []);
 
@@ -38,39 +53,57 @@ export default function ServicesSection() {
   const services: Service[] = [
     {
       number: "01",
-      title: "Build your web app",
+      category: "BUILD",
+      title: "Web Apps",
       description:
-        "Turn a product idea into a clear, responsive application with the interface and data working together.",
+        "Build a fast, responsive web app that turns your idea into a product people can actually use.",
       items: [
-        "Responsive UI",
-        "Database integration",
-        "Product workflows",
+        "Responsive interfaces",
+        "Authentication & database",
+        "Dashboards & client portals",
       ],
-      stack: "Next.js / React / TypeScript / Supabase",
+      bestFor:
+        "SaaS products, MVPs, internal tools and client portals",
+      stack:
+        "Next.js / React / TypeScript / Supabase",
+      cta: "Build my web app ↗",
+      href: "/contact?service=web-app",
     },
     {
       number: "02",
-      title: "Put AI to useful work",
+      category: "AI",
+      title: "AI Agents & Features",
       description:
-        "Add an assistant or focused AI feature that helps your users get something done.",
+        "Add AI agents and focused features that answer questions, process information and handle useful tasks.",
       items: [
-        "AI assistants",
-        "Chatbot integrations",
-        "Message classification",
+        "AI agents",
+        "Chatbots & assistants",
+        "AI powered workflows",
       ],
-      stack: "OpenAI / APIs / AI workflows",
+      bestFor:
+        "Support, research, operations and product features",
+      stack:
+        "OpenAI / APIs / AI workflows",
+      cta: "Add AI to my product ↗",
+      href: "/contact?service=ai",
     },
     {
       number: "03",
-      title: "Connect your tools",
+      category: "AUTOMATE",
+      title: "Automation & Integrations",
       description:
-        "Reduce repeated data entry and keep your CRM, task management and email operations connected.",
+        "Connect the tools your team already uses and automate repetitive work between them.",
       items: [
         "CRM automation",
-        "Field mapping",
-        "Email workflows",
+        "API integrations",
+        "Lead & email workflows",
       ],
-      stack: "n8n / HubSpot / Smartlead / Webhooks",
+      bestFor:
+        "Sales, lead generation, CRM and repetitive admin work",
+      stack:
+        "n8n / HubSpot / Smartlead / Webhooks",
+      cta: "Automate my workflow ↗",
+      href: "/contact?service=automation",
     },
   ];
 
@@ -80,10 +113,10 @@ export default function ServicesSection() {
       background: "#0c0e0d",
       color: "#ffffff",
       padding: isMobile
-        ? "80px 20px 80px"
+        ? "75px 20px 75px"
         : isTablet
-        ? "100px 32px 90px"
-        : "120px 48px 110px",
+        ? "95px 32px 90px"
+        : "105px 48px 100px",
       boxSizing: "border-box",
     },
 
@@ -95,55 +128,82 @@ export default function ServicesSection() {
 
     label: {
       color: "#caff46",
-      fontSize: "10px",
+      fontSize: isMobile ? "11px" : "12px",
       fontWeight: "700",
-      letterSpacing: "1.8px",
-      marginBottom: isMobile ? "24px" : "30px",
+      letterSpacing: "1px",
+      marginBottom: isMobile ? "22px" : "26px",
+      lineHeight: "1.5",
     },
 
     heading: {
       margin: 0,
       color: "#f3f4f2",
       fontSize: isMobile
-        ? "44px"
+        ? "40px"
         : isTablet
-        ? "56px"
-        : "68px",
-      lineHeight: "1.02",
+        ? "50px"
+        : "58px",
+      lineHeight: "1.03",
       fontWeight: "400",
-      letterSpacing: isMobile ? "-2px" : "-3px",
+      letterSpacing: isMobile ? "-1px" : "-2px",
       maxWidth: "700px",
     },
 
+    intro: {
+      margin: isMobile
+        ? "20px 0 0"
+        : "24px 0 0",
+      maxWidth: "620px",
+      color: "#b8beb9",
+      fontSize: isMobile ? "14px" : "15px",
+      lineHeight: "1.7",
+    },
+
     cards: {
-      marginTop: isMobile ? "48px" : "58px",
+      marginTop: isMobile ? "44px" : "54px",
       display: "grid",
-      gridTemplateColumns: isMobile
-        ? "1fr"
+      gridTemplateColumns:
+        isMobile || isTablet
+          ? "1fr"
+          : "repeat(3, 1fr)",
+      gap: isMobile
+        ? "18px"
         : isTablet
-        ? "1fr"
-        : "repeat(3, 1fr)",
-      gap: isMobile ? "18px" : isTablet ? "20px" : "18px",
+        ? "20px"
+        : "18px",
     },
 
     card: {
-      minHeight: isMobile ? "auto" : "500px",
+      minHeight: isMobile ? "auto" : "455px",
       background: "#141814",
-      border: "1px solid #323832",
-      borderRadius: "8px",
+      borderRadius: "10px",
       padding: isMobile
         ? "26px 22px"
-        : "34px 28px 28px",
+        : "30px 26px 26px",
       boxSizing: "border-box",
       display: "flex",
       flexDirection: "column",
+    },
+
+    cardTop: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      gap: "16px",
+      marginBottom: "28px",
     },
 
     number: {
       color: "#caff46",
       fontSize: "11px",
       fontWeight: "700",
-      marginBottom: "30px",
+    },
+
+    category: {
+      color: "#868d86",
+      fontSize: "9px",
+      fontWeight: "700",
+      letterSpacing: "1.4px",
     },
 
     cardTitle: {
@@ -159,18 +219,19 @@ export default function ServicesSection() {
       color: "#b9c0ba",
       fontSize: isMobile ? "14px" : "15px",
       lineHeight: "1.7",
-      minHeight: isMobile ? "auto" : "100px",
+      minHeight:
+        isMobile || isTablet ? "auto" : "102px",
     },
 
     list: {
-      marginTop: "20px",
+      marginTop: "18px",
     },
 
     listItem: {
       display: "flex",
       alignItems: "center",
       gap: "10px",
-      padding: "11px 0",
+      padding: "10px 0",
       borderBottom: "1px solid #2c332c",
       color: "#f1f2f0",
       fontSize: "13px",
@@ -178,31 +239,138 @@ export default function ServicesSection() {
 
     check: {
       color: "#caff46",
-      fontSize: "15px",
+      fontSize: "14px",
+      flexShrink: 0,
+    },
+
+    bestFor: {
+      marginTop: "20px",
+      color: "#adb4ae",
+      fontSize: "12px",
+      lineHeight: "1.6",
+    },
+
+    bestForLabel: {
+      color: "#ffffff",
+      fontWeight: "600",
+    },
+
+    toolsLabel: {
+      marginTop: "22px",
+      color: "#7f877f",
+      fontSize: "9px",
+      fontWeight: "700",
+      letterSpacing: "1.3px",
     },
 
     stack: {
-      marginTop: "26px",
-      color: "#f0f1ef",
+      marginTop: "7px",
+      color: "#e1e4e1",
       fontSize: "11px",
       lineHeight: "1.6",
     },
 
     linkWrap: {
       marginTop: "auto",
-      paddingTop: isMobile ? "32px" : "42px",
+      paddingTop: isMobile ? "30px" : "34px",
     },
 
     link: {
-      color: "#ffffff",
       textDecoration: "none",
-      fontSize: "12px",
-      paddingBottom: "8px",
-      borderBottom: "1px solid #69705f",
+      fontSize: "13px",
+      fontWeight: "500",
+      paddingBottom: "7px",
       width: "fit-content",
       display: "inline-block",
+      transition:
+        "color 0.2s ease, border-color 0.2s ease, transform 0.2s ease",
+    },
+
+    bottomCta: {
+      marginTop: isMobile ? "54px" : "68px",
+      paddingTop: isMobile ? "32px" : "40px",
+      borderTop: "1px solid #2c312d",
+      display: "flex",
+      flexDirection: isMobile ? "column" : "row",
+      justifyContent: "space-between",
+      alignItems: isMobile ? "flex-start" : "center",
+      gap: "24px",
+    },
+
+    bottomTextWrap: {
+      maxWidth: "650px",
+    },
+
+    bottomTitle: {
+      margin: 0,
+      color: "#ffffff",
+      fontSize: isMobile ? "22px" : "28px",
+      lineHeight: "1.3",
+      fontWeight: "400",
+    },
+
+    bottomText: {
+      margin: "10px 0 0",
+      color: "#aeb4af",
+      fontSize: isMobile ? "13px" : "14px",
+      lineHeight: "1.7",
+    },
+
+    bottomLink: {
+      color: "#caff46",
+      textDecoration: "none",
+      fontSize: isMobile ? "14px" : "15px",
+      fontWeight: "600",
+      paddingBottom: "7px",
+      borderBottom: "1px solid #caff46",
+      whiteSpace: "nowrap",
     },
   };
+
+  const getCardStyle = (
+    serviceNumber: string
+  ): CSSProperties => ({
+    ...styles.card,
+
+    border:
+      hoveredCard === serviceNumber
+        ? "1px solid #caff46"
+        : "1px solid #323832",
+
+    transform:
+      hoveredCard === serviceNumber
+        ? "translateY(-4px)"
+        : "translateY(0)",
+
+    boxShadow:
+      hoveredCard === serviceNumber
+        ? "0 18px 45px rgba(0,0,0,0.2)"
+        : "none",
+
+    transition:
+      "transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease",
+  });
+
+  const getLinkStyle = (
+    serviceNumber: string
+  ): CSSProperties => ({
+    ...styles.link,
+
+    color:
+      hoveredLink === serviceNumber
+        ? "#caff46"
+        : "#ffffff",
+
+    borderBottom:
+      hoveredLink === serviceNumber
+        ? "1px solid #caff46"
+        : "1px solid #69705f",
+
+    transform:
+      hoveredLink === serviceNumber
+        ? "translateX(4px)"
+        : "translateX(0)",
+  });
 
   return (
     <section style={styles.section}>
@@ -212,19 +380,37 @@ export default function ServicesSection() {
         </div>
 
         <h2 style={styles.heading}>
-          What does your business
+          What can I build
           <br />
-          need next?
+          for you?
         </h2>
+
+        <p style={styles.intro}>
+          From full web applications to AI features and connected
+          workflows, I help turn business problems into practical
+          products and systems.
+        </p>
 
         <div style={styles.cards}>
           {services.map((service) => (
             <article
               key={service.number}
-              style={styles.card}
+              style={getCardStyle(service.number)}
+              onMouseEnter={() =>
+                setHoveredCard(service.number)
+              }
+              onMouseLeave={() =>
+                setHoveredCard(null)
+              }
             >
-              <div style={styles.number}>
-                {service.number}
+              <div style={styles.cardTop}>
+                <div style={styles.number}>
+                  {service.number}
+                </div>
+
+                <div style={styles.category}>
+                  {service.category}
+                </div>
               </div>
 
               <h3 style={styles.cardTitle}>
@@ -245,11 +431,20 @@ export default function ServicesSection() {
                       ✓
                     </span>
 
-                    <span>
-                      {item}
-                    </span>
+                    <span>{item}</span>
                   </div>
                 ))}
+              </div>
+
+              <div style={styles.bestFor}>
+                <span style={styles.bestForLabel}>
+                  Best for:
+                </span>{" "}
+                {service.bestFor}
+              </div>
+
+              <div style={styles.toolsLabel}>
+                TOOLS I USE
               </div>
 
               <div style={styles.stack}>
@@ -258,14 +453,40 @@ export default function ServicesSection() {
 
               <div style={styles.linkWrap}>
                 <Link
-                  href="/contact"
-                  style={styles.link}
+                  href={service.href}
+                  style={getLinkStyle(service.number)}
+                  onMouseEnter={() =>
+                    setHoveredLink(service.number)
+                  }
+                  onMouseLeave={() =>
+                    setHoveredLink(null)
+                  }
                 >
-                  Let's discuss it ↗
+                  {service.cta}
                 </Link>
               </div>
             </article>
           ))}
+        </div>
+
+        <div style={styles.bottomCta}>
+          <div style={styles.bottomTextWrap}>
+            <h3 style={styles.bottomTitle}>
+              Not sure which service fits?
+            </h3>
+
+            <p style={styles.bottomText}>
+              Tell me what you&apos;re trying to improve or build. I can
+              help you figure out the right approach.
+            </p>
+          </div>
+
+          <Link
+            href="/contact"
+            style={styles.bottomLink}
+          >
+            Start a conversation ↗
+          </Link>
         </div>
       </div>
     </section>
