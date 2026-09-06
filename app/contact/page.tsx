@@ -1,12 +1,19 @@
-import ContactSection from '@/components/MainPage/ContactSection'
-import React from 'react'
+import { Suspense } from "react";
+import ContactSection from "@/components/MainPage/ContactSection";
 
-const page = () => {
+export default function ContactPage() {
   return (
-    <div className='pt-10' >
-        <ContactSection/>
-    </div>
-  )
+    <Suspense
+      fallback={
+        <main
+          style={{
+            minHeight: "100vh",
+            background: "#0c0e0d",
+          }}
+        />
+      }
+    >
+      <ContactSection />
+    </Suspense>
+  );
 }
-
-export default page
