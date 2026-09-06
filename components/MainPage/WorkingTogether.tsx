@@ -493,7 +493,7 @@ export default function WorkingTogether() {
                   setHoveredLink(null)
                 }
               >
-                More about me ↗
+                More about me ↗ 
               </Link>
 
               <Link
