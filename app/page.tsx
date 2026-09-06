@@ -1,6 +1,5 @@
 import ContactSection from "@/components/MainPage/ContactSection";
 import Hero from "@/components/MainPage/Hero";
-import Navbar from "@/components/MainPage/Navbar";
 import ProjectsSection from "@/components/MainPage/ProjectsSection";
 import ServicesSection from "@/components/MainPage/ServicesSection";
 import WorkingTogether from "@/components/MainPage/WorkingTogether";
