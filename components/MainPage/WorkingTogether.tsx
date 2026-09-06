@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   useEffect,
   useState,
@@ -15,6 +16,14 @@ type Step = {
 
 export default function WorkingTogether() {
   const [width, setWidth] = useState<number>(1440);
+
+  const [hoveredStep, setHoveredStep] = useState<
+    string | null
+  >(null);
+
+  const [hoveredLink, setHoveredLink] = useState<
+    string | null
+  >(null);
 
   useEffect(() => {
     const handleResize = (): void => {
@@ -39,21 +48,21 @@ export default function WorkingTogether() {
       label: "DISCOVER",
       title: "Start with the problem.",
       description:
-        "We discuss your users, existing tools and the outcome you need. Then we agree on a focused scope.",
+        "We discuss your users, current tools and the result you need. Then we agree on a focused scope and the best way forward.",
     },
     {
       number: "02",
       label: "BUILD",
       title: "See the work take shape.",
       description:
-        "Review working progress, give feedback and make decisions while there is room to adjust.",
+        "You review working progress, share feedback and make decisions while there is still room to adjust.",
     },
     {
       number: "03",
-      label: "HAND OVER",
-      title: "Know what comes next.",
+      label: "DELIVER",
+      title: "Launch with clarity.",
       description:
-        "Review the finished scope together, with a clear handover and next steps for your project.",
+        "We review the finished work together, confirm what is complete and leave you with clear next steps for your product.",
     },
   ];
 
@@ -63,10 +72,10 @@ export default function WorkingTogether() {
       background: "#0c0e0d",
       color: "#ffffff",
       padding: isMobile
-        ? "80px 20px"
+        ? "75px 20px 80px"
         : isTablet
-        ? "100px 32px"
-        : "120px 48px",
+        ? "95px 32px 95px"
+        : "105px 48px 105px",
       boxSizing: "border-box",
     },
 
@@ -81,78 +90,108 @@ export default function WorkingTogether() {
       gridTemplateColumns: isMobile
         ? "1fr"
         : "1.5fr 0.5fr",
-      gap: isMobile ? "26px" : "60px",
+      gap: isMobile ? "26px" : "55px",
       alignItems: "end",
     },
 
     label: {
       color: "#caff46",
-      fontSize: "10px",
+      fontSize: isMobile ? "11px" : "12px",
       fontWeight: "700",
-      letterSpacing: "1.8px",
-      marginBottom: isMobile ? "24px" : "28px",
+      letterSpacing: "1px",
+      marginBottom: isMobile ? "22px" : "26px",
+      lineHeight: "1.5",
     },
 
     heading: {
       margin: 0,
       color: "#f4f5f3",
       fontSize: isMobile
-        ? "44px"
+        ? "40px"
         : isTablet
-        ? "56px"
-        : "64px",
-      lineHeight: "1.02",
+        ? "50px"
+        : "58px",
+      lineHeight: "1.03",
       fontWeight: "400",
-      letterSpacing: isMobile ? "0px" : "1px",
+      letterSpacing: isMobile ? "-1px" : "-2px",
     },
 
     intro: {
-      maxWidth: "240px",
+      maxWidth: "270px",
       justifySelf: isMobile ? "start" : "end",
       margin: 0,
       color: "#b9bfba",
-      fontSize: "13px",
+      fontSize: isMobile ? "14px" : "15px",
       lineHeight: "1.7",
     },
 
     steps: {
-      marginTop: isMobile ? "48px" : "58px",
+      marginTop: isMobile ? "46px" : "56px",
       display: "grid",
-      gridTemplateColumns: isMobile
-        ? "1fr"
+      gridTemplateColumns:
+        isMobile || isTablet
+          ? "1fr"
+          : "repeat(3, 1fr)",
+      gap: isMobile
+        ? "28px"
         : isTablet
-        ? "1fr"
-        : "repeat(3, 1fr)",
-      gap: isMobile ? "36px" : isTablet ? "32px" : "40px",
+        ? "30px"
+        : "36px",
     },
 
     step: {
       borderTop: "1px solid #303530",
-      paddingTop: isMobile ? "24px" : "28px",
+      paddingTop: isMobile ? "22px" : "26px",
+      transition:
+        "border-color 0.25s ease, transform 0.25s ease",
     },
 
     stepLabel: {
       color: "#caff46",
-      fontSize: "10px",
+      fontSize: "11px",
       fontWeight: "700",
-      letterSpacing: "0.7px",
-      marginBottom: "24px",
+      letterSpacing: "0.8px",
+      marginBottom: "22px",
+      transition: "color 0.25s ease",
     },
 
     stepTitle: {
       margin: 0,
       color: "#ffffff",
-      fontSize: isMobile ? "23px" : "25px",
+      fontSize: isMobile ? "22px" : "24px",
       fontWeight: "400",
       lineHeight: "1.2",
     },
 
     stepText: {
-      margin: "18px 0 0",
+      margin: "16px 0 0",
       color: "#b9bfba",
       fontSize: isMobile ? "14px" : "15px",
       lineHeight: "1.7",
       maxWidth: "350px",
+    },
+
+    reassurance: {
+      marginTop: isMobile ? "34px" : "42px",
+      display: "flex",
+      flexWrap: "wrap",
+      gap: isMobile ? "12px 18px" : "16px 24px",
+      color: "#aeb5af",
+      fontSize: isMobile ? "12px" : "13px",
+    },
+
+    reassuranceItem: {
+      display: "flex",
+      alignItems: "center",
+      gap: "8px",
+    },
+
+    reassuranceDot: {
+      width: "5px",
+      height: "5px",
+      borderRadius: "50%",
+      background: "#caff46",
+      flexShrink: 0,
     },
 
     divider: {
@@ -161,17 +200,20 @@ export default function WorkingTogether() {
       background: "#303530",
       margin: isMobile
         ? "70px 0"
-        : "100px 0 70px",
+        : "90px 0 70px",
     },
 
     about: {
       display: "grid",
-      gridTemplateColumns: isMobile
-        ? "1fr"
+      gridTemplateColumns:
+        isMobile || isTablet
+          ? "1fr"
+          : "1fr 1fr",
+      gap: isMobile
+        ? "42px"
         : isTablet
-        ? "1fr"
-        : "1fr 1fr",
-      gap: isMobile ? "45px" : isTablet ? "55px" : "80px",
+        ? "52px"
+        : "76px",
       alignItems: "start",
     },
 
@@ -179,55 +221,140 @@ export default function WorkingTogether() {
       margin: 0,
       color: "#f4f5f3",
       fontSize: isMobile
-        ? "44px"
+        ? "40px"
         : isTablet
-        ? "56px"
-        : "62px",
-      lineHeight: "1.02",
+        ? "50px"
+        : "58px",
+      lineHeight: "1.03",
       fontWeight: "400",
-      letterSpacing: isMobile ? "0px" : "1px",
+      letterSpacing: isMobile ? "-1px" : "-2px",
     },
 
     signature: {
-      marginTop: isMobile ? "32px" : "42px",
+      marginTop: isMobile ? "30px" : "38px",
     },
 
     name: {
       color: "#ffffff",
-      fontSize: "23px",
+      fontSize: isMobile ? "22px" : "24px",
       fontWeight: "700",
       marginBottom: "8px",
     },
 
-    tagline: {
+    role: {
       color: "#c9ceca",
-      fontSize: "10px",
-      letterSpacing: "1.4px",
+      fontSize: isMobile ? "12px" : "13px",
+      lineHeight: "1.5",
+    },
+
+    availability: {
+      marginTop: "14px",
+      display: "flex",
+      alignItems: "center",
+      gap: "8px",
+      color: "#b8beb9",
+      fontSize: isMobile ? "12px" : "13px",
+    },
+
+    availabilityDot: {
+      width: "7px",
+      height: "7px",
+      borderRadius: "50%",
+      background: "#caff46",
+      flexShrink: 0,
     },
 
     aboutText: {
-      paddingTop: isMobile ? "0" : "6px",
+      paddingTop: isMobile ? "0" : "4px",
     },
 
     mainText: {
       margin: 0,
       color: "#ffffff",
-      fontSize: isMobile ? "17px" : "19px",
-      lineHeight: "1.6",
+      fontSize: isMobile ? "16px" : "18px",
+      lineHeight: "1.65",
       fontWeight: "500",
     },
 
     secondaryText: {
-      margin: "22px 0 0",
+      margin: "20px 0 0",
       color: "#aeb5af",
+      fontSize: isMobile ? "14px" : "15px",
+      lineHeight: "1.7",
+    },
+
+    directText: {
+      margin: "20px 0 0",
+      color: "#d5d9d5",
       fontSize: isMobile ? "14px" : "15px",
       lineHeight: "1.7",
     },
 
     accent: {
       color: "#caff46",
+      textDecoration: "none",
+    },
+
+    buttonRow: {
+      marginTop: isMobile ? "28px" : "32px",
+      display: "flex",
+      flexDirection: isMobile ? "column" : "row",
+      alignItems: isMobile ? "flex-start" : "center",
+      gap: isMobile ? "18px" : "24px",
+    },
+
+    aboutLink: {
+      color: "#ffffff",
+      textDecoration: "none",
+      fontSize: "14px",
+      fontWeight: "500",
+      paddingBottom: "7px",
+      borderBottom: "1px solid #69705f",
+      width: "fit-content",
+      transition:
+        "color 0.2s ease, border-color 0.2s ease",
+    },
+
+    contactLink: {
+      color: "#caff46",
+      textDecoration: "none",
+      fontSize: "14px",
+      fontWeight: "600",
+      paddingBottom: "7px",
+      borderBottom: "1px solid #caff46",
+      width: "fit-content",
     },
   };
+
+  const getStepStyle = (
+    stepNumber: string
+  ): CSSProperties => ({
+    ...styles.step,
+
+    borderTop:
+      hoveredStep === stepNumber
+        ? "1px solid #caff46"
+        : "1px solid #303530",
+
+    transform:
+      hoveredStep === stepNumber
+        ? "translateY(-3px)"
+        : "translateY(0)",
+  });
+
+  const getAboutLinkStyle = (): CSSProperties => ({
+    ...styles.aboutLink,
+
+    color:
+      hoveredLink === "about"
+        ? "#caff46"
+        : "#ffffff",
+
+    borderBottom:
+      hoveredLink === "about"
+        ? "1px solid #caff46"
+        : "1px solid #69705f",
+  });
 
   return (
     <section style={styles.section}>
@@ -244,15 +371,22 @@ export default function WorkingTogether() {
           </div>
 
           <p style={styles.intro}>
-            A practical way to move
-            <br />
-            from conversation to delivery.
+            A simple process from first conversation to final delivery.
           </p>
         </div>
 
         <div style={styles.steps}>
           {steps.map((step) => (
-            <div key={step.number} style={styles.step}>
+            <div
+              key={step.number}
+              style={getStepStyle(step.number)}
+              onMouseEnter={() =>
+                setHoveredStep(step.number)
+              }
+              onMouseLeave={() =>
+                setHoveredStep(null)
+              }
+            >
               <div style={styles.stepLabel}>
                 {step.number} / {step.label}
               </div>
@@ -266,6 +400,28 @@ export default function WorkingTogether() {
               </p>
             </div>
           ))}
+        </div>
+
+        <div style={styles.reassurance}>
+          <div style={styles.reassuranceItem}>
+            <span style={styles.reassuranceDot} />
+            <span>Clear scope</span>
+          </div>
+
+          <div style={styles.reassuranceItem}>
+            <span style={styles.reassuranceDot} />
+            <span>Regular updates</span>
+          </div>
+
+          <div style={styles.reassuranceItem}>
+            <span style={styles.reassuranceDot} />
+            <span>Direct communication</span>
+          </div>
+
+          <div style={styles.reassuranceItem}>
+            <span style={styles.reassuranceDot} />
+            <span>Clear handover</span>
+          </div>
         </div>
 
         <div style={styles.divider} />
@@ -287,28 +443,66 @@ export default function WorkingTogether() {
                 Zohaib
               </div>
 
-              <div style={styles.tagline}>
-                / Learn. Build. Repeat.
+              <div style={styles.role}>
+                Web Developer • AI Builder • Pakistan / Remote
+              </div>
+
+              <div style={styles.availability}>
+                <span style={styles.availabilityDot} />
+                <span>
+                  Available for selected projects
+                </span>
               </div>
             </div>
           </div>
 
           <div style={styles.aboutText}>
             <p style={styles.mainText}>
-              I’m Zohaib, a freelance web developer based in
-              Pakistan. I connect the interface, the data and the
-              everyday workflows behind a product. My work spans
-              web apps, AI integrations and email operations with
-              Smartlead and Hypertide.
+              I&apos;m Zohaib, a web developer and AI builder focused on
+              practical products, useful automation and connected workflows.
+              I work across web apps, AI integrations, APIs and the systems
+              that keep day to day work moving.
+            </p>
+
+            <p style={styles.directText}>
+              You work directly with me from the first conversation through
+              development and delivery, so there is less back and forth and a
+              clearer view of the whole project.
             </p>
 
             <p style={styles.secondaryText}>
-              I also share programming content through{" "}
-              <span style={styles.accent}>
+              I also run{" "}
+              <Link
+                href="/about"
+                style={styles.accent}
+              >
                 Codingskillup
-              </span>
-              . Learn, build, repeat.
+              </Link>
+              , where I share what I learn while building. Learn, build,
+              repeat.
             </p>
+
+            <div style={styles.buttonRow}>
+              <Link
+                href="/about"
+                style={getAboutLinkStyle()}
+                onMouseEnter={() =>
+                  setHoveredLink("about")
+                }
+                onMouseLeave={() =>
+                  setHoveredLink(null)
+                }
+              >
+                More about me ↗
+              </Link>
+
+              <Link
+                href="/contact"
+                style={styles.contactLink}
+              >
+                Let&apos;s work together ↗
+              </Link>
+            </div>
           </div>
         </div>
       </div>
