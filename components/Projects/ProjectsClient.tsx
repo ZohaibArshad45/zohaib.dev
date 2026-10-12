@@ -255,34 +255,42 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
                   <span>{project.status}</span>
                 </div>
 
-                <h2 style={styles.projectTitle}>{project.headline}</h2>
+                <h2 style={styles.projectTitle}>{project.headline || project.title}</h2>
 
-                <p style={styles.projectSubhead}>{project.subhead}</p>
+                {project.subhead && (
+                  <p style={styles.projectSubhead}>{project.subhead}</p>
+                )}
 
                 <p style={styles.projectDescription}>{project.description}</p>
 
-                <div style={styles.outcomeBox}>
-                  <strong>Outcome:</strong> {project.outcome}
-                </div>
+                {project.outcome && (
+                  <div style={styles.outcomeBox}>
+                    <strong>Outcome:</strong> {project.outcome}
+                  </div>
+                )}
 
                 {/* METRICS PILLS */}
-                <div style={styles.metricsRow}>
-                  {project.metrics.map((m) => (
-                    <div key={m.label} style={styles.metricPill}>
-                      <span style={styles.metricPillVal}>{m.value}</span>
-                      <span style={styles.metricPillLabel}>{m.label}</span>
-                    </div>
-                  ))}
-                </div>
+                {project.metrics && project.metrics.length > 0 && (
+                  <div style={styles.metricsRow}>
+                    {project.metrics.slice(0, 3).map((m) => (
+                      <div key={m.label} style={styles.metricPill}>
+                        <span style={styles.metricPillVal}>{m.value}</span>
+                        <span style={styles.metricPillLabel}>{m.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
 
                 {/* TAGS */}
-                <div style={styles.tagsRow}>
-                  {project.tags.map((tag) => (
-                    <span key={tag} style={styles.tag}>
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+                {project.tags && project.tags.length > 0 && (
+                  <div style={styles.tagsRow}>
+                    {project.tags.slice(0, 5).map((tag) => (
+                      <span key={tag} style={styles.tag}>
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
 
                 {/* ACTION LINKS */}
                 <div style={styles.actionsRow}>
@@ -331,9 +339,11 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
                     )}
                   </div>
 
-                  <span style={styles.clientMeta}>
-                    {project.client} • {project.timeline}
-                  </span>
+                  {[project.client, project.timeline].filter(Boolean).length > 0 && (
+                    <span style={styles.clientMeta}>
+                      {[project.client, project.timeline].filter(Boolean).join(" • ")}
+                    </span>
+                  )}
                 </div>
               </div>
             </article>
@@ -599,22 +609,22 @@ const styles: Record<string, CSSProperties> = {
   card: {
     width: "100%",
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
     borderRadius: "12px",
     overflow: "hidden",
     background: "#121512",
     boxSizing: "border-box",
   },
   previewContainer: {
-    padding: "18px",
+    padding: "14px",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    background: "rgba(0,0,0,0.2)",
+    background: "rgba(0,0,0,0.25)",
     boxSizing: "border-box",
   },
   contentContainer: {
-    padding: "36px 36px 36px",
+    padding: "24px 28px",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -622,57 +632,65 @@ const styles: Record<string, CSSProperties> = {
   },
   projectEyebrow: {
     color: "#caff46",
-    fontSize: "11px",
+    fontSize: "10px",
     fontWeight: "700",
     letterSpacing: "1px",
-    marginBottom: "14px",
+    marginBottom: "8px",
     display: "flex",
     gap: "6px",
   },
   projectTitle: {
     margin: 0,
-    fontSize: "clamp(24px, 3vw, 32px)",
-    lineHeight: "1.15",
-    fontWeight: "400",
+    fontSize: "clamp(20px, 2.2vw, 25px)",
+    lineHeight: "1.2",
+    fontWeight: "500",
     color: "#ffffff",
   },
   projectSubhead: {
-    margin: "8px 0 0",
-    fontSize: "13px",
+    margin: "4px 0 0",
+    fontSize: "12px",
     color: "#9da49e",
     fontWeight: "600",
   },
   projectDescription: {
-    margin: "14px 0 0",
-    fontSize: "14px",
-    lineHeight: "1.7",
+    margin: "8px 0 0",
+    fontSize: "13px",
+    lineHeight: "1.55",
     color: "#bac0bb",
+    display: "-webkit-box",
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: "vertical",
+    overflow: "hidden",
   },
   outcomeBox: {
-    margin: "16px 0 0",
-    paddingLeft: "12px",
+    margin: "10px 0 0",
+    paddingLeft: "10px",
     borderLeft: "2px solid #caff46",
-    fontSize: "13px",
-    lineHeight: "1.6",
+    fontSize: "12px",
+    lineHeight: "1.5",
     color: "#d7dbd7",
+    display: "-webkit-box",
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: "vertical",
+    overflow: "hidden",
   },
   metricsRow: {
     display: "flex",
     flexWrap: "wrap",
-    gap: "10px",
-    marginTop: "20px",
+    gap: "8px",
+    marginTop: "12px",
   },
   metricPill: {
     background: "#181d19",
     border: "1px solid #2e372f",
     borderRadius: "6px",
-    padding: "6px 10px",
+    padding: "4px 8px",
     display: "flex",
     alignItems: "center",
-    gap: "6px",
+    gap: "5px",
   },
   metricPillVal: {
-    fontSize: "12px",
+    fontSize: "11px",
     fontWeight: "700",
     color: "#caff46",
   },
@@ -683,14 +701,14 @@ const styles: Record<string, CSSProperties> = {
   tagsRow: {
     display: "flex",
     flexWrap: "wrap",
-    gap: "8px",
-    marginTop: "18px",
+    gap: "6px",
+    marginTop: "12px",
   },
   tag: {
-    padding: "5px 11px",
-    borderRadius: "16px",
+    padding: "4px 9px",
+    borderRadius: "14px",
     border: "1px solid #363d37",
-    fontSize: "11px",
+    fontSize: "10px",
     color: "#ffffff",
     background: "#151916",
   },
@@ -699,9 +717,9 @@ const styles: Record<string, CSSProperties> = {
     flexWrap: "wrap",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: "16px",
-    marginTop: "26px",
-    paddingTop: "18px",
+    gap: "14px",
+    marginTop: "16px",
+    paddingTop: "14px",
     borderTop: "1px solid #252b26",
   },
   projectLink: {

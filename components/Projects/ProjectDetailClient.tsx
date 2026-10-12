@@ -98,20 +98,26 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
 
           {/* PROJECT INFO GRID */}
           <div style={styles.metaGrid}>
-            <div style={styles.metaCard}>
-              <div style={styles.metaLabel}>CLIENT / SCOPE</div>
-              <div style={styles.metaValue}>{project.client || "Direct Project"}</div>
-            </div>
+            {project.client ? (
+              <div style={styles.metaCard}>
+                <div style={styles.metaLabel}>CLIENT / SCOPE</div>
+                <div style={styles.metaValue}>{project.client}</div>
+              </div>
+            ) : null}
 
-            <div style={styles.metaCard}>
-              <div style={styles.metaLabel}>ROLE</div>
-              <div style={styles.metaValue}>{project.role || "Lead Engineer"}</div>
-            </div>
+            {project.role ? (
+              <div style={styles.metaCard}>
+                <div style={styles.metaLabel}>ROLE</div>
+                <div style={styles.metaValue}>{project.role}</div>
+              </div>
+            ) : null}
 
-            <div style={styles.metaCard}>
-              <div style={styles.metaLabel}>TIMELINE</div>
-              <div style={styles.metaValue}>{project.timeline || "Completed"}</div>
-            </div>
+            {project.timeline ? (
+              <div style={styles.metaCard}>
+                <div style={styles.metaLabel}>TIMELINE</div>
+                <div style={styles.metaValue}>{project.timeline}</div>
+              </div>
+            ) : null}
 
             <div style={styles.metaCard}>
               <div style={styles.metaLabel}>CATEGORIES</div>
@@ -174,6 +180,52 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
             <ProjectPreviewCard project={project} isMobile={isMobile} />
           )}
         </section>
+
+        {/* DIRECT ACTION BAR IMMEDIATELY BELOW THE SCREENSHOT / PREVIEW */}
+        {(project.demoUrl || project.githubUrl) && (
+          <div style={styles.imageActionStrip}>
+            <div style={styles.imageActionInfo}>
+              <span style={styles.imageActionLabel}>LIVE SYSTEM &amp; CODEBASE</span>
+              <span style={styles.imageActionTitle}>
+                Test the deployed product or inspect technical implementation in GitHub.
+              </span>
+            </div>
+
+            <div style={styles.imageActionBtns}>
+              {project.demoUrl && (
+                <a
+                  href={project.demoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={styles.livePrimaryBtn}
+                >
+                  <span style={styles.pulseDot} />
+                  <span>Open Live Website ↗</span>
+                </a>
+              )}
+
+              {project.githubUrl && (
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={styles.githubSecondaryBtn}
+                >
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    style={{ flexShrink: 0 }}
+                  >
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                  </svg>
+                  <span>View GitHub Repository ↗</span>
+                </a>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* IMPACT METRICS */}
         {project.metrics && project.metrics.length > 0 && (
@@ -437,7 +489,76 @@ const styles: Record<string, CSSProperties> = {
     borderRadius: "12px",
     overflow: "hidden",
     padding: "16px",
+    marginBottom: "16px",
+  },
+  imageActionStrip: {
+    background: "#121512",
+    border: "1px solid #283329",
+    borderRadius: "10px",
+    padding: "18px 24px",
     marginBottom: "40px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexWrap: "wrap",
+    gap: "16px",
+    boxShadow: "0 10px 30px rgba(0, 0, 0, 0.25)",
+  },
+  imageActionInfo: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "4px",
+  },
+  imageActionLabel: {
+    fontSize: "10px",
+    fontWeight: "700",
+    color: "#caff46",
+    letterSpacing: "1px",
+  },
+  imageActionTitle: {
+    fontSize: "13px",
+    color: "#b0b8b1",
+  },
+  imageActionBtns: {
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+    flexWrap: "wrap",
+  },
+  livePrimaryBtn: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "10px",
+    background: "#caff46",
+    color: "#0c0e0d",
+    padding: "12px 22px",
+    borderRadius: "8px",
+    fontSize: "13px",
+    fontWeight: "800",
+    textDecoration: "none",
+    letterSpacing: "0.2px",
+    boxShadow: "0 0 20px rgba(202, 255, 70, 0.25)",
+    transition: "transform 0.2s ease, opacity 0.2s ease",
+  },
+  pulseDot: {
+    width: "7px",
+    height: "7px",
+    borderRadius: "50%",
+    background: "#0c0e0d",
+  },
+  githubSecondaryBtn: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "8px",
+    background: "#161b17",
+    color: "#ffffff",
+    border: "1px solid #334035",
+    padding: "11px 20px",
+    borderRadius: "8px",
+    fontSize: "13px",
+    fontWeight: "600",
+    textDecoration: "none",
+    transition: "border-color 0.2s ease, background 0.2s ease",
   },
   metricsBanner: {
     background: "#121512",

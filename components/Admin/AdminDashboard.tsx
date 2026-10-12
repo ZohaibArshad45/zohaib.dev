@@ -533,9 +533,9 @@ export default function AdminDashboard() {
         .trim()
         .replace(/[^a-z0-9-]/g, "-"),
       shortTitle: projectForm.shortTitle || projectForm.title,
-      client: (projectForm.client || "").trim() || "Independent / Production",
-      role: (projectForm.role || "").trim() || "Lead Full-Stack Engineer",
-      timeline: (projectForm.timeline || "").trim() || "Completed",
+      client: (projectForm.client || "").trim(),
+      role: (projectForm.role || "").trim(),
+      timeline: (projectForm.timeline || "").trim(),
       outcome: (projectForm.outcome || "").trim(),
       problem: (projectForm.problem || "").trim(),
       solution: (projectForm.solution || "").trim(),

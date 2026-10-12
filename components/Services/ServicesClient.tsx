@@ -23,12 +23,39 @@ export default function ServicesClient({ initialServices }: Props) {
   const isMobile = width <= 768;
   const isTablet = width > 768 && width <= 1024;
 
+  const [hoveredService, setHoveredService] = useState<string | null>(null);
+  const [hoveredCta, setHoveredCta] = useState<string | null>(null);
+
   const categories = ["All", ...Array.from(new Set(services.map((s) => s.category)))];
 
   const filteredServices = services.filter((s) => {
     if (selectedCategory === "All") return true;
     return s.category === selectedCategory;
   });
+
+  const getServiceCardStyle = (key: string): CSSProperties => {
+    const isHovered = hoveredService === key;
+    return {
+      ...styles.serviceCard,
+      borderColor: isHovered ? "#caff46" : "#242c25",
+      transform: isHovered ? "translateY(-6px)" : "translateY(0)",
+      boxShadow: isHovered
+        ? "0 22px 48px rgba(0, 0, 0, 0.5), 0 0 25px rgba(202, 255, 70, 0.14)"
+        : "0 4px 14px rgba(0, 0, 0, 0.2)",
+      transition: "all 0.28s cubic-bezier(0.16, 1, 0.3, 1)",
+    };
+  };
+
+  const getCtaStyle = (key: string): CSSProperties => {
+    const isHovered = hoveredCta === key;
+    return {
+      ...styles.ctaButton,
+      background: isHovered ? "#d4ff66" : "#caff46",
+      transform: isHovered ? "scale(1.02)" : "scale(1)",
+      boxShadow: isHovered ? "0 0 16px rgba(202, 255, 70, 0.3)" : "none",
+      transition: "all 0.2s ease",
+    };
+  };
 
   return (
     <main style={styles.page}>
@@ -112,74 +139,87 @@ export default function ServicesClient({ initialServices }: Props) {
               </Link>
             </div>
           ) : (
-            filteredServices.map((service) => (
-              <div key={service.id || service.slug} style={styles.serviceCard}>
-              <div style={styles.cardTopRow}>
-                <span style={styles.serviceNum}>{service.number}</span>
-                <span style={styles.categoryPill}>{service.category}</span>
-              </div>
+            filteredServices.map((service) => {
+              const cardKey = service.id || service.slug || service.title;
+              return (
+                <div
+                  key={cardKey}
+                  style={getServiceCardStyle(cardKey)}
+                  onMouseEnter={() => setHoveredService(cardKey)}
+                  onMouseLeave={() => setHoveredService(null)}
+                >
+                  <div style={styles.cardTopRow}>
+                    <span style={styles.serviceNum}>{service.number}</span>
+                    <span style={styles.categoryPill}>{service.category}</span>
+                  </div>
 
-              <h2 style={styles.serviceTitle}>{service.title}</h2>
-              <p style={styles.serviceDesc}>{service.description}</p>
+                  <h2 style={styles.serviceTitle}>{service.title}</h2>
+                  <p style={styles.serviceDesc}>{service.description}</p>
 
-              {/* DELIVERABLES / CAPABILITIES CHECKLIST */}
-              <div style={styles.checklistSection}>
-                <div style={styles.checklistHeader}>WHAT IS DELIVERED:</div>
-                <ul style={styles.checklist}>
-                  {service.items.map((item) => (
-                    <li key={item} style={styles.checkItem}>
-                      <span style={styles.checkIcon}>✓</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+                  {/* DELIVERABLES / CAPABILITIES CHECKLIST */}
+                  <div style={styles.checklistSection}>
+                    <div style={styles.checklistHeader}>WHAT IS DELIVERED:</div>
+                    <ul style={styles.checklist}>
+                      {service.items.map((item) => (
+                        <li key={item} style={styles.checkItem}>
+                          <span style={styles.checkIcon}>✓</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
-              {/* TARGET AUDIENCE / BEST FOR */}
-              {service.bestFor && (
-                <div style={styles.bestForBox}>
-                  <span style={styles.bestForLabel}>BEST SUITED FOR:</span>
-                  <div style={styles.bestForText}>{service.bestFor}</div>
-                </div>
-              )}
+                  {/* TARGET AUDIENCE / BEST FOR */}
+                  {service.bestFor && (
+                    <div style={styles.bestForBox}>
+                      <span style={styles.bestForLabel}>BEST SUITED FOR:</span>
+                      <div style={styles.bestForText}>{service.bestFor}</div>
+                    </div>
+                  )}
 
-              {/* TECH STACK */}
-              {service.stack && (
-                <div style={styles.stackBox}>
-                  <span style={styles.stackLabel}>TOOLS &amp; STACK:</span>
-                  <div style={styles.stackTags}>
-                    {service.stack.split(/[,/]/).map((tool) => (
-                      <span key={tool.trim()} style={styles.stackTag}>
-                        {tool.trim()}
-                      </span>
-                    ))}
+                  {/* TECH STACK */}
+                  {service.stack && (
+                    <div style={styles.stackBox}>
+                      <span style={styles.stackLabel}>TOOLS &amp; STACK:</span>
+                      <div style={styles.stackTags}>
+                        {service.stack.split(/[,/]/).map((tool) => (
+                          <span key={tool.trim()} style={styles.stackTag}>
+                            {tool.trim()}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* FOOTER: TIMELINE & CTA */}
+                  <div style={styles.cardFooter}>
+                    <div style={styles.metaCol}>
+                      {service.timeline && (
+                        <div style={styles.metaItem}>
+                          <span style={styles.metaDim}>Turnaround:</span>{" "}
+                          <span style={styles.metaBold}>{service.timeline}</span>
+                        </div>
+                      )}
+                      {service.startingPrice && (
+                        <div style={styles.metaItem}>
+                          <span style={styles.metaDim}>Starting:</span>{" "}
+                          <span style={styles.metaPrice}>{service.startingPrice}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    <Link
+                      href={service.href || "/contact"}
+                      style={getCtaStyle(cardKey)}
+                      onMouseEnter={() => setHoveredCta(cardKey)}
+                      onMouseLeave={() => setHoveredCta(null)}
+                    >
+                      {service.cta || "Get in touch ↗"}
+                    </Link>
                   </div>
                 </div>
-              )}
-
-              {/* FOOTER: TIMELINE & CTA */}
-              <div style={styles.cardFooter}>
-                <div style={styles.metaCol}>
-                  {service.timeline && (
-                    <div style={styles.metaItem}>
-                      <span style={styles.metaDim}>Turnaround:</span>{" "}
-                      <span style={styles.metaBold}>{service.timeline}</span>
-                    </div>
-                  )}
-                  {service.startingPrice && (
-                    <div style={styles.metaItem}>
-                      <span style={styles.metaDim}>Starting:</span>{" "}
-                      <span style={styles.metaPrice}>{service.startingPrice}</span>
-                    </div>
-                  )}
-                </div>
-
-                <Link href={service.href || "/contact"} style={styles.ctaButton}>
-                  {service.cta || "Get in touch ↗"}
-                </Link>
-              </div>
-            </div>
-          )))}
+              );
+            }))}
         </section>
 
         {/* PROCESS / HOW IT WORKS */}
