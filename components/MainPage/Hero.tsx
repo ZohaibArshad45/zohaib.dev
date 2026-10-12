@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { CSSProperties, useEffect, useState } from "react";
+import type { SiteSettings } from "@/lib/settings";
 
-export default function Hero() {
+export default function Hero({ settings }: { settings?: SiteSettings }) {
   const [width, setWidth] = useState(1200);
   const [hoveredTag, setHoveredTag] = useState<string | null>(null);
 
@@ -228,7 +229,7 @@ export default function Hero() {
     <section style={styles.section}>
       <div style={styles.left}>
         <div style={styles.eyebrow}>
-          Web Developer • AI Builder • Available Remote
+          {settings?.availabilityStatus || "Web Developer • AI Builder • Available Remote"}
         </div>
 
         <h1 style={styles.title}>
@@ -239,8 +240,7 @@ export default function Hero() {
         </h1>
 
         <p style={styles.description}>
-          I build fast web apps, useful AI features and automated workflows
-          that help teams save time and move faster.
+          {settings?.bioSnippet || "I build fast web apps, useful AI features and automated workflows that help teams save time and move faster."}
         </p>
 
         <div style={styles.buttons}>
@@ -333,7 +333,7 @@ export default function Hero() {
               </div>
 
               <div style={styles.profileRole}>
-                Web Developer &amp; AI Builder
+                {settings?.founderTitle || "Web Developer & AI Builder"}
               </div>
             </div>
           </Link>

@@ -6,6 +6,7 @@ import {
   useState,
   type CSSProperties,
 } from "react";
+import type { SiteSettings } from "@/lib/settings";
 
 type Step = {
   number: string;
@@ -14,7 +15,7 @@ type Step = {
   description: string;
 };
 
-export default function WorkingTogether() {
+export default function WorkingTogether({ settings }: { settings?: SiteSettings }) {
   const [width, setWidth] = useState<number>(1440);
 
   const [hoveredStep, setHoveredStep] = useState<
@@ -444,13 +445,13 @@ export default function WorkingTogether() {
               </div>
 
               <div style={styles.role}>
-                Web Developer • AI Builder • Pakistan / Remote
+                {settings?.founderTitle || "Web Developer • AI Builder • Pakistan / Remote"}
               </div>
 
               <div style={styles.availability}>
                 <span style={styles.availabilityDot} />
                 <span>
-                  Available for selected projects
+                  {settings?.availabilityStatus || "Available for selected projects"}
                 </span>
               </div>
             </div>
@@ -458,10 +459,16 @@ export default function WorkingTogether() {
 
           <div style={styles.aboutText}>
             <p style={styles.mainText}>
-              I&apos;m Zohaib, a web developer and AI builder focused on
-              practical products, useful automation and connected workflows.
-              I work across web apps, AI integrations, APIs and the systems
-              that keep day to day work moving.
+              {settings?.bioSnippet ? (
+                <>I&apos;m Zohaib. {settings.bioSnippet}</>
+              ) : (
+                <>
+                  I&apos;m Zohaib, a web developer and AI builder focused on
+                  practical products, useful automation and connected workflows.
+                  I work across web apps, AI integrations, APIs and the systems
+                  that keep day to day work moving.
+                </>
+              )}
             </p>
 
             <p style={styles.directText}>

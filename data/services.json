@@ -1,0 +1,62 @@
+[
+  {
+    "id": "srv-mv5hr1i4",
+    "slug": "web-apps",
+    "number": "01",
+    "category": "Web Apps",
+    "title": "Web Apps",
+    "description": "Build a fast, responsive web app that turns your idea into a product people can actually use.\n\n",
+    "items": [
+      "Responsive interfaces",
+      "Authentication & database",
+      "Dashboards & client portals"
+    ],
+    "bestFor": "SaaS products, MVPs, internal tools and client portals",
+    "stack": "Next.js / React / Node.js / TypeScript / Supabase",
+    "timeline": "2 to 3 Weeks",
+    "startingPrice": "",
+    "cta": "Build my web app ↗",
+    "href": "/contact?service=web-apps",
+    "featured": false
+  },
+  {
+    "id": "srv-mv5hw8o7",
+    "slug": "ai-agents-features",
+    "number": "02",
+    "category": "AI Systems",
+    "title": "AI Agents & Features",
+    "description": "Add AI agents and focused features that answer questions, process information and handle useful tasks.",
+    "items": [
+      "AI agents",
+      "Chatbots & assistants",
+      "AI powered workflows"
+    ],
+    "bestFor": "Support, research, operations and product features",
+    "stack": "OpenAI / APIs / AI workflows",
+    "timeline": "2 to 3 Weeks",
+    "startingPrice": "",
+    "cta": "Add AI to my product  ↗",
+    "href": "/contact?service=ai-agents-features",
+    "featured": false
+  },
+  {
+    "id": "srv-mv5hyo54",
+    "slug": "automation-integrations",
+    "number": "03",
+    "category": "Automation & Workflows",
+    "title": "Automation & Integrations",
+    "description": "Connect the tools your team already uses and automate repetitive work between them.\n\n",
+    "items": [
+      "CRM automation",
+      "API integrations",
+      "Lead & email workflows"
+    ],
+    "bestFor": "Sales, lead generation, CRM and repetitive admin work",
+    "stack": "n8n / HubSpot / Smartlead / Webhooks",
+    "timeline": "2-3 Weeks",
+    "startingPrice": "",
+    "cta": "Automate my workflow ↗",
+    "href": "/contact?service=automation-integrations",
+    "featured": false
+  }
+]

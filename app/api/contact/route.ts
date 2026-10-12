@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { addInquiry } from "@/lib/supabase";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -39,6 +40,19 @@ export async function POST(request: Request) {
           status: 400,
         }
       );
+    }
+
+    // Persist inquiry in admin store
+    try {
+      await addInquiry({
+        name,
+        email,
+        projectType,
+        timeline,
+        details,
+      });
+    } catch (saveErr) {
+      console.error("Failed to persist inquiry in admin store:", saveErr);
     }
 
     const { data, error } = await resend.emails.send({

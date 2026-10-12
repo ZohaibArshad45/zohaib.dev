@@ -34,7 +34,9 @@ type Social = {
   short: string;
 };
 
-export default function ContactSection() {
+import type { SiteSettings } from "@/lib/settings";
+
+export default function ContactSection({ settings }: { settings?: SiteSettings }) {
   const [width, setWidth] = useState<number>(1440);
 
   const [sending, setSending] = useState(false);
@@ -74,23 +76,23 @@ export default function ContactSection() {
 
   const socials: Social[] = [
     {
-      name: "LinkedIn",
-      href: "#",
-      short: "in",
-    },
-    {
       name: "GitHub",
-      href: "#",
+      href: settings?.githubUrl || "https://github.com/codingskillup",
       short: "GH",
     },
     {
-      name: "Upwork",
-      href: "#",
-      short: "Up",
+      name: "LinkedIn",
+      href: settings?.linkedinUrl || "https://linkedin.com/in/",
+      short: "in",
+    },
+    {
+      name: "Twitter / X",
+      href: settings?.twitterUrl || "https://x.com/",
+      short: "X",
     },
     {
       name: "Codingskillup",
-      href: "#",
+      href: "https://codingskillup.com",
       short: "CS",
     },
   ];
@@ -659,19 +661,33 @@ export default function ContactSection() {
               </div>
 
               <div style={styles.founder}>
-                Founder of Codingskillup
+                {settings?.founderTitle || "Founder of Codingskillup"}
               </div>
 
               <div style={styles.location}>
-                Bahawalpur, Punjab, Pakistan
+                {settings?.location || "Bahawalpur, Punjab, Pakistan"}
               </div>
 
               <a
-                href="mailto:zohaibfta@gmail.com"
+                href={`mailto:${settings?.primaryEmail || "zohaibfta@gmail.com"}`}
                 style={styles.emailLink}
               >
-                zohaibfta@gmail.com ↗
+                {settings?.primaryEmail || "zohaibfta@gmail.com"} ↗
               </a>
+
+              {settings?.phone && (
+                <div style={{ marginTop: "10px", fontSize: "14px", color: "#a4b0a5" }}>
+                  <span>WhatsApp: </span>
+                  <a
+                    href={`https://wa.me/${settings.phone.replace(/[^0-9]/g, "")}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{ color: "#caff46", textDecoration: "none", fontWeight: "600" }}
+                  >
+                    {settings.phone} ↗
+                  </a>
+                </div>
+              )}
             </div>
 
             <div style={styles.nextSteps}>
@@ -889,7 +905,7 @@ export default function ContactSection() {
               </p>
 
               <p style={styles.directText}>
-                Send your project details directly to zohaibfta@gmail.com
+                Send your project details directly to {settings?.primaryEmail || "zohaibfta@gmail.com"}
               </p>
             </div>
           </form>

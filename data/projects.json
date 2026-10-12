@@ -1,0 +1,66 @@
+[
+  {
+    "slug": "outreach-ops",
+    "number": "01",
+    "title": "Outreach Ops — Cold Email Infrastructure Monitoring & Automation Platform",
+    "shortTitle": "Outreach Ops — Cold Email Infrastructure Monitoring & Automation Platform",
+    "status": "Web Apps",
+    "categories": [
+      "Web Apps"
+    ],
+    "headline": "Outreach Ops: Smart Outreach, Simplified.",
+    "subhead": "",
+    "description": "Outreach Ops is a centralized outreach management platform designed to simplify email outreach, manage domains, monitor email deliverability, and automate daily operations. It helps teams organize outreach activities, track performance, manage sending domains, and streamline workflows through a clean dashboard. Built with Next.js, TypeScript, Tailwind CSS, and Supabase, Outreach Ops brings essential outreach tools together in one place, reducing manual work and improving operational efficiency.",
+    "outcome": "",
+    "tags": [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "Supabase",
+      "Smartlead API",
+      "EmailGuard",
+      "Vercel Cron + Supabase pg_cron",
+      "Resend"
+    ],
+    "images": [
+      "/uploads/1-mv5i8zzw.png",
+      "/uploads/2-mv5i95fc.png",
+      "/uploads/screenshot-2026-10-12-220701-mv5i9irk.png"
+    ],
+    "previewType": "dashboard",
+    "client": "Portfolio Project",
+    "role": "Developer",
+    "timeline": "Completed",
+    "deliverables": [
+      "Domain management and monitoring",
+      "Email deliverability tracking and verification",
+      "Outreach activity tracking and performance insights",
+      "Dynamic Account Rules",
+      "Campaigns & Clients",
+      "Issues & Diagnostics",
+      "Automated Monitoring & Notifications",
+      "Automated email notifications and scheduled tasks",
+      "Responsive dashboard UI with Tailwind CSS",
+      "Automated workflows to reduce manual operations",
+      "Secure authentication and server side operations"
+    ],
+    "problem": "",
+    "solution": "",
+    "architectureHighlights": [
+      "Domain management and monitoring",
+      "Email deliverability tracking and verification",
+      "Outreach activity tracking and performance insights",
+      "Dynamic Account Rules",
+      "Campaigns & Clients",
+      "Issues & Diagnostics",
+      "Automated Monitoring & Notifications",
+      "Automated email notifications and scheduled tasks",
+      "Responsive dashboard UI with Tailwind CSS",
+      "Automated workflows to reduce manual operations",
+      "Secure authentication and server side operations"
+    ],
+    "metrics": [],
+    "demoUrl": "https://outreach-ops-ten.vercel.app/",
+    "githubUrl": "https://github.com/codingskillup/Outreach-Ops"
+  }
+]

@@ -7,19 +7,13 @@ import {
   type CSSProperties,
 } from "react";
 
-type Service = {
-  number: string;
-  category: string;
-  title: string;
-  description: string;
-  items: string[];
-  bestFor: string;
-  stack: string;
-  cta: string;
-  href: string;
-};
+import { type Service, INITIAL_SERVICES } from "@/lib/services";
 
-export default function ServicesSection() {
+export default function ServicesSection({
+  services: propServices,
+}: {
+  services?: Service[];
+}) {
   const [width, setWidth] = useState<number>(1440);
 
   const [hoveredCard, setHoveredCard] = useState<
@@ -50,62 +44,8 @@ export default function ServicesSection() {
   const isMobile = width <= 700;
   const isTablet = width > 700 && width <= 1024;
 
-  const services: Service[] = [
-    {
-      number: "01",
-      category: "BUILD",
-      title: "Web Apps",
-      description:
-        "Build a fast, responsive web app that turns your idea into a product people can actually use.",
-      items: [
-        "Responsive interfaces",
-        "Authentication & database",
-        "Dashboards & client portals",
-      ],
-      bestFor:
-        "SaaS products, MVPs, internal tools and client portals",
-      stack:
-        "Next.js / React / TypeScript / Supabase",
-      cta: "Build my web app ↗",
-      href: "/contact?service=web-app",
-    },
-    {
-      number: "02",
-      category: "AI",
-      title: "AI Agents & Features",
-      description:
-        "Add AI agents and focused features that answer questions, process information and handle useful tasks.",
-      items: [
-        "AI agents",
-        "Chatbots & assistants",
-        "AI powered workflows",
-      ],
-      bestFor:
-        "Support, research, operations and product features",
-      stack:
-        "OpenAI / APIs / AI workflows",
-      cta: "Add AI to my product ↗",
-      href: "/contact?service=ai",
-    },
-    {
-      number: "03",
-      category: "AUTOMATE",
-      title: "Automation & Integrations",
-      description:
-        "Connect the tools your team already uses and automate repetitive work between them.",
-      items: [
-        "CRM automation",
-        "API integrations",
-        "Lead & email workflows",
-      ],
-      bestFor:
-        "Sales, lead generation, CRM and repetitive admin work",
-      stack:
-        "n8n / HubSpot / Smartlead / Webhooks",
-      cta: "Automate my workflow ↗",
-      href: "/contact?service=automation",
-    },
-  ];
+  const services: Service[] =
+    propServices && propServices.length > 0 ? propServices : INITIAL_SERVICES;
 
   const styles: Record<string, CSSProperties> = {
     section: {
@@ -392,17 +332,54 @@ export default function ServicesSection() {
         </p>
 
         <div style={styles.cards}>
-          {services.map((service) => (
-            <article
-              key={service.number}
-              style={getCardStyle(service.number)}
-              onMouseEnter={() =>
-                setHoveredCard(service.number)
-              }
-              onMouseLeave={() =>
-                setHoveredCard(null)
-              }
+          {services.length === 0 ? (
+            <div
+              style={{
+                gridColumn: "1 / -1",
+                padding: "60px 24px",
+                border: "1px dashed #273028",
+                borderRadius: "12px",
+                textAlign: "center",
+                background: "rgba(18, 22, 19, 0.4)",
+              }}
             >
+              <p
+                style={{
+                  color: "#8a948c",
+                  fontSize: "15px",
+                  margin: "0 0 16px",
+                }}
+              >
+                No services published yet in the database.
+              </p>
+              <Link
+                href="/admin"
+                style={{
+                  display: "inline-block",
+                  color: "#caff46",
+                  border: "1px solid #caff46",
+                  padding: "8px 18px",
+                  borderRadius: "20px",
+                  fontSize: "12px",
+                  textDecoration: "none",
+                  fontWeight: 600,
+                }}
+              >
+                + Add Services in Admin ↗
+              </Link>
+            </div>
+          ) : (
+            services.map((service) => (
+              <article
+                key={service.slug || service.id || service.number}
+                style={getCardStyle(service.number)}
+                onMouseEnter={() =>
+                  setHoveredCard(service.number)
+                }
+                onMouseLeave={() =>
+                  setHoveredCard(null)
+                }
+              >
               <div style={styles.cardTop}>
                 <div style={styles.number}>
                   {service.number}
@@ -466,7 +443,7 @@ export default function ServicesSection() {
                 </Link>
               </div>
             </article>
-          ))}
+          )))}
         </div>
 
         <div style={styles.bottomCta}>
