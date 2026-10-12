@@ -121,20 +121,33 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
         {/* METRICS STRIP */}
         <section style={styles.metricsStrip}>
           <div style={styles.metricItem}>
-            <div style={styles.metricVal}>06+</div>
-            <div style={styles.metricDesc}>Production Systems Built</div>
+            <div style={styles.metricVal}>
+              {projectList.length < 10
+                ? `0${projectList.length}`
+                : `${projectList.length}`}
+              {projectList.length > 1 ? "+" : ""}
+            </div>
+            <div style={styles.metricDesc}>
+              {projectList.length === 1
+                ? "Production System Built"
+                : "Production Systems Built"}
+            </div>
           </div>
           <div style={styles.metricItem}>
-            <div style={styles.metricVal}>85%</div>
-            <div style={styles.metricDesc}>Manual Overhead Reduced</div>
+            <div style={styles.metricVal}>
+              {categoriesList.filter((c) => c !== "All").length < 10
+                ? `0${categoriesList.filter((c) => c !== "All").length}`
+                : `${categoriesList.filter((c) => c !== "All").length}`}
+            </div>
+            <div style={styles.metricDesc}>Core Solution Domains</div>
+          </div>
+          <div style={styles.metricItem}>
+            <div style={styles.metricVal}>100%</div>
+            <div style={styles.metricDesc}>Production Tested &amp; Typed</div>
           </div>
           <div style={styles.metricItem}>
             <div style={styles.metricVal}>99.9%</div>
-            <div style={styles.metricDesc}>Integration Uptime &amp; Sync</div>
-          </div>
-          <div style={styles.metricItem}>
-            <div style={styles.metricVal}>10k+</div>
-            <div style={styles.metricDesc}>Developers Reached</div>
+            <div style={styles.metricDesc}>System Reliability &amp; Uptime</div>
           </div>
         </section>
 

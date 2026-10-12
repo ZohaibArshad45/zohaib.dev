@@ -61,23 +61,25 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
           <div style={styles.metaGrid}>
             <div style={styles.metaCard}>
               <div style={styles.metaLabel}>CLIENT / SCOPE</div>
-              <div style={styles.metaValue}>{project.client}</div>
+              <div style={styles.metaValue}>{project.client || "Direct Project"}</div>
             </div>
 
             <div style={styles.metaCard}>
               <div style={styles.metaLabel}>ROLE</div>
-              <div style={styles.metaValue}>{project.role}</div>
+              <div style={styles.metaValue}>{project.role || "Lead Engineer"}</div>
             </div>
 
             <div style={styles.metaCard}>
               <div style={styles.metaLabel}>TIMELINE</div>
-              <div style={styles.metaValue}>{project.timeline}</div>
+              <div style={styles.metaValue}>{project.timeline || "Completed"}</div>
             </div>
 
             <div style={styles.metaCard}>
               <div style={styles.metaLabel}>CATEGORIES</div>
               <div style={styles.metaValue}>
-                {project.categories.join(", ")}
+                {Array.isArray(project.categories) && project.categories.length > 0
+                  ? project.categories.join(", ")
+                  : project.status || "Web Apps"}
               </div>
             </div>
           </div>
@@ -135,70 +137,85 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
         </section>
 
         {/* IMPACT METRICS */}
-        <section style={styles.metricsBanner}>
-          <div style={styles.metricsLabel}>KEY IMPACT &amp; MEASURED RESULTS</div>
-          <div style={styles.metricsGrid}>
-            {project.metrics.map((metric) => (
-              <div key={metric.label} style={styles.metricItem}>
-                <div style={styles.metricValue}>{metric.value}</div>
-                <div style={styles.metricName}>{metric.label}</div>
-              </div>
-            ))}
-          </div>
-        </section>
+        {project.metrics && project.metrics.length > 0 && (
+          <section style={styles.metricsBanner}>
+            <div style={styles.metricsLabel}>KEY IMPACT &amp; MEASURED RESULTS</div>
+            <div style={styles.metricsGrid}>
+              {project.metrics.map((metric) => (
+                <div key={metric.label} style={styles.metricItem}>
+                  <div style={styles.metricValue}>{metric.value}</div>
+                  <div style={styles.metricName}>{metric.label}</div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* CORE CONTENT: PROBLEM & SOLUTION */}
-        <section style={styles.sectionGrid}>
-          <div style={styles.sectionCol}>
-            <div style={styles.label}>01 / THE CHALLENGE</div>
-            <h2 style={styles.sectionHeading}>The Problem</h2>
-            <p style={styles.bodyText}>{project.problem}</p>
-          </div>
+        {(Boolean(project.problem) || Boolean(project.solution)) && (
+          <section style={styles.sectionGrid}>
+            {project.problem && (
+              <div style={styles.sectionCol}>
+                <div style={styles.label}>01 / THE CHALLENGE</div>
+                <h2 style={styles.sectionHeading}>The Problem</h2>
+                <p style={styles.bodyText}>{project.problem}</p>
+              </div>
+            )}
 
-          <div style={styles.sectionCol}>
-            <div style={styles.label}>02 / THE APPROACH</div>
-            <h2 style={styles.sectionHeading}>The Solution</h2>
-            <p style={styles.bodyText}>{project.solution}</p>
-          </div>
-        </section>
+            {project.solution && (
+              <div style={styles.sectionCol}>
+                <div style={styles.label}>02 / THE APPROACH</div>
+                <h2 style={styles.sectionHeading}>The Solution</h2>
+                <p style={styles.bodyText}>{project.solution}</p>
+              </div>
+            )}
+          </section>
+        )}
 
-        <div style={styles.divider} />
+        {(Boolean(project.problem) || Boolean(project.solution)) && (
+          <div style={styles.divider} />
+        )}
 
         {/* ARCHITECTURE HIGHLIGHTS */}
-        <section style={styles.deepDiveSection}>
-          <div style={styles.label}>03 / SYSTEM ARCHITECTURE</div>
-          <h2 style={styles.sectionHeading}>Engineering &amp; Technical Highlights</h2>
-          <p style={styles.bodyIntro}>
-            Engineered with a focus on low latency, observable data flows, and
-            fault-tolerant execution.
-          </p>
+        {project.architectureHighlights && project.architectureHighlights.length > 0 && (
+          <>
+            <section style={styles.deepDiveSection}>
+              <div style={styles.label}>03 / SYSTEM ARCHITECTURE</div>
+              <h2 style={styles.sectionHeading}>Engineering &amp; Technical Highlights</h2>
+              <p style={styles.bodyIntro}>
+                Engineered with a focus on low latency, observable data flows, and
+                fault-tolerant execution.
+              </p>
 
-          <div style={styles.archGrid}>
-            {project.architectureHighlights.map((highlight, index) => (
-              <div key={highlight} style={styles.archCard}>
-                <div style={styles.archNum}>0{index + 1}</div>
-                <p style={styles.archText}>{highlight}</p>
+              <div style={styles.archGrid}>
+                {project.architectureHighlights.map((highlight, index) => (
+                  <div key={highlight + index} style={styles.archCard}>
+                    <div style={styles.archNum}>0{index + 1}</div>
+                    <p style={styles.archText}>{highlight}</p>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </section>
-
-        <div style={styles.divider} />
+            </section>
+            <div style={styles.divider} />
+          </>
+        )}
 
         {/* DELIVERABLES & TECH STACK */}
         <section style={styles.sectionGrid}>
-          <div>
-            <div style={styles.label}>04 / DELIVERABLES</div>
-            <h2 style={styles.sectionHeading}>What Was Built</h2>
-            <ul style={styles.deliverablesList}>
-              {project.deliverables.map((item) => (
-                <li key={item} style={styles.deliverableItem}>
-                  <span style={styles.checkIcon}>✓</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {project.deliverables && project.deliverables.length > 0 && (
+            <div>
+              <div style={styles.label}>04 / DELIVERABLES</div>
+              <h2 style={styles.sectionHeading}>What Was Built</h2>
+              <ul style={styles.deliverablesList}>
+                {project.deliverables.map((item) => (
+                  <li key={item} style={styles.deliverableItem}>
+                    <span style={styles.checkIcon}>✓</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           <div>
             <div style={styles.label}>05 / TECHNOLOGY STACK</div>
@@ -215,9 +232,11 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
               ))}
             </div>
 
-            <div style={styles.outcomeHighlight}>
-              <strong>Primary Takeaway:</strong> {project.outcome}
-            </div>
+            {project.outcome && (
+              <div style={styles.outcomeHighlight}>
+                <strong>Primary Takeaway:</strong> {project.outcome}
+              </div>
+            )}
           </div>
         </section>
 

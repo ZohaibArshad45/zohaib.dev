@@ -49,8 +49,8 @@ const EMPTY_PROJECT: Project = {
   tags: ["Next.js", "React", "TypeScript"],
   images: [],
   previewType: "dashboard",
-  client: "Portfolio Project",
-  role: "Developer",
+  client: "",
+  role: "Lead Full-Stack Engineer",
   timeline: "Completed",
   deliverables: [],
   problem: "",
@@ -97,6 +97,7 @@ export default function AdminDashboard() {
   // Form simplified text inputs
   const [techTagsInput, setTechTagsInput] = useState<string>("");
   const [featuresInput, setFeaturesInput] = useState<string>("");
+  const [projectMetrics, setProjectMetrics] = useState<Array<{ value: string; label: string }>>([]);
 
   // 3-Images Upload state
   const [uploadingSlot, setUploadingSlot] = useState<number | null>(null);
@@ -394,12 +395,19 @@ export default function AdminDashboard() {
       number: nextNum,
       status: initialCategory,
       categories: [initialCategory],
+      client: "",
+      role: "Lead Full-Stack Engineer",
+      timeline: "Completed",
+      outcome: "",
+      problem: "",
+      solution: "",
       images: [],
     });
     setTechTagsInput("Next.js, TypeScript, Tailwind CSS");
     setFeaturesInput(
       "Real-time data synchronization\nResponsive mobile & desktop interface\nClean modern design with dark mode"
     );
+    setProjectMetrics([]);
     setUploadError(null);
     setUploadingSlot(null);
     setIsProjectModalOpen(true);
@@ -409,9 +417,15 @@ export default function AdminDashboard() {
     setIsEditingProject(true);
     setProjectForm({
       ...proj,
+      client: proj.client || "",
+      role: proj.role || "",
+      timeline: proj.timeline || "",
+      outcome: proj.outcome || "",
+      problem: proj.problem || "",
+      solution: proj.solution || "",
       images: Array.isArray(proj.images) ? proj.images : [],
     });
-    setTechTagsInput(proj.tags.join(", "));
+    setTechTagsInput(proj.tags ? proj.tags.join(", ") : "");
     // Prefer deliverables or architectureHighlights as features
     const features =
       proj.deliverables && proj.deliverables.length > 0
@@ -420,6 +434,11 @@ export default function AdminDashboard() {
         ? proj.architectureHighlights.join("\n")
         : "";
     setFeaturesInput(features);
+    setProjectMetrics(
+      Array.isArray(proj.metrics) && proj.metrics.length > 0
+        ? proj.metrics
+        : []
+    );
     setUploadError(null);
     setUploadingSlot(null);
     setIsProjectModalOpen(true);
@@ -500,6 +519,13 @@ export default function AdminDashboard() {
       .map((img) => (typeof img === "string" ? img.trim() : ""))
       .filter((img) => img.length > 0);
 
+    const cleanMetrics = projectMetrics
+      .map((m) => ({
+        value: (m.value || "").trim(),
+        label: (m.label || "").trim(),
+      }))
+      .filter((m) => m.value.length > 0 && m.label.length > 0);
+
     const preparedProject: Project = {
       ...projectForm,
       slug: projectForm.slug
@@ -507,6 +533,13 @@ export default function AdminDashboard() {
         .trim()
         .replace(/[^a-z0-9-]/g, "-"),
       shortTitle: projectForm.shortTitle || projectForm.title,
+      client: (projectForm.client || "").trim() || "Independent / Production",
+      role: (projectForm.role || "").trim() || "Lead Full-Stack Engineer",
+      timeline: (projectForm.timeline || "").trim() || "Completed",
+      outcome: (projectForm.outcome || "").trim(),
+      problem: (projectForm.problem || "").trim(),
+      solution: (projectForm.solution || "").trim(),
+      metrics: cleanMetrics,
       tags: tagsArray,
       images: cleanImages,
       deliverables: featuresArray,
@@ -2066,6 +2099,57 @@ CREATE POLICY "Allow anon on services" ON public.services FOR ALL TO public USIN
                 </div>
               </div>
 
+              {/* 3b. CLIENT / SCOPE, ROLE & TIMELINE */}
+              <div style={styles.formRow2}>
+                <div>
+                  <label style={styles.formLabel}>Client / Organization Scope</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Outreach Ops, Self-Initiated, Client Project"
+                    value={projectForm.client || ""}
+                    onChange={(e) =>
+                      setProjectForm({ ...projectForm, client: e.target.value })
+                    }
+                    style={styles.formInput}
+                  />
+                  <span style={styles.inputHint}>
+                    Case study page pe &quot;CLIENT / SCOPE&quot; ke under show hoga.
+                  </span>
+                </div>
+
+                <div>
+                  <label style={styles.formLabel}>Your Role</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Lead Full-Stack Engineer, AI Architect"
+                    value={projectForm.role || ""}
+                    onChange={(e) =>
+                      setProjectForm({ ...projectForm, role: e.target.value })
+                    }
+                    style={styles.formInput}
+                  />
+                  <span style={styles.inputHint}>
+                    Case study page pe &quot;ROLE&quot; ke under show hoga.
+                  </span>
+                </div>
+
+                <div>
+                  <label style={styles.formLabel}>Project Timeline / Status</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Completed • Active, 3 Weeks"
+                    value={projectForm.timeline || ""}
+                    onChange={(e) =>
+                      setProjectForm({ ...projectForm, timeline: e.target.value })
+                    }
+                    style={styles.formInput}
+                  />
+                  <span style={styles.inputHint}>
+                    Case study page pe &quot;TIMELINE&quot; ke under show hoga.
+                  </span>
+                </div>
+              </div>
+
               {/* 4. Tagline / Headline */}
               <div>
                 <label style={styles.formLabel}>Short Tagline / Headline *</label>
@@ -2079,6 +2163,201 @@ CREATE POLICY "Allow anon on services" ON public.services FOR ALL TO public USIN
                   }
                   style={styles.formInput}
                 />
+              </div>
+
+              {/* 4b. PRIMARY OUTCOME */}
+              <div>
+                <label style={styles.formLabel}>Primary Outcome / Key Result (1-2 Sentences)</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Automated cold outreach monitoring, reducing manual triage by 85%."
+                  value={projectForm.outcome || ""}
+                  onChange={(e) =>
+                    setProjectForm({ ...projectForm, outcome: e.target.value })
+                  }
+                  style={styles.formInput}
+                />
+                <span style={styles.inputHint}>
+                  Projects directory card aur case study takeaway me show hoga.
+                </span>
+              </div>
+
+              {/* 4c. CASE STUDY: THE PROBLEM & THE SOLUTION */}
+              <div style={styles.formRow2}>
+                <div>
+                  <label style={styles.formLabel}>The Challenge / The Problem</label>
+                  <textarea
+                    rows={4}
+                    placeholder="Describe the problem, pain point, or manual bottleneck before this system..."
+                    value={projectForm.problem || ""}
+                    onChange={(e) =>
+                      setProjectForm({ ...projectForm, problem: e.target.value })
+                    }
+                    style={styles.formTextarea}
+                  />
+                  <span style={styles.inputHint}>
+                    Case study me &quot;01 / THE CHALLENGE — The Problem&quot; section banata hai.
+                  </span>
+                </div>
+
+                <div>
+                  <label style={styles.formLabel}>The Approach / The Solution</label>
+                  <textarea
+                    rows={4}
+                    placeholder="Describe how you architected the solution, tools integrated, and algorithms..."
+                    value={projectForm.solution || ""}
+                    onChange={(e) =>
+                      setProjectForm({ ...projectForm, solution: e.target.value })
+                    }
+                    style={styles.formTextarea}
+                  />
+                  <span style={styles.inputHint}>
+                    Case study me &quot;02 / THE APPROACH — The Solution&quot; section banata hai.
+                  </span>
+                </div>
+              </div>
+
+              {/* 4d. KEY IMPACT & MEASURED RESULTS (METRICS BANNER) */}
+              <div
+                style={{
+                  background: "#161b17",
+                  border: "1px solid #283329",
+                  borderRadius: "8px",
+                  padding: "16px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "12px",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                    gap: "8px",
+                  }}
+                >
+                  <div>
+                    <label style={styles.formLabelBold}>
+                      📊 Key Impact &amp; Measured Results (Banner Metrics)
+                    </label>
+                    <span style={styles.imageSectionSubtitle}>
+                      Case study ke top green banner me metrics pills show honge (e.g. Value: 85%, Label: Manual Overhead Reduced).
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (projectMetrics.length < 4) {
+                        setProjectMetrics([
+                          ...projectMetrics,
+                          { value: "", label: "" },
+                        ]);
+                      }
+                    }}
+                    disabled={projectMetrics.length >= 4}
+                    style={{
+                      background:
+                        projectMetrics.length >= 4 ? "#1a201c" : "#242e26",
+                      color:
+                        projectMetrics.length >= 4 ? "#627064" : "#caff46",
+                      border: "1px solid #334235",
+                      padding: "6px 14px",
+                      borderRadius: "6px",
+                      fontSize: "11px",
+                      fontWeight: 600,
+                      cursor:
+                        projectMetrics.length >= 4 ? "not-allowed" : "pointer",
+                    }}
+                  >
+                    + Add Metric Pill
+                  </button>
+                </div>
+
+                {projectMetrics.length === 0 ? (
+                  <div
+                    style={{
+                      padding: "14px",
+                      textAlign: "center",
+                      fontSize: "12px",
+                      color: "#7e8f80",
+                      border: "1px dashed #263328",
+                      borderRadius: "6px",
+                    }}
+                  >
+                    No impact metrics added yet. Click &quot;+ Add Metric Pill&quot; to highlight numbers like &quot;85% Reduced&quot;, &quot;99.9% Uptime&quot;, etc.
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "10px",
+                    }}
+                  >
+                    {projectMetrics.map((m, idx) => (
+                      <div
+                        key={idx}
+                        style={{
+                          display: "grid",
+                          gridTemplateColumns: "140px 1fr auto",
+                          gap: "10px",
+                          alignItems: "center",
+                        }}
+                      >
+                        <input
+                          type="text"
+                          placeholder="Value (e.g. 85%)"
+                          value={m.value}
+                          onChange={(e) => {
+                            const updated = [...projectMetrics];
+                            updated[idx] = {
+                              ...updated[idx],
+                              value: e.target.value,
+                            };
+                            setProjectMetrics(updated);
+                          }}
+                          style={styles.formInput}
+                        />
+                        <input
+                          type="text"
+                          placeholder="Label (e.g. Manual Overhead Reduced)"
+                          value={m.label}
+                          onChange={(e) => {
+                            const updated = [...projectMetrics];
+                            updated[idx] = {
+                              ...updated[idx],
+                              label: e.target.value,
+                            };
+                            setProjectMetrics(updated);
+                          }}
+                          style={styles.formInput}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setProjectMetrics(
+                              projectMetrics.filter((_, i) => i !== idx)
+                            );
+                          }}
+                          style={{
+                            background: "transparent",
+                            border: "1px solid #3d2323",
+                            color: "#f87171",
+                            borderRadius: "6px",
+                            padding: "9px 12px",
+                            cursor: "pointer",
+                            fontSize: "12px",
+                          }}
+                          title="Remove Metric"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* 5. Project Description (What it does) */}
