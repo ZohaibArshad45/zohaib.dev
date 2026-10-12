@@ -28,45 +28,38 @@
       "/uploads/screenshot-2026-10-12-220701-mv5i9irk.png"
     ],
     "previewType": "dashboard",
-    "client": "Production Deployment",
+    "client": "Independent / Production",
     "role": "Lead Full-Stack Engineer",
     "timeline": "Completed • Active",
     "deliverables": [
-      "Real-time domain DNS health & deliverability monitoring",
-      "Automated mailbox warmup and diagnostic probes",
-      "Smartlead & EmailGuard API synchronization engine",
-      "Dynamic account rules & automatic issue escalation",
-      "High-density responsive operator dashboard in Tailwind CSS",
-      "Scheduled background health checks via Supabase & Cron"
+      "Domain management and monitoring",
+      "Email deliverability tracking and verification",
+      "Outreach activity tracking and performance insights",
+      "Dynamic Account Rules",
+      "Campaigns & Clients",
+      "Issues & Diagnostics",
+      "Automated Monitoring & Notifications",
+      "Automated email notifications and scheduled tasks",
+      "Responsive dashboard UI with Tailwind CSS",
+      "Automated workflows to reduce manual operations",
+      "Secure authentication and server side operations"
     ],
     "problem": "Cold outreach teams running multiple domains face continuous deliverability drops, burned inbox reputations, and blacklisting risks. Before Outreach Ops, operators spent hours every morning manually checking DNS records, bounce rates, and deliverability status across separate platforms without unified alerts or proactive diagnostics.",
     "solution": "Engineered a centralized operations command center that connects directly to sending APIs and domain verification providers. Designed idempotent background cron tasks that probe mailbox health every hour, flag delivery anomalies before domain burning occurs, and surface actionable remediation directly inside an intuitive, low-latency dashboard.",
     "architectureHighlights": [
-      "Real-time domain DNS health & deliverability monitoring",
-      "Automated mailbox warmup and diagnostic probes",
-      "Smartlead & EmailGuard API synchronization engine",
-      "Dynamic account rules & automatic issue escalation",
-      "High-density responsive operator dashboard in Tailwind CSS",
-      "Scheduled background health checks via Supabase & Cron"
+      "Domain management and monitoring",
+      "Email deliverability tracking and verification",
+      "Outreach activity tracking and performance insights",
+      "Dynamic Account Rules",
+      "Campaigns & Clients",
+      "Issues & Diagnostics",
+      "Automated Monitoring & Notifications",
+      "Automated email notifications and scheduled tasks",
+      "Responsive dashboard UI with Tailwind CSS",
+      "Automated workflows to reduce manual operations",
+      "Secure authentication and server side operations"
     ],
-    "metrics": [
-      {
-        "value": "85%",
-        "label": "Manual Overhead Reduced"
-      },
-      {
-        "value": "100%",
-        "label": "Automated DNS & Inbox Probes"
-      },
-      {
-        "value": "99.9%",
-        "label": "Sync Engine Uptime"
-      },
-      {
-        "value": "< 2s",
-        "label": "Diagnostic Latency"
-      }
-    ],
+    "metrics": [],
     "demoUrl": "https://outreach-ops-ten.vercel.app/",
     "githubUrl": "https://github.com/codingskillup/Outreach-Ops"
   }

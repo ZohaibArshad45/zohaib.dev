@@ -55,7 +55,46 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
 
           <h1 style={styles.title}>{project.title}</h1>
 
-          <p style={styles.subhead}>{project.subhead}</p>
+          {project.subhead && (
+            <p style={styles.subhead}>{project.subhead}</p>
+          )}
+
+          {/* EXTERNAL ACTION LINKS (LIVE DEMO & GITHUB) */}
+          {(project.demoUrl || project.githubUrl) && (
+            <div style={styles.actionButtonsRow}>
+              {project.demoUrl && (
+                <a
+                  href={project.demoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={styles.liveButton}
+                >
+                  <span style={styles.liveDot} />
+                  <span>Live Preview / Website ↗</span>
+                </a>
+              )}
+
+              {project.githubUrl && (
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={styles.githubButton}
+                >
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    style={{ flexShrink: 0 }}
+                  >
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                  </svg>
+                  <span>View Source Code ↗</span>
+                </a>
+              )}
+            </div>
+          )}
 
           {/* PROJECT INFO GRID */}
           <div style={styles.metaGrid}>
@@ -176,35 +215,11 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
           <div style={styles.divider} />
         )}
 
-        {/* ARCHITECTURE HIGHLIGHTS */}
-        {project.architectureHighlights && project.architectureHighlights.length > 0 && (
-          <>
-            <section style={styles.deepDiveSection}>
-              <div style={styles.label}>03 / SYSTEM ARCHITECTURE</div>
-              <h2 style={styles.sectionHeading}>Engineering &amp; Technical Highlights</h2>
-              <p style={styles.bodyIntro}>
-                Engineered with a focus on low latency, observable data flows, and
-                fault-tolerant execution.
-              </p>
-
-              <div style={styles.archGrid}>
-                {project.architectureHighlights.map((highlight, index) => (
-                  <div key={highlight + index} style={styles.archCard}>
-                    <div style={styles.archNum}>0{index + 1}</div>
-                    <p style={styles.archText}>{highlight}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
-            <div style={styles.divider} />
-          </>
-        )}
-
         {/* DELIVERABLES & TECH STACK */}
         <section style={styles.sectionGrid}>
           {project.deliverables && project.deliverables.length > 0 && (
             <div>
-              <div style={styles.label}>04 / DELIVERABLES</div>
+              <div style={styles.label}>03 / DELIVERABLES</div>
               <h2 style={styles.sectionHeading}>What Was Built</h2>
               <ul style={styles.deliverablesList}>
                 {project.deliverables.map((item) => (
@@ -218,7 +233,7 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
           )}
 
           <div>
-            <div style={styles.label}>05 / TECHNOLOGY STACK</div>
+            <div style={styles.label}>04 / TECHNOLOGY STACK</div>
             <h2 style={styles.sectionHeading}>Tools &amp; Frameworks</h2>
             <p style={styles.bodyText}>
               Selected strictly for reliability, developer ergonomics, and
@@ -235,6 +250,32 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
             {project.outcome && (
               <div style={styles.outcomeHighlight}>
                 <strong>Primary Takeaway:</strong> {project.outcome}
+              </div>
+            )}
+
+            {/* Direct Links in Tech Box */}
+            {(project.demoUrl || project.githubUrl) && (
+              <div style={{ marginTop: "24px", display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                {project.demoUrl && (
+                  <a
+                    href={project.demoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={styles.liveButton}
+                  >
+                    <span>Visit Live Site ↗</span>
+                  </a>
+                )}
+                {project.githubUrl && (
+                  <a
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={styles.githubButton}
+                  >
+                    <span>View GitHub ↗</span>
+                  </a>
+                )}
               </div>
             )}
           </div>
@@ -321,6 +362,48 @@ const styles: Record<string, CSSProperties> = {
     color: "#bac2bc",
     lineHeight: "1.6",
     maxWidth: "760px",
+  },
+  actionButtonsRow: {
+    display: "flex",
+    flexWrap: "wrap",
+    alignItems: "center",
+    gap: "12px",
+    marginTop: "22px",
+  },
+  liveButton: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "8px",
+    background: "#caff46",
+    color: "#0c0e0d",
+    padding: "11px 20px",
+    borderRadius: "8px",
+    fontSize: "13px",
+    fontWeight: "700",
+    textDecoration: "none",
+    letterSpacing: "0.2px",
+    boxShadow: "0 4px 20px rgba(202, 255, 70, 0.2)",
+    transition: "transform 0.2s ease, opacity 0.2s ease",
+  },
+  liveDot: {
+    width: "7px",
+    height: "7px",
+    borderRadius: "50%",
+    background: "#0c0e0d",
+  },
+  githubButton: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "8px",
+    background: "#161b17",
+    color: "#ffffff",
+    border: "1px solid #323d34",
+    padding: "11px 20px",
+    borderRadius: "8px",
+    fontSize: "13px",
+    fontWeight: "600",
+    textDecoration: "none",
+    transition: "border-color 0.2s ease, background 0.2s ease",
   },
   metaGrid: {
     display: "grid",

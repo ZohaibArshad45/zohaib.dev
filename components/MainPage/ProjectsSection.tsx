@@ -1101,14 +1101,50 @@ export default function SelectedWork({
                   </div>
                 )}
 
-                <Link
-                  href={`/projects/${project.slug}`}
-                  style={getProjectLinkStyle(project.slug)}
-                  onMouseEnter={() => setHoveredLink(project.slug)}
-                  onMouseLeave={() => setHoveredLink(null)}
-                >
-                  Explore the project ↗
-                </Link>
+                <div style={{ display: "flex", alignItems: "center", gap: "16px", marginTop: "24px", flexWrap: "wrap" }}>
+                  <Link
+                    href={`/projects/${project.slug}`}
+                    style={getProjectLinkStyle(project.slug)}
+                    onMouseEnter={() => setHoveredLink(project.slug)}
+                    onMouseLeave={() => setHoveredLink(null)}
+                  >
+                    Explore Case Study ↗
+                  </Link>
+
+                  {project.demoUrl && (
+                    <a
+                      href={project.demoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        fontSize: "13px",
+                        fontWeight: "700",
+                        color: "#caff46",
+                        textDecoration: "none",
+                        paddingBottom: "4px",
+                      }}
+                    >
+                      Live Demo ↗
+                    </a>
+                  )}
+
+                  {project.githubUrl && (
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        fontSize: "13px",
+                        fontWeight: "500",
+                        color: "#a4aca6",
+                        textDecoration: "none",
+                        paddingBottom: "4px",
+                      }}
+                    >
+                      GitHub ↗
+                    </a>
+                  )}
+                </div>
               </div>
             </article>
           )))}
