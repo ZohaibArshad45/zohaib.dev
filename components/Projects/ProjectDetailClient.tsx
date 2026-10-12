@@ -59,6 +59,16 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
             <p style={styles.subhead}>{project.subhead}</p>
           )}
 
+          {project.description && (
+            <p style={styles.fullDescription}>{project.description}</p>
+          )}
+
+          {project.outcome && (
+            <div style={styles.outcomeHighlight}>
+              <strong style={{ color: "#caff46" }}>Outcome:</strong> {project.outcome}
+            </div>
+          )}
+
           {/* EXTERNAL ACTION LINKS (LIVE DEMO & GITHUB) */}
           {(project.demoUrl || project.githubUrl) && (
             <div style={styles.actionButtonsRow}>
@@ -415,6 +425,24 @@ const styles: Record<string, CSSProperties> = {
     lineHeight: "1.6",
     maxWidth: "760px",
   },
+  fullDescription: {
+    margin: "18px 0 0",
+    fontSize: "15px",
+    color: "#a4b0a6",
+    lineHeight: "1.75",
+    maxWidth: "820px",
+  },
+  outcomeHighlight: {
+    margin: "18px 0 0",
+    padding: "12px 18px",
+    background: "rgba(202, 255, 70, 0.05)",
+    borderLeft: "3px solid #caff46",
+    borderRadius: "0 8px 8px 0",
+    fontSize: "14px",
+    lineHeight: "1.6",
+    color: "#e2e8e3",
+    maxWidth: "820px",
+  },
   actionButtonsRow: {
     display: "flex",
     flexWrap: "wrap",
@@ -694,15 +722,6 @@ const styles: Record<string, CSSProperties> = {
     background: "#161b17",
     fontSize: "12px",
     color: "#ffffff",
-  },
-  outcomeHighlight: {
-    padding: "16px",
-    borderRadius: "8px",
-    background: "#161b17",
-    borderLeft: "3px solid #caff46",
-    fontSize: "13px",
-    lineHeight: "1.6",
-    color: "#dce3dc",
   },
   nextProjectBanner: {
     background: "#121512",

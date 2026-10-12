@@ -261,11 +261,13 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
                   <p style={styles.projectSubhead}>{project.subhead}</p>
                 )}
 
-                <p style={styles.projectDescription}>{project.description}</p>
+                <p className="line-clamp-3" style={styles.projectDescription}>
+                  {project.description}
+                </p>
 
                 {project.outcome && (
-                  <div style={styles.outcomeBox}>
-                    <strong>Outcome:</strong> {project.outcome}
+                  <div className="line-clamp-2" style={styles.outcomeBox}>
+                    <strong style={{ color: "#caff46" }}>Outcome:</strong> {project.outcome}
                   </div>
                 )}
 
@@ -657,10 +659,6 @@ const styles: Record<string, CSSProperties> = {
     fontSize: "13px",
     lineHeight: "1.55",
     color: "#bac0bb",
-    display: "-webkit-box",
-    WebkitLineClamp: 2,
-    WebkitBoxOrient: "vertical",
-    overflow: "hidden",
   },
   outcomeBox: {
     margin: "10px 0 0",
@@ -669,10 +667,6 @@ const styles: Record<string, CSSProperties> = {
     fontSize: "12px",
     lineHeight: "1.5",
     color: "#d7dbd7",
-    display: "-webkit-box",
-    WebkitLineClamp: 2,
-    WebkitBoxOrient: "vertical",
-    overflow: "hidden",
   },
   metricsRow: {
     display: "flex",

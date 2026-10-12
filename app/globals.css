@@ -128,3 +128,36 @@
     @apply font-sans;
   }
 }
+
+/* Multi-line clamp utilities */
+.line-clamp-1 {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 1 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.line-clamp-2 {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.line-clamp-3 {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.line-clamp-4 {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 4 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
