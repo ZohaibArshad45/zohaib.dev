@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "id": "inq-mv674bsl-mq0a",
+    "name": "Zohaib Test",
+    "email": "zohaibfta@gmail.com",
+    "projectType": "Web App",
+    "timeline": "Flexible",
+    "details": "Hello, this is a test message.",
+    "status": "Contacted",
+    "priority": "Medium",
+    "createdAt": "2026-10-13T04:43:38.805Z"
+  }
+]

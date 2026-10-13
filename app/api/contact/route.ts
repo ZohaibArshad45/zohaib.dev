@@ -17,24 +17,16 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const {
-      name,
-      email,
-      projectType,
-      timeline,
-      details,
-    } = body;
+    const name = typeof body.name === "string" ? body.name.trim() : "";
+    const email = typeof body.email === "string" ? body.email.trim() : "";
+    const projectType = typeof body.projectType === "string" && body.projectType.trim() ? body.projectType.trim() : "Web App";
+    const timeline = typeof body.timeline === "string" && body.timeline.trim() ? body.timeline.trim() : "Flexible";
+    const details = typeof body.details === "string" ? body.details.trim() : "";
 
-    if (
-      !name ||
-      !email ||
-      !projectType ||
-      !timeline ||
-      !details
-    ) {
+    if (!name || !email || !details) {
       return NextResponse.json(
         {
-          message: "Please complete all fields.",
+          message: "Please complete all required fields (Name, Email, Details).",
         },
         {
           status: 400,

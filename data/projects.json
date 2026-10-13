@@ -1,5 +1,64 @@
 [
   {
+    "slug": "ai-powered-resume-tailor",
+    "number": "02",
+    "title": "AI Powered Resume Tailor",
+    "shortTitle": "AI Powered Resume Tailor",
+    "status": "Web Apps",
+    "categories": [
+      "Web Apps"
+    ],
+    "headline": "AI Powered Resumes, Tailored for Every Job.",
+    "subhead": "",
+    "description": "An AI powered resume optimization tool that tailors resumes to specific job descriptions. It analyzes job requirements, highlights relevant skills and experience, improves resume content, and helps users create ATS friendly resumes to increase their chances of getting noticed by recruiters. Built with Next.js, TypeScript, OpenAI, and Tailwind CSS.",
+    "outcome": "Simplified the resume customization process by using AI to align resumes with specific job descriptions, improve keyword relevance, and support ATS friendly formatting. Helped job seekers save time and present their skills and experience more effectively for targeted job applications.",
+    "tags": [
+      "Next.js",
+      "TypeScript",
+      "React",
+      "Tailwind CSS",
+      "OpenAI API",
+      "Node.js",
+      "REST API"
+    ],
+    "images": [
+      "/uploads/01-mv66ky4x.png",
+      "/uploads/04-mv678cuj.png",
+      "/uploads/03-mv679el9.png"
+    ],
+    "previewType": "dashboard",
+    "client": "Client Project",
+    "role": "Developer",
+    "timeline": "Completed / Active",
+    "deliverables": [
+      "AI powered resume customization for specific job descriptions",
+      "Job description analysis and keyword extraction",
+      "ATS friendly resume optimization",
+      "AI generated professional summaries and skill suggestions",
+      "Work experience refinement and content improvement",
+      "Resume keyword matching with job requirements",
+      "Personalized resume content for targeted applications",
+      "Clean and responsive user interface",
+      "Built with Next.js, TypeScript, OpenAI, and Tailwind CSS"
+    ],
+    "problem": "Job seekers often struggle to tailor their resumes for different job openings. Generic resumes may miss important keywords, fail to highlight relevant skills, and perform poorly in Applicant Tracking Systems (ATS). Manually customizing a resume for every application is time consuming and makes it harder to present experience effectively for each role.",
+    "solution": "Built an AI powered resume tailoring tool that analyzes job descriptions and adapts resume content to match specific job requirements. The solution uses AI to identify relevant skills, suggest improvements, optimize keywords for ATS compatibility, and refine professional summaries and work experience. Users can create targeted resumes more efficiently, improve their job application quality, and present their qualifications clearly for each role.",
+    "architectureHighlights": [
+      "AI powered resume customization for specific job descriptions",
+      "Job description analysis and keyword extraction",
+      "ATS friendly resume optimization",
+      "AI generated professional summaries and skill suggestions",
+      "Work experience refinement and content improvement",
+      "Resume keyword matching with job requirements",
+      "Personalized resume content for targeted applications",
+      "Clean and responsive user interface",
+      "Built with Next.js, TypeScript, OpenAI, and Tailwind CSS"
+    ],
+    "metrics": [],
+    "demoUrl": "https://resume-tailor-ai-two.vercel.app/",
+    "githubUrl": "https://github.com/codingskillup/resume-tailor"
+  },
+  {
     "slug": "outreach-ops",
     "number": "01",
     "title": "Outreach Ops — Cold Email Infrastructure Monitoring & Automation Platform",
