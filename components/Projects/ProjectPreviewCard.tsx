@@ -882,6 +882,7 @@ const styles: Record<string, CSSProperties> = {
     width: "100%",
     height: "100%",
     objectFit: "cover",
+    objectPosition: "top left",
     borderRadius: "8px",
     transition: "transform 0.4s ease",
   },

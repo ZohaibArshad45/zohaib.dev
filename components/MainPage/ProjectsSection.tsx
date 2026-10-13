@@ -253,35 +253,37 @@ export default function SelectedWork({
 
     outcome: {
       marginTop: "16px",
-      paddingLeft: "13px",
+      padding: "10px 14px",
+      background: "rgba(202, 255, 70, 0.04)",
       borderLeft: "2px solid #caff46",
+      borderRadius: "0 6px 6px 0",
       color: "#d7dbd7",
       fontSize: isMobile ? "12px" : "13px",
       lineHeight: "1.6",
-      maxWidth: "450px",
+      maxWidth: "100%",
     },
 
     tags: {
       display: "flex",
       flexWrap: "wrap",
       gap: "8px",
-      marginTop: "20px",
+      marginTop: "18px",
     },
 
     tag: {
-      padding: "7px 10px",
-      border: "1px solid #3b413c",
+      padding: "5px 12px",
+      border: "1px solid rgba(255, 255, 255, 0.12)",
       borderRadius: "20px",
       fontSize: "11px",
-      color: "#ffffff",
+      color: "#e2e8e3",
+      background: "rgba(255, 255, 255, 0.03)",
     },
 
     projectLink: {
       color: "#ffffff",
       textDecoration: "none",
       width: "fit-content",
-      marginTop: "26px",
-      paddingBottom: "7px",
+      paddingBottom: "3px",
       fontSize: "13px",
       fontWeight: "500",
       transition:
@@ -903,9 +905,9 @@ export default function SelectedWork({
       return (
         <div
           style={{
-            minHeight: isMobile ? "320px" : "420px",
-            background: "#141815",
-            padding: 0,
+            minHeight: isMobile ? "280px" : "400px",
+            background: "linear-gradient(145deg, #121713 0%, #171d18 100%)",
+            padding: isMobile ? "16px 14px" : "24px 22px",
             boxSizing: "border-box",
             display: "flex",
             alignItems: "center",
@@ -914,53 +916,130 @@ export default function SelectedWork({
             overflow: "hidden",
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={project.images[0]}
-            alt={project.title}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              minHeight: isMobile ? "320px" : "420px",
-              maxHeight: "440px",
-              transition: "transform 0.4s ease",
-              transform:
-                hoveredProject === project.slug
-                  ? "scale(1.04)"
-                  : "scale(1)",
-            }}
-          />
+          {/* Subtle Ambient Radial Glow */}
           <div
             style={{
               position: "absolute",
-              inset: 0,
-              background:
-                "linear-gradient(to top, rgba(12, 14, 13, 0.85) 0%, transparent 60%)",
+              width: "260px",
+              height: "260px",
+              background: "radial-gradient(circle, rgba(202, 255, 70, 0.08) 0%, transparent 70%)",
+              top: "10%",
+              left: "15%",
               pointerEvents: "none",
             }}
           />
+
+          {/* Browser / App Window Mockup */}
+          <div
+            style={{
+              width: "100%",
+              maxWidth: "560px",
+              background: "#161b17",
+              borderRadius: "10px",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+              boxShadow: "0 22px 50px rgba(0, 0, 0, 0.55), 0 0 20px rgba(202, 255, 70, 0.04)",
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
+              transition: "transform 0.35s ease, border-color 0.35s ease",
+              transform: hoveredProject === project.slug ? "scale(1.02)" : "scale(1)",
+            }}
+          >
+            {/* Window Title Bar */}
+            <div
+              style={{
+                height: "32px",
+                background: "#1c231e",
+                borderBottom: "1px solid rgba(255, 255, 255, 0.06)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "0 12px",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <span style={{ width: "9px", height: "9px", borderRadius: "50%", background: "#ff5f56", display: "inline-block" }} />
+                <span style={{ width: "9px", height: "9px", borderRadius: "50%", background: "#ffbd2e", display: "inline-block" }} />
+                <span style={{ width: "9px", height: "9px", borderRadius: "50%", background: "#27c93f", display: "inline-block" }} />
+              </div>
+
+              {/* URL / System Pill */}
+              <div
+                style={{
+                  fontSize: "10px",
+                  color: "#9ca59e",
+                  fontFamily: "monospace",
+                  background: "rgba(0, 0, 0, 0.25)",
+                  padding: "2px 12px",
+                  borderRadius: "12px",
+                  border: "1px solid rgba(255, 255, 255, 0.05)",
+                  maxWidth: "180px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {project.demoUrl ? project.demoUrl.replace(/^https?:\/\//, "") : `${project.slug}.app`}
+              </div>
+
+              <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#caff46" }} />
+                <span style={{ fontSize: "9px", color: "#caff46", fontWeight: "600", letterSpacing: "0.5px" }}>LIVE</span>
+              </div>
+            </div>
+
+            {/* Screenshot Screen Container */}
+            <div
+              style={{
+                width: "100%",
+                aspectRatio: "16 / 10",
+                maxHeight: "340px",
+                overflow: "hidden",
+                position: "relative",
+                background: "#0d100e",
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={project.images[0]}
+                alt={project.title}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  objectPosition: "top left",
+                  display: "block",
+                  transition: "transform 0.4s ease",
+                  transform: hoveredProject === project.slug ? "scale(1.03)" : "scale(1)",
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Overlay Badges */}
           <div
             style={{
               position: "absolute",
-              bottom: "18px",
-              left: "20px",
+              bottom: isMobile ? "10px" : "16px",
+              left: isMobile ? "12px" : "18px",
               display: "flex",
               alignItems: "center",
               gap: "8px",
+              zIndex: 3,
             }}
           >
             <span
               style={{
                 fontSize: "11px",
-                background: "rgba(12, 14, 13, 0.85)",
+                background: "rgba(12, 14, 13, 0.9)",
                 backdropFilter: "blur(8px)",
-                border: "1px solid rgba(202, 255, 70, 0.3)",
+                border: "1px solid rgba(202, 255, 70, 0.35)",
                 color: "#caff46",
-                padding: "5px 12px",
+                padding: "4px 11px",
                 borderRadius: "20px",
                 fontWeight: 600,
                 letterSpacing: "0.5px",
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
               }}
             >
               {project.number || "01"} • SHOWCASE
@@ -969,11 +1048,13 @@ export default function SelectedWork({
               <span
                 style={{
                   fontSize: "11px",
-                  background: "rgba(12, 14, 13, 0.75)",
+                  background: "rgba(12, 14, 13, 0.85)",
                   backdropFilter: "blur(8px)",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
                   color: "#e0e6e1",
-                  padding: "5px 10px",
+                  padding: "4px 10px",
                   borderRadius: "20px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
                 }}
               >
                 +{project.images.length - 1} photos
