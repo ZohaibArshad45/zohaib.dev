@@ -31,6 +31,7 @@ export async function POST(request: Request) {
       type,
       fileUrl,
       fileSize,
+      coverImage,
       tags,
       featured,
       externalLink,
@@ -50,15 +51,26 @@ export async function POST(request: Request) {
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/(^-|-$)/g, "");
 
+    const inferredType =
+      type ||
+      (fileUrl.toLowerCase().endsWith(".pdf")
+        ? "pdf"
+        : fileUrl.toLowerCase().endsWith(".zip") ||
+          fileUrl.toLowerCase().endsWith(".tar") ||
+          fileUrl.toLowerCase().endsWith(".gz")
+        ? "zip"
+        : "code");
+
     const newResource: Resource = {
       id: `res-${Date.now().toString(36)}-${Math.random().toString(36).substring(2, 6)}`,
       slug: cleanSlug,
       title: title.trim(),
       description: description.trim(),
       category: category?.trim() || "Source Code & Starters",
-      type: type || "code",
+      type: inferredType,
       fileUrl: fileUrl.trim(),
       fileSize: fileSize?.trim() || "",
+      coverImage: coverImage?.trim() || undefined,
       tags: Array.isArray(tags)
         ? tags
         : typeof tags === "string"

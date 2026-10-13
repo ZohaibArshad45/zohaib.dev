@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, type CSSProperties, type FormEvent, type ChangeEvent } from "react";
+import Image from "next/image";
 import type { Resource, ResourceType } from "@/lib/resources";
 import { RESOURCE_CATEGORIES } from "@/lib/resources";
 
@@ -13,6 +14,7 @@ const EMPTY_RESOURCE: Resource = {
   type: "code",
   fileUrl: "",
   fileSize: "",
+  coverImage: "",
   tags: ["Next.js", "TypeScript"],
   downloadsCount: 0,
   featured: false,
@@ -32,7 +34,6 @@ export default function ResourcesAdminSection({
   // Filters
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [categoryFilter, setCategoryFilter] = useState<string>("All");
-  const [typeFilter, setTypeFilter] = useState<string>("All");
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -40,11 +41,16 @@ export default function ResourcesAdminSection({
   const [resourceForm, setResourceForm] = useState<Resource>(EMPTY_RESOURCE);
   const [tagsInput, setTagsInput] = useState<string>("");
 
-  // Uploading State
-  const [isUploading, setIsUploading] = useState<boolean>(false);
-  const [uploadError, setUploadError] = useState<string | null>(null);
-  const [uploadSuccess, setUploadSuccess] = useState<string | null>(null);
+  // File Uploading State
+  const [isFileUploading, setIsFileUploading] = useState<boolean>(false);
+  const [fileUploadError, setFileUploadError] = useState<string | null>(null);
+  const [fileUploadSuccess, setFileUploadSuccess] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Cover Image Uploading State
+  const [isCoverUploading, setIsCoverUploading] = useState<boolean>(false);
+  const [coverUploadError, setCoverUploadError] = useState<string | null>(null);
+  const coverInputRef = useRef<HTMLInputElement>(null);
 
   // Operation State
   const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -55,14 +61,13 @@ export default function ResourcesAdminSection({
   const filtered = resources.filter((r) => {
     const matchesCat =
       categoryFilter === "All" || r.category === categoryFilter;
-    const matchesType = typeFilter === "All" || r.type === typeFilter;
     const q = searchTerm.toLowerCase().trim();
-    if (!q) return matchesCat && matchesType;
+    if (!q) return matchesCat;
     const matchesSearch =
       r.title.toLowerCase().includes(q) ||
       r.description.toLowerCase().includes(q) ||
       r.tags.some((t) => t.toLowerCase().includes(q));
-    return matchesCat && matchesType && matchesSearch;
+    return matchesCat && matchesSearch;
   });
 
   // Open Create Modal
@@ -73,8 +78,9 @@ export default function ResourcesAdminSection({
       id: `res-${Date.now().toString(36)}`,
     });
     setTagsInput("Next.js, TypeScript");
-    setUploadError(null);
-    setUploadSuccess(null);
+    setFileUploadError(null);
+    setFileUploadSuccess(null);
+    setCoverUploadError(null);
     setIsModalOpen(true);
   };
 
@@ -83,19 +89,65 @@ export default function ResourcesAdminSection({
     setIsEditing(true);
     setResourceForm(resource);
     setTagsInput(resource.tags ? resource.tags.join(", ") : "");
-    setUploadError(null);
-    setUploadSuccess(null);
+    setFileUploadError(null);
+    setFileUploadSuccess(null);
+    setCoverUploadError(null);
     setIsModalOpen(true);
   };
 
-  // Handle Direct File Upload
+  // Handle Downloadable File Upload (PDF, ZIP, Code)
   const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setIsUploading(true);
-    setUploadError(null);
-    setUploadSuccess(null);
+    setIsFileUploading(true);
+    setFileUploadError(null);
+    setFileUploadSuccess(null);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (data.success && data.url) {
+        // Auto infer type
+        const lowerName = file.name.toLowerCase();
+        const autoType: ResourceType = lowerName.endsWith(".pdf")
+          ? "pdf"
+          : lowerName.endsWith(".zip") || lowerName.endsWith(".tar") || lowerName.endsWith(".gz")
+          ? "zip"
+          : "code";
+
+        setResourceForm((prev) => ({
+          ...prev,
+          fileUrl: data.url,
+          fileSize: data.fileSize || `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
+          type: autoType,
+        }));
+        setFileUploadSuccess(`File ready: ${data.fileName || file.name} (${data.fileSize || "Ready"})`);
+      } else {
+        setFileUploadError(data.message || "Failed to upload file");
+      }
+    } catch {
+      setFileUploadError("Server upload error. Check connection.");
+    } finally {
+      setIsFileUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
+  // Handle Cover Image Upload
+  const handleCoverUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsCoverUploading(true);
+    setCoverUploadError(null);
 
     try {
       const formData = new FormData();
@@ -110,45 +162,44 @@ export default function ResourcesAdminSection({
       if (data.success && data.url) {
         setResourceForm((prev) => ({
           ...prev,
-          fileUrl: data.url,
-          fileSize: data.fileSize || `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
-          // Auto detect type from extension
-          type: file.name.endsWith(".pdf")
-            ? "pdf"
-            : file.name.endsWith(".zip") || file.name.endsWith(".tar") || file.name.endsWith(".gz")
-            ? "zip"
-            : "code",
+          coverImage: data.url,
         }));
-        setUploadSuccess(`Uploaded: ${data.fileName || file.name} (${data.fileSize || "Ready"})`);
       } else {
-        setUploadError(data.message || "Failed to upload file");
+        setCoverUploadError(data.message || "Failed to upload cover image");
       }
     } catch {
-      setUploadError("Server upload error. Check connection.");
+      setCoverUploadError("Cover upload error. Please try again.");
     } finally {
-      setIsUploading(false);
-      if (fileInputRef.current) fileInputRef.current.value = "";
+      setIsCoverUploading(false);
+      if (coverInputRef.current) coverInputRef.current.value = "";
     }
   };
 
   // Save (Create or Update)
   const handleSaveResource = async (e: FormEvent) => {
     e.preventDefault();
-    if (!resourceForm.title.trim() || !resourceForm.fileUrl.trim()) {
-      alert("Title and File URL are required.");
+    if (!resourceForm.title.trim()) {
+      alert("Please provide a resource title.");
+      return;
+    }
+
+    if (!resourceForm.fileUrl.trim()) {
+      alert("Please upload a resource file (PDF or ZIP/code) before saving.");
       return;
     }
 
     setIsSaving(true);
 
-    const payload = {
+    const cleanSlug =
+      resourceForm.slug?.trim() ||
+      resourceForm.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "");
+
+    const payload: Resource = {
       ...resourceForm,
-      slug:
-        resourceForm.slug.trim() ||
-        resourceForm.title
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-")
-          .replace(/(^-|-$)/g, ""),
+      slug: cleanSlug,
       tags: tagsInput
         .split(",")
         .map((t) => t.trim())
@@ -246,7 +297,7 @@ export default function ResourcesAdminSection({
           <h3 style={styles.heading}>Free Developer Resources CMS</h3>
           <p style={styles.subheading}>
             Upload and manage downloadable PDF guides, source code starters,
-            architecture blueprints, and cheatsheets.
+            and cover thumbnails for your portfolio visitors.
           </p>
         </div>
 
@@ -277,18 +328,6 @@ export default function ResourcesAdminSection({
             </option>
           ))}
         </select>
-
-        <select
-          value={typeFilter}
-          onChange={(e) => setTypeFilter(e.target.value)}
-          style={styles.filterSelect}
-        >
-          <option value="All">All Formats</option>
-          <option value="pdf">PDF Guides</option>
-          <option value="code">Source Code</option>
-          <option value="zip">ZIP Archives</option>
-          <option value="template">Templates</option>
-        </select>
       </div>
 
       {/* TABLE / CARD LIST */}
@@ -309,6 +348,19 @@ export default function ResourcesAdminSection({
 
             return (
               <div key={item.id} style={styles.itemCard}>
+                {/* OPTIONAL COVER THUMBNAIL */}
+                {item.coverImage && (
+                  <div style={styles.itemCoverWrapper}>
+                    <Image
+                      src={item.coverImage}
+                      alt={item.title}
+                      width={120}
+                      height={80}
+                      style={styles.itemCoverImg}
+                    />
+                  </div>
+                )}
+
                 <div style={styles.itemMain}>
                   <div style={styles.itemHeader}>
                     <span
@@ -396,7 +448,7 @@ export default function ResourcesAdminSection({
       )}
 
       {/* ============================================================= */}
-      {/* ADD / EDIT MODAL */}
+      {/* SIMPLIFIED ADD / EDIT MODAL */}
       {/* ============================================================= */}
       {isModalOpen && (
         <div style={styles.modalOverlay}>
@@ -428,73 +480,31 @@ export default function ResourcesAdminSection({
                     setResourceForm((prev) => ({
                       ...prev,
                       title,
-                      slug: isEditing
-                        ? prev.slug
-                        : title
-                            .toLowerCase()
-                            .replace(/[^a-z0-9]+/g, "-")
-                            .replace(/(^-|-$)/g, ""),
                     }));
                   }}
                   style={styles.input}
                 />
               </div>
 
-              {/* SLUG */}
+              {/* CATEGORY */}
               <div>
-                <label style={styles.label}>Slug / URL Identifier</label>
-                <input
-                  type="text"
-                  placeholder="e.g. nextjs16-saas-production-boilerplate"
-                  value={resourceForm.slug}
+                <label style={styles.label}>Category *</label>
+                <select
+                  value={resourceForm.category}
                   onChange={(e) =>
-                    setResourceForm({ ...resourceForm, slug: e.target.value })
+                    setResourceForm({
+                      ...resourceForm,
+                      category: e.target.value,
+                    })
                   }
                   style={styles.input}
-                />
-              </div>
-
-              {/* ROW: CATEGORY & TYPE */}
-              <div style={styles.rowTwo}>
-                <div>
-                  <label style={styles.label}>Category *</label>
-                  <select
-                    value={resourceForm.category}
-                    onChange={(e) =>
-                      setResourceForm({
-                        ...resourceForm,
-                        category: e.target.value,
-                      })
-                    }
-                    style={styles.input}
-                  >
-                    {RESOURCE_CATEGORIES.map((c) => (
-                      <option key={c} value={c}>
-                        {c}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label style={styles.label}>Format / Type *</label>
-                  <select
-                    value={resourceForm.type}
-                    onChange={(e) =>
-                      setResourceForm({
-                        ...resourceForm,
-                        type: e.target.value as ResourceType,
-                      })
-                    }
-                    style={styles.input}
-                  >
-                    <option value="code">Source Code (ZIP / Repo)</option>
-                    <option value="pdf">PDF Engineering Guide</option>
-                    <option value="zip">ZIP Archive</option>
-                    <option value="template">Template</option>
-                    <option value="guide">Guide</option>
-                  </select>
-                </div>
+                >
+                  {RESOURCE_CATEGORIES.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               {/* DESCRIPTION */}
@@ -503,7 +513,7 @@ export default function ResourcesAdminSection({
                 <textarea
                   required
                   rows={3}
-                  placeholder="Explain what is included in this free download, technologies used, and who it helps..."
+                  placeholder="Explain what is included in this free download, architecture details, and how to use it..."
                   value={resourceForm.description}
                   onChange={(e) =>
                     setResourceForm({
@@ -515,83 +525,114 @@ export default function ResourcesAdminSection({
                 />
               </div>
 
-              {/* FILE UPLOAD DROPZONE */}
+              {/* COVER IMAGE UPLOAD (NEW FEATURE) */}
+              <div style={styles.coverZone}>
+                <div style={styles.coverHeaderRow}>
+                  <label style={styles.label}>Cover Image / Thumbnail (Optional)</label>
+                  {resourceForm.coverImage && (
+                    <button
+                      type="button"
+                      onClick={() => setResourceForm({ ...resourceForm, coverImage: "" })}
+                      style={styles.removeCoverBtn}
+                    >
+                      Remove Cover ✕
+                    </button>
+                  )}
+                </div>
+
+                {resourceForm.coverImage ? (
+                  <div style={styles.coverPreviewCard}>
+                    <Image
+                      src={resourceForm.coverImage}
+                      alt="Cover Preview"
+                      width={400}
+                      height={180}
+                      style={styles.coverPreviewImg}
+                    />
+                    <div style={styles.coverPreviewMeta}>
+                      <span style={styles.coverBadge}>✓ Cover Attached</span>
+                      <label htmlFor="resource-cover-upload" style={styles.changeCoverBtn}>
+                        Change Image
+                      </label>
+                    </div>
+                  </div>
+                ) : (
+                  <div style={styles.uploadBox}>
+                    <input
+                      ref={coverInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleCoverUpload}
+                      disabled={isCoverUploading}
+                      style={styles.fileInputHidden}
+                      id="resource-cover-upload"
+                    />
+                    <label
+                      htmlFor="resource-cover-upload"
+                      style={styles.uploadCoverLabel}
+                    >
+                      {isCoverUploading ? (
+                        <span>⏳ Uploading cover image...</span>
+                      ) : (
+                        <span>
+                          🖼️ Click to Upload Cover Image / Thumbnail (PNG, JPG, WEBP)
+                        </span>
+                      )}
+                    </label>
+                  </div>
+                )}
+                {coverUploadError && (
+                  <p style={styles.uploadErrorText}>✕ {coverUploadError}</p>
+                )}
+              </div>
+
+              {/* DOWNLOADABLE FILE UPLOAD (PDF, ZIP, CODE) */}
               <div style={styles.uploadZone}>
                 <label style={styles.label}>
-                  Upload File (PDF, ZIP, Code, Cheatsheet)
+                  Upload Downloadable File * (PDF, ZIP, or Code up to 50MB)
                 </label>
                 <div style={styles.uploadBox}>
                   <input
                     ref={fileInputRef}
                     type="file"
                     onChange={handleFileUpload}
-                    disabled={isUploading}
+                    disabled={isFileUploading}
                     style={styles.fileInputHidden}
                     id="resource-file-upload"
                   />
                   <label
                     htmlFor="resource-file-upload"
-                    style={styles.uploadTriggerLabel}
+                    style={{
+                      ...styles.uploadTriggerLabel,
+                      borderColor: resourceForm.fileUrl ? "#caff46" : "#2a342c",
+                    }}
                   >
-                    {isUploading ? (
+                    {isFileUploading ? (
                       <span>⏳ Uploading file to storage...</span>
+                    ) : resourceForm.fileUrl ? (
+                      <span>
+                        ✓ File Ready: {resourceForm.fileUrl.split("/").pop()} ({resourceForm.fileSize || "Saved"}) — Click to replace
+                      </span>
                     ) : (
                       <span>
-                        📁 Click to Browse or Drag &amp; Drop File (PDF, ZIP, MD,
-                        Code up to 50MB)
+                        📁 Click to Choose PDF or ZIP File (Auto-formats type &amp; size)
                       </span>
                     )}
                   </label>
                 </div>
 
-                {uploadSuccess && (
-                  <p style={styles.uploadSuccessText}>✓ {uploadSuccess}</p>
+                {fileUploadSuccess && (
+                  <p style={styles.uploadSuccessText}>✓ {fileUploadSuccess}</p>
                 )}
-                {uploadError && (
-                  <p style={styles.uploadErrorText}>✕ {uploadError}</p>
+                {fileUploadError && (
+                  <p style={styles.uploadErrorText}>✕ {fileUploadError}</p>
                 )}
-              </div>
-
-              {/* FILE URL & FILE SIZE (EDITABLE) */}
-              <div style={styles.rowTwo}>
-                <div>
-                  <label style={styles.label}>Direct File URL *</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="/uploads/my-starter.zip or https://..."
-                    value={resourceForm.fileUrl}
-                    onChange={(e) =>
-                      setResourceForm({
-                        ...resourceForm,
-                        fileUrl: e.target.value,
-                      })
-                    }
-                    style={styles.input}
-                  />
-                </div>
-
-                <div>
-                  <label style={styles.label}>File Size Label</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. 4.2 MB (ZIP) or 1.8 MB (PDF)"
-                    value={resourceForm.fileSize || ""}
-                    onChange={(e) =>
-                      setResourceForm({
-                        ...resourceForm,
-                        fileSize: e.target.value,
-                      })
-                    }
-                    style={styles.input}
-                  />
-                </div>
               </div>
 
               {/* EXTERNAL LINK & TAGS */}
               <div style={styles.rowTwo}>
                 <div>
-                  <label style={styles.label}>External Link (GitHub Repo / Demo)</label>
+                  <label style={styles.label}>GitHub / Source Link (Optional)</label>
                   <input
                     type="url"
                     placeholder="https://github.com/codingskillup/..."
@@ -752,23 +793,38 @@ const styles: Record<string, CSSProperties> = {
     background: "#131714",
     border: "1px solid #222923",
     borderRadius: "16px",
-    padding: "22px 26px",
+    padding: "20px 24px",
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between",
-    gap: "24px",
+    gap: "20px",
     flexWrap: "wrap",
   },
 
+  itemCoverWrapper: {
+    width: "120px",
+    height: "80px",
+    borderRadius: "10px",
+    overflow: "hidden",
+    flexShrink: 0,
+    background: "#1a201b",
+    border: "1px solid #28322a",
+  },
+
+  itemCoverImg: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+  },
+
   itemMain: {
-    flex: "1 1 500px",
+    flex: "1 1 380px",
   },
 
   itemHeader: {
     display: "flex",
     alignItems: "center",
     gap: "8px",
-    marginBottom: "10px",
+    marginBottom: "8px",
     flexWrap: "wrap",
   },
 
@@ -812,7 +868,7 @@ const styles: Record<string, CSSProperties> = {
   },
 
   itemTitle: {
-    fontSize: "18px",
+    fontSize: "17px",
     fontWeight: "700",
     color: "#ffffff",
     margin: "0 0 6px",
@@ -820,9 +876,9 @@ const styles: Record<string, CSSProperties> = {
 
   itemDescription: {
     fontSize: "13px",
-    color: "#9aa39b",
+    color: "#9aa39c",
     lineHeight: "1.5",
-    margin: "0 0 12px",
+    margin: "0 0 10px",
   },
 
   itemMetaRow: {
@@ -862,7 +918,7 @@ const styles: Record<string, CSSProperties> = {
   urlLink: {
     color: "#caff46",
     textDecoration: "none",
-    maxWidth: "260px",
+    maxWidth: "240px",
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
@@ -873,6 +929,7 @@ const styles: Record<string, CSSProperties> = {
     alignItems: "center",
     gap: "8px",
     flexWrap: "wrap",
+    marginLeft: "auto",
   },
 
   actionBtnPrimary: {
@@ -923,13 +980,13 @@ const styles: Record<string, CSSProperties> = {
 
   modalCard: {
     width: "100%",
-    maxWidth: "680px",
+    maxWidth: "660px",
     maxHeight: "90vh",
     overflowY: "auto",
     background: "#131714",
     border: "1px solid #28322a",
     borderRadius: "20px",
-    padding: "32px",
+    padding: "30px",
     boxShadow: "0 25px 60px rgba(0, 0, 0, 0.6)",
   },
 
@@ -937,7 +994,7 @@ const styles: Record<string, CSSProperties> = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: "24px",
+    marginBottom: "20px",
   },
 
   modalTitle: {
@@ -958,7 +1015,7 @@ const styles: Record<string, CSSProperties> = {
   modalBody: {
     display: "flex",
     flexDirection: "column",
-    gap: "18px",
+    gap: "16px",
   },
 
   label: {
@@ -987,6 +1044,78 @@ const styles: Record<string, CSSProperties> = {
     gap: "14px",
   },
 
+  coverZone: {
+    background: "#0e110f",
+    padding: "16px",
+    borderRadius: "10px",
+    border: "1px solid #232a24",
+  },
+
+  coverHeaderRow: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: "6px",
+  },
+
+  removeCoverBtn: {
+    background: "transparent",
+    border: "none",
+    color: "#f87171",
+    fontSize: "12px",
+    cursor: "pointer",
+  },
+
+  coverPreviewCard: {
+    position: "relative",
+    borderRadius: "10px",
+    overflow: "hidden",
+    border: "1px solid #2b352d",
+    background: "#161b17",
+  },
+
+  coverPreviewImg: {
+    width: "100%",
+    height: "140px",
+    objectFit: "cover",
+    display: "block",
+  },
+
+  coverPreviewMeta: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "10px 14px",
+    background: "#111612",
+  },
+
+  coverBadge: {
+    fontSize: "12px",
+    color: "#caff46",
+    fontWeight: "700",
+  },
+
+  changeCoverBtn: {
+    fontSize: "12px",
+    color: "#ffffff",
+    cursor: "pointer",
+    textDecoration: "underline",
+  },
+
+  uploadCoverLabel: {
+    display: "block",
+    padding: "16px",
+    borderRadius: "8px",
+    background: "#161c17",
+    color: "#9aa39b",
+    textAlign: "center",
+    fontSize: "13px",
+    fontWeight: "600",
+    cursor: "pointer",
+    border: "1px dashed #2a342c",
+    transition: "border-color 0.2s ease, color 0.2s ease",
+  },
+
   uploadZone: {
     background: "#0e110f",
     padding: "16px",
@@ -1004,7 +1133,7 @@ const styles: Record<string, CSSProperties> = {
 
   uploadTriggerLabel: {
     display: "block",
-    padding: "18px",
+    padding: "16px",
     borderRadius: "8px",
     background: "#161c17",
     color: "#caff46",

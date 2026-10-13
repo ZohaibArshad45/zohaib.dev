@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useMemo, type CSSProperties } from "react";
 import Navbar from "@/components/MainPage/Navbar";
 import ContactSection from "@/components/MainPage/ContactSection";
@@ -18,6 +19,9 @@ export default function ResourcesClient({
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
+  const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
+  const [hoveredCopyId, setHoveredCopyId] = useState<string | null>(null);
+  const [hoveredExternalId, setHoveredExternalId] = useState<string | null>(null);
 
   // Extract unique categories
   const categories = useMemo(() => {
@@ -254,9 +258,58 @@ export default function ResourcesClient({
                   const badge = getFormatBadgeColor(resource.type);
                   const isCopied = copiedId === resource.id;
                   const isDownloading = downloadingId === resource.id;
+                  const isHovered = hoveredCardId === resource.id;
 
                   return (
-                    <div key={resource.id} style={styles.card}>
+                    <div
+                      key={resource.id}
+                      onMouseEnter={() => setHoveredCardId(resource.id)}
+                      onMouseLeave={() => setHoveredCardId(null)}
+                      style={{
+                        ...styles.card,
+                        transform: isHovered
+                          ? "translateY(-8px) scale(1.01)"
+                          : "translateY(0) scale(1)",
+                        borderColor: isHovered
+                          ? "rgba(202, 255, 70, 0.45)"
+                          : "#232a24",
+                        boxShadow: isHovered
+                          ? "0 24px 50px -12px rgba(0, 0, 0, 0.75), 0 0 32px rgba(202, 255, 70, 0.16)"
+                          : "none",
+                        background: isHovered
+                          ? "linear-gradient(180deg, #161c17 0%, #0e120f 100%)"
+                          : "linear-gradient(180deg, #131714 0%, #0f1210 100%)",
+                      }}
+                    >
+                      {/* COVER IMAGE THUMBNAIL */}
+                      {resource.coverImage && (
+                        <div
+                          style={{
+                            ...styles.coverThumbnailWrapper,
+                            borderColor: isHovered
+                              ? "rgba(202, 255, 70, 0.35)"
+                              : "#232a24",
+                            boxShadow: isHovered
+                              ? "0 8px 24px rgba(0, 0, 0, 0.5)"
+                              : "none",
+                          }}
+                        >
+                          <Image
+                            src={resource.coverImage}
+                            alt={resource.title}
+                            width={420}
+                            height={210}
+                            style={{
+                              ...styles.coverThumbnailImg,
+                              transform: isHovered ? "scale(1.06)" : "scale(1)",
+                              filter: isHovered
+                                ? "brightness(1.05)"
+                                : "brightness(1)",
+                            }}
+                          />
+                        </div>
+                      )}
+
                       {/* TOP BADGE ROW */}
                       <div style={styles.cardTop}>
                         <div style={styles.badgeGroup}>
@@ -284,7 +337,15 @@ export default function ResourcesClient({
                       </div>
 
                       {/* TITLE & DESCRIPTION */}
-                      <h2 style={styles.cardTitle}>{resource.title}</h2>
+                      <h2
+                        style={{
+                          ...styles.cardTitle,
+                          color: isHovered ? "#caff46" : "#ffffff",
+                          transition: "color 0.25s ease",
+                        }}
+                      >
+                        {resource.title}
+                      </h2>
                       <p style={styles.cardDescription}>
                         {resource.description}
                       </p>
@@ -320,7 +381,15 @@ export default function ResourcesClient({
                         <button
                           onClick={() => handleDownload(resource)}
                           disabled={isDownloading}
-                          style={styles.downloadBtn}
+                          style={{
+                            ...styles.downloadBtn,
+                            transform: isHovered
+                              ? "translateY(-2px)"
+                              : "translateY(0)",
+                            boxShadow: isHovered
+                              ? "0 0 25px rgba(202, 255, 70, 0.45)"
+                              : "none",
+                          }}
                           title="Download Resource"
                         >
                           {isDownloading ? (
@@ -338,7 +407,23 @@ export default function ResourcesClient({
 
                         <button
                           onClick={() => handleCopyLink(resource)}
-                          style={styles.copyBtn}
+                          onMouseEnter={() => setHoveredCopyId(resource.id)}
+                          onMouseLeave={() => setHoveredCopyId(null)}
+                          style={{
+                            ...styles.copyBtn,
+                            borderColor:
+                              hoveredCopyId === resource.id
+                                ? "#caff46"
+                                : "#273029",
+                            color:
+                              hoveredCopyId === resource.id
+                                ? "#caff46"
+                                : "#cbd2cc",
+                            background:
+                              hoveredCopyId === resource.id
+                                ? "rgba(202, 255, 70, 0.08)"
+                                : "#181d19",
+                          }}
                           title="Copy Download Link"
                         >
                           {isCopied ? "✓ Copied" : "Copy Link"}
@@ -349,7 +434,25 @@ export default function ResourcesClient({
                             href={resource.externalLink}
                             target="_blank"
                             rel="noopener noreferrer"
-                            style={styles.externalLinkBtn}
+                            onMouseEnter={() =>
+                              setHoveredExternalId(resource.id)
+                            }
+                            onMouseLeave={() => setHoveredExternalId(null)}
+                            style={{
+                              ...styles.externalLinkBtn,
+                              borderColor:
+                                hoveredExternalId === resource.id
+                                  ? "#caff46"
+                                  : "#273029",
+                              color:
+                                hoveredExternalId === resource.id
+                                  ? "#caff46"
+                                  : "#cbd2cc",
+                              background:
+                                hoveredExternalId === resource.id
+                                  ? "rgba(202, 255, 70, 0.08)"
+                                  : "#181d19",
+                            }}
                             title="View on GitHub / Source"
                           >
                             GitHub ↗
@@ -608,11 +711,34 @@ const styles: Record<string, CSSProperties> = {
     background: "linear-gradient(180deg, #131714 0%, #0f1210 100%)",
     border: "1px solid #232a24",
     borderRadius: "20px",
-    padding: "28px",
+    padding: "24px",
     display: "flex",
     flexDirection: "column",
-    transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+    transition:
+      "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease",
     position: "relative",
+    cursor: "default",
+  },
+
+  coverThumbnailWrapper: {
+    width: "100%",
+    height: "190px",
+    borderRadius: "14px",
+    overflow: "hidden",
+    marginBottom: "18px",
+    background: "#161b17",
+    border: "1px solid #232a24",
+    position: "relative",
+    transition: "border-color 0.3s ease, box-shadow 0.3s ease",
+  },
+
+  coverThumbnailImg: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    display: "block",
+    transition:
+      "transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), filter 0.45s ease",
   },
 
   cardTop: {

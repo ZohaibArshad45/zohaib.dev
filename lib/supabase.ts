@@ -648,6 +648,7 @@ export async function getResources(): Promise<{
           type: row.type,
           fileUrl: row.file_url || row.fileUrl,
           fileSize: row.file_size || row.fileSize,
+          coverImage: row.cover_image || row.coverImage,
           tags: Array.isArray(row.tags) ? row.tags : [],
           downloadsCount: Number(row.downloads_count || row.downloadsCount || 0),
           featured: Boolean(row.featured),
@@ -680,6 +681,7 @@ export async function addResource(
       type: resource.type,
       file_url: resource.fileUrl,
       file_size: resource.fileSize || null,
+      cover_image: resource.coverImage || null,
       tags: resource.tags,
       downloads_count: resource.downloadsCount || 0,
       featured: Boolean(resource.featured),
@@ -710,6 +712,7 @@ export async function addResource(
           type: data.type,
           fileUrl: data.file_url || data.fileUrl,
           fileSize: data.file_size || data.fileSize,
+          coverImage: data.cover_image || data.coverImage,
           tags: Array.isArray(data.tags) ? data.tags : [],
           downloadsCount: Number(data.downloads_count || 0),
           featured: Boolean(data.featured),
@@ -741,6 +744,7 @@ export async function updateResource(
     if (updates.type) dbUpdates.type = updates.type;
     if (updates.fileUrl) dbUpdates.file_url = updates.fileUrl;
     if (updates.fileSize !== undefined) dbUpdates.file_size = updates.fileSize;
+    if (updates.coverImage !== undefined) dbUpdates.cover_image = updates.coverImage;
     if (updates.tags) dbUpdates.tags = updates.tags;
     if (updates.downloadsCount !== undefined) dbUpdates.downloads_count = updates.downloadsCount;
     if (updates.featured !== undefined) dbUpdates.featured = updates.featured;
@@ -770,6 +774,7 @@ export async function updateResource(
           type: data.type,
           fileUrl: data.file_url,
           fileSize: data.file_size,
+          coverImage: data.cover_image,
           tags: Array.isArray(data.tags) ? data.tags : [],
           downloadsCount: Number(data.downloads_count || 0),
           featured: Boolean(data.featured),

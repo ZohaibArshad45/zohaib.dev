@@ -16,6 +16,7 @@ export interface Resource {
   type: ResourceType;
   fileUrl: string;
   fileSize?: string;
+  coverImage?: string;
   tags: string[];
   downloadsCount: number;
   featured: boolean;
@@ -43,6 +44,7 @@ export const INITIAL_RESOURCES: Resource[] = [
     type: "code",
     fileUrl: "/uploads/nextjs16-saas-starter.zip",
     fileSize: "2.4 MB (ZIP)",
+    coverImage: "/uploads/01-mv66ky4x.png",
     tags: ["Next.js 16", "TypeScript", "Tailwind CSS", "Supabase"],
     downloadsCount: 348,
     featured: true,
@@ -59,6 +61,7 @@ export const INITIAL_RESOURCES: Resource[] = [
     type: "pdf",
     fileUrl: "/uploads/ai-agents-system-design-guide.pdf",
     fileSize: "5.8 MB (PDF)",
+    coverImage: "/uploads/03-mv679el9.png",
     tags: ["AI Agents", "System Design", "Python", "LLMs"],
     downloadsCount: 512,
     featured: true,
@@ -74,6 +77,7 @@ export const INITIAL_RESOURCES: Resource[] = [
     type: "pdf",
     fileUrl: "/uploads/supabase-rls-security-cheatsheet.pdf",
     fileSize: "1.2 MB (PDF)",
+    coverImage: "/uploads/04-mv678cuj.png",
     tags: ["PostgreSQL", "Supabase", "SQL", "Security"],
     downloadsCount: 289,
     featured: false,
@@ -89,6 +93,7 @@ export const INITIAL_RESOURCES: Resource[] = [
     type: "code",
     fileUrl: "/uploads/fastapi-langchain-microservice.zip",
     fileSize: "850 KB (ZIP)",
+    coverImage: "/uploads/1-mv5i8zzw.png",
     tags: ["FastAPI", "Python", "Docker", "LangChain"],
     downloadsCount: 215,
     featured: true,
@@ -105,6 +110,7 @@ export const INITIAL_RESOURCES: Resource[] = [
     type: "pdf",
     fileUrl: "/uploads/web-performance-playbook.pdf",
     fileSize: "3.1 MB (PDF)",
+    coverImage: "/uploads/2-mv5i95fc.png",
     tags: ["Web Vitals", "Performance", "SEO", "Next.js"],
     downloadsCount: 420,
     featured: false,
@@ -120,6 +126,7 @@ export const INITIAL_RESOURCES: Resource[] = [
     type: "code",
     fileUrl: "/uploads/interactive-dark-ui-kit.zip",
     fileSize: "1.6 MB (ZIP)",
+    coverImage: "/uploads/01-mv66ky4x.png",
     tags: ["React", "UI/UX", "CSS Animations", "Frontend"],
     downloadsCount: 630,
     featured: true,
