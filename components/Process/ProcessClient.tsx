@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState, type CSSProperties } from "react";
+import { useState, type CSSProperties } from "react";
 import ContactSection from "@/components/MainPage/ContactSection";
 import type { SiteSettings } from "@/lib/settings";
 
@@ -152,20 +152,9 @@ const FAQS: FAQItem[] = [
 ];
 
 export default function ProcessClient({ settings }: { settings?: SiteSettings }) {
-  const [width, setWidth] = useState<number>(1440);
   const [activePhaseIndex, setActivePhaseIndex] = useState<number>(0);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [hoveredPhase, setHoveredPhase] = useState<number | null>(null);
-
-  useEffect(() => {
-    const handleResize = () => setWidth(window.innerWidth);
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const isMobile = width <= 768;
-  const isTablet = width > 768 && width <= 1024;
 
   const toggleFaq = (idx: number) => {
     setOpenFaqIndex(openFaqIndex === idx ? null : idx);

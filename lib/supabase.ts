@@ -17,7 +17,6 @@ import {
 import {
   getLocalServices,
   addLocalService,
-  updateLocalService,
   deleteLocalService,
 } from "./servicesStore";
 import {
@@ -42,27 +41,59 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 // =====================================================================
 // DATA CONVERSION HELPERS
 // =====================================================================
-function mapDbToProject(row: any): Project {
+type DbProjectRow = {
+  slug?: string;
+  number?: string;
+  title?: string;
+  short_title?: string;
+  shortTitle?: string;
+  status?: string;
+  categories?: string[];
+  headline?: string;
+  subhead?: string;
+  description?: string;
+  outcome?: string;
+  tags?: string[];
+  images?: string[];
+  preview_type?: Project["previewType"];
+  previewType?: Project["previewType"];
+  client?: string;
+  role?: string;
+  timeline?: string;
+  deliverables?: string[];
+  problem?: string;
+  solution?: string;
+  architecture_highlights?: string[];
+  architectureHighlights?: string[];
+  metrics?: Project["metrics"];
+  demo_url?: string;
+  demoUrl?: string;
+  github_url?: string;
+  githubUrl?: string;
+  [key: string]: unknown;
+};
+
+function mapDbToProject(row: DbProjectRow): Project {
   return {
-    slug: row.slug,
-    number: row.number,
-    title: row.title,
-    shortTitle: row.short_title || row.shortTitle || row.title,
-    status: row.status,
+    slug: row.slug || "",
+    number: row.number || "01",
+    title: row.title || "",
+    shortTitle: row.short_title || row.shortTitle || row.title || "",
+    status: row.status || "",
     categories: Array.isArray(row.categories) ? row.categories : [],
-    headline: row.headline,
-    subhead: row.subhead,
-    description: row.description,
-    outcome: row.outcome,
+    headline: row.headline || "",
+    subhead: row.subhead || "",
+    description: row.description || "",
+    outcome: row.outcome || "",
     tags: Array.isArray(row.tags) ? row.tags : [],
     images: Array.isArray(row.images) ? row.images : [],
     previewType: row.preview_type || row.previewType || "dashboard",
-    client: row.client,
-    role: row.role,
-    timeline: row.timeline,
+    client: row.client || "",
+    role: row.role || "",
+    timeline: row.timeline || "",
     deliverables: Array.isArray(row.deliverables) ? row.deliverables : [],
-    problem: row.problem,
-    solution: row.solution,
+    problem: row.problem || "",
+    solution: row.solution || "",
     architectureHighlights: Array.isArray(row.architecture_highlights)
       ? row.architecture_highlights
       : row.architectureHighlights || [],
@@ -72,7 +103,7 @@ function mapDbToProject(row: any): Project {
   };
 }
 
-function mapProjectToDb(proj: Project): any {
+function mapProjectToDb(proj: Project): Record<string, unknown> {
   return {
     slug: proj.slug,
     number: proj.number,
@@ -161,7 +192,7 @@ export async function updateProject(
   const localUpdated = await updateLocalProject(slug, updates);
 
   try {
-    const dbUpdates: any = {};
+    const dbUpdates: Record<string, unknown> = {};
     if (updates.number) dbUpdates.number = updates.number;
     if (updates.title) dbUpdates.title = updates.title;
     if (updates.shortTitle) dbUpdates.short_title = updates.shortTitle;
@@ -307,7 +338,7 @@ export async function updateInquiry(
   const local = await updateLocalInquiry(id, updates);
 
   try {
-    const dbUpdates: any = {};
+    const dbUpdates: Record<string, unknown> = {};
     if (updates.status) dbUpdates.status = updates.status;
     if (updates.priority) dbUpdates.priority = updates.priority;
     if (updates.notes !== undefined) dbUpdates.notes = updates.notes;

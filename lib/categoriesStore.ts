@@ -38,7 +38,7 @@ export async function getCategories(): Promise<string[]> {
       .order("name", { ascending: true });
 
     if (!error && Array.isArray(data) && data.length > 0) {
-      return data.map((d: any) => d.name);
+      return data.map((d: { name: string }) => d.name);
     }
   } catch {
     // fallback

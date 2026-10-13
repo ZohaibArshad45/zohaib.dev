@@ -44,7 +44,7 @@ export async function PATCH(request: Request) {
       newPassword,
     } = body;
 
-    const updates: Record<string, any> = {};
+    const updates: Record<string, string> = {};
 
     if (primaryEmail !== undefined) updates.primaryEmail = primaryEmail;
     if (phone !== undefined) updates.phone = phone;

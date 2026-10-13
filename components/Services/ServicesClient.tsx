@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState, type CSSProperties } from "react";
+import { useState, type CSSProperties } from "react";
 import type { Service } from "@/lib/services";
 
 type Props = {
@@ -11,17 +11,6 @@ type Props = {
 export default function ServicesClient({ initialServices }: Props) {
   const [services] = useState<Service[]>(initialServices);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
-  const [width, setWidth] = useState<number>(1440);
-
-  useEffect(() => {
-    const handleResize = () => setWidth(window.innerWidth);
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const isMobile = width <= 768;
-  const isTablet = width > 768 && width <= 1024;
 
   const [hoveredService, setHoveredService] = useState<string | null>(null);
   const [hoveredCta, setHoveredCta] = useState<string | null>(null);

@@ -831,7 +831,7 @@ export default function SelectedWork({
               marginBottom: "8px",
             }}
           >
-            {project.number || "01"} // {project.categories?.join(" • ") || "CUSTOM SYSTEM"}
+            {`${project.number || "01"} // ${project.categories?.join(" • ") || "CUSTOM SYSTEM"}`}
           </div>
           <div
             style={{
@@ -914,6 +914,7 @@ export default function SelectedWork({
             overflow: "hidden",
           }}
         >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={project.images[0]}
             alt={project.title}

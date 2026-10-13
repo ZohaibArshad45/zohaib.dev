@@ -4,11 +4,7 @@ import Link from "next/link";
 import { useEffect, useState, type CSSProperties } from "react";
 import ContactSection from "@/components/MainPage/ContactSection";
 import ProjectPreviewCard from "@/components/Projects/ProjectPreviewCard";
-import {
-  PROJECTS,
-  type Project,
-  type ProjectCategory,
-} from "@/lib/projects";
+import { type Project } from "@/lib/projects";
 
 type Props = {
   initialProjects?: Project[];
@@ -63,14 +59,13 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
   }, []);
 
   const isMobile = width <= 700;
-  const isTablet = width > 700 && width <= 1024;
 
   const filteredProjects = projectList.filter((project) => {
     if (activeCategory === "All") return true;
     return (
       project.status === activeCategory ||
       (Array.isArray(project.categories) &&
-        project.categories.includes(activeCategory as any))
+        project.categories.includes(activeCategory))
     );
   });
 
@@ -163,7 +158,7 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
                       (p) =>
                         p.status === category ||
                         (Array.isArray(p.categories) &&
-                          p.categories.includes(category as any))
+                          p.categories.includes(category))
                     ).length;
 
               return (

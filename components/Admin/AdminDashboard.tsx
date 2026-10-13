@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState, type CSSProperties, type FormEvent } from "react";
 import type { Project } from "@/lib/projects";
-import type { Inquiry, InquiryStatus, PriorityLevel } from "@/lib/inquiriesStore";
+import type { Inquiry, InquiryStatus } from "@/lib/inquiriesStore";
 import type { Service } from "@/lib/services";
 import { DEFAULT_SETTINGS, type SiteSettings } from "@/lib/settings";
 
@@ -75,8 +75,6 @@ export default function AdminDashboard() {
   const [categories, setCategories] = useState<string[]>([]);
   const [projectsSource, setProjectsSource] = useState<string>("local");
   const [loading, setLoading] = useState<boolean>(true);
-  const [copySuccess, setCopySuccess] = useState<boolean>(false);
-  const [hideSupabaseBanner, setHideSupabaseBanner] = useState<boolean>(false);
 
   // Inquiries filter & detail drawer
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -120,6 +118,7 @@ export default function AdminDashboard() {
 
   const [width, setWidth] = useState<number>(1440);
 
+
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
     handleResize();
@@ -127,20 +126,59 @@ export default function AdminDashboard() {
 
     const sessionAuth = sessionStorage.getItem("zohaib_admin_auth");
     if (sessionAuth === "true") {
-      setIsAuthenticated(true);
+      setTimeout(() => {
+        setIsAuthenticated(true);
+      }, 0);
     }
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      fetchProjects();
-      fetchServices();
-      fetchInquiries();
-      fetchCategories();
-      fetchSettings();
+    if (!isAuthenticated) return;
+
+    let ignore = false;
+
+    async function loadAll() {
+      try {
+        const [projRes, srvRes, inqRes, catRes, setRes] = await Promise.all([
+          fetch("/api/admin/projects").then((r) => r.json()),
+          fetch("/api/admin/services").then((r) => r.json()),
+          fetch("/api/admin/inquiries").then((r) => r.json()),
+          fetch("/api/admin/categories").then((r) => r.json()),
+          fetch("/api/admin/settings").then((r) => r.json()),
+        ]);
+
+        if (ignore) return;
+
+        if (projRes.success && Array.isArray(projRes.projects)) {
+          setProjects(projRes.projects);
+          if (projRes.source) setProjectsSource(projRes.source);
+        }
+        if (srvRes.success && Array.isArray(srvRes.services)) {
+          setServices(srvRes.services);
+        }
+        if (inqRes.success && Array.isArray(inqRes.inquiries)) {
+          setInquiries(inqRes.inquiries);
+        }
+        if (catRes.success && Array.isArray(catRes.categories)) {
+          setCategories(catRes.categories);
+        }
+        if (setRes.success && setRes.settings) {
+          setSiteSettings(setRes.settings);
+        }
+      } catch (err) {
+        console.error("Failed to load admin data:", err);
+      } finally {
+        if (!ignore) setLoading(false);
+      }
     }
+
+    loadAll();
+
+    return () => {
+      ignore = true;
+    };
   }, [isAuthenticated]);
 
   // Secure Server-Side Login (No hardcoded password in client JS)
@@ -182,70 +220,6 @@ export default function AdminDashboard() {
     setPasscodeInput("");
   };
 
-  const fetchProjects = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/admin/projects");
-      const data = await res.json();
-      if (data.success && Array.isArray(data.projects)) {
-        setProjects(data.projects);
-        if (data.source) setProjectsSource(data.source);
-      }
-    } catch (err) {
-      console.error("Failed to fetch projects:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchServices = async () => {
-    try {
-      const res = await fetch("/api/admin/services");
-      const data = await res.json();
-      if (data.success && Array.isArray(data.services)) {
-        setServices(data.services);
-      }
-    } catch (err) {
-      console.error("Failed to fetch services:", err);
-    }
-  };
-
-  const fetchInquiries = async () => {
-    try {
-      const res = await fetch("/api/admin/inquiries");
-      const data = await res.json();
-      if (data.success && Array.isArray(data.inquiries)) {
-        setInquiries(data.inquiries);
-      }
-    } catch (err) {
-      console.error("Failed to fetch inquiries:", err);
-    }
-  };
-
-  const fetchCategories = async () => {
-    try {
-      const res = await fetch("/api/admin/categories");
-      const data = await res.json();
-      if (data.success && Array.isArray(data.categories)) {
-        setCategories(data.categories);
-      }
-    } catch (err) {
-      console.error("Failed to fetch categories:", err);
-    }
-  };
-
-  const fetchSettings = async () => {
-    try {
-      const res = await fetch("/api/admin/settings");
-      const data = await res.json();
-      if (data.success && data.settings) {
-        setSiteSettings(data.settings);
-      }
-    } catch (err) {
-      console.error("Failed to fetch settings:", err);
-    }
-  };
-
   const handleSaveSettings = async (e: FormEvent) => {
     e.preventDefault();
     setSettingsLoading(true);
@@ -271,7 +245,7 @@ export default function AdminDashboard() {
     }
 
     try {
-      const payload: any = {
+      const payload: Record<string, unknown> = {
         ...siteSettings,
       };
       if (newPassInput) {
@@ -746,109 +720,6 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleCopySql = () => {
-    const sql = `-- 1. Inquiries Table
-CREATE TABLE IF NOT EXISTS public.inquiries (
-  id TEXT PRIMARY KEY,
-  name TEXT NOT NULL,
-  email TEXT NOT NULL,
-  project_type TEXT NOT NULL DEFAULT 'Web App',
-  timeline TEXT NOT NULL DEFAULT 'Flexible',
-  details TEXT NOT NULL,
-  status TEXT NOT NULL DEFAULT 'New',
-  priority TEXT NOT NULL DEFAULT 'Medium',
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  notes TEXT,
-  estimated_budget TEXT
-);
-
--- 2. Projects Table
-CREATE TABLE IF NOT EXISTS public.projects (
-  slug TEXT PRIMARY KEY,
-  number TEXT NOT NULL DEFAULT '01',
-  title TEXT NOT NULL,
-  short_title TEXT NOT NULL,
-  status TEXT NOT NULL,
-  categories TEXT[] NOT NULL DEFAULT '{}',
-  headline TEXT NOT NULL,
-  subhead TEXT NOT NULL,
-  description TEXT NOT NULL,
-  outcome TEXT NOT NULL,
-  tags TEXT[] NOT NULL DEFAULT '{}',
-  preview_type TEXT NOT NULL DEFAULT 'inbox',
-  client TEXT NOT NULL DEFAULT 'Personal Project',
-  role TEXT NOT NULL DEFAULT 'Full-Stack Developer',
-  timeline TEXT NOT NULL DEFAULT 'Completed',
-  deliverables TEXT[] NOT NULL DEFAULT '{}',
-  problem TEXT NOT NULL DEFAULT '',
-  solution TEXT NOT NULL DEFAULT '',
-  architecture_highlights TEXT[] NOT NULL DEFAULT '{}',
-  metrics JSONB NOT NULL DEFAULT '[]'::JSONB,
-  demo_url TEXT,
-  github_url TEXT,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-
--- 3. Categories Table
-CREATE TABLE IF NOT EXISTS public.categories (
-  name TEXT PRIMARY KEY,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-
--- 4. Settings Table
-CREATE TABLE IF NOT EXISTS public.site_settings (
-  key TEXT PRIMARY KEY,
-  value TEXT NOT NULL,
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-
--- 5. Services Table
-CREATE TABLE IF NOT EXISTS public.services (
-  id TEXT PRIMARY KEY,
-  slug TEXT UNIQUE NOT NULL,
-  number TEXT NOT NULL DEFAULT '01',
-  category TEXT NOT NULL,
-  title TEXT NOT NULL,
-  description TEXT NOT NULL,
-  items TEXT[] NOT NULL DEFAULT '{}',
-  stack TEXT[] NOT NULL DEFAULT '{}',
-  turnaround TEXT,
-  starting_price TEXT,
-  best_for TEXT,
-  cta_text TEXT NOT NULL DEFAULT 'Inquire About This Service',
-  href TEXT NOT NULL DEFAULT '/contact',
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-
--- RLS Configuration
-ALTER TABLE public.inquiries ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.projects ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.categories ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.site_settings ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.services ENABLE ROW LEVEL SECURITY;
-
-DROP POLICY IF EXISTS "Allow anon on inquiries" ON public.inquiries;
-CREATE POLICY "Allow anon on inquiries" ON public.inquiries FOR ALL TO public USING (true) WITH CHECK (true);
-
-DROP POLICY IF EXISTS "Allow anon on projects" ON public.projects;
-CREATE POLICY "Allow anon on projects" ON public.projects FOR ALL TO public USING (true) WITH CHECK (true);
-
-DROP POLICY IF EXISTS "Allow anon on categories" ON public.categories;
-CREATE POLICY "Allow anon on categories" ON public.categories FOR ALL TO public USING (true) WITH CHECK (true);
-
-DROP POLICY IF EXISTS "Allow anon on site_settings" ON public.site_settings;
-CREATE POLICY "Allow anon on site_settings" ON public.site_settings FOR ALL TO public USING (true) WITH CHECK (true);
-
-DROP POLICY IF EXISTS "Allow anon on services" ON public.services;
-CREATE POLICY "Allow anon on services" ON public.services FOR ALL TO public USING (true) WITH CHECK (true);
-`;
-    navigator.clipboard.writeText(sql);
-    setCopySuccess(true);
-    setTimeout(() => setCopySuccess(false), 3000);
-  };
-
   const isMobile = width <= 768;
 
   const filteredInquiries = inquiries.filter((inq) => {
@@ -1207,7 +1078,7 @@ CREATE POLICY "Allow anon on services" ON public.services FOR ALL TO public USIN
                   const count = projects.filter(
                     (p) =>
                       p.status === cat ||
-                      (p.categories && p.categories.includes(cat as any))
+                      (p.categories && p.categories.includes(cat))
                   ).length;
 
                   return (
@@ -2846,58 +2717,6 @@ CREATE POLICY "Allow anon on services" ON public.services FOR ALL TO public USIN
       )}
     </main>
   );
-}
-
-// Helper badge styles
-function getStatusBadgeStyle(status: InquiryStatus): CSSProperties {
-  switch (status) {
-    case "New":
-      return {
-        background: "rgba(202, 255, 70, 0.15)",
-        color: "#caff46",
-        border: "1px solid rgba(202, 255, 70, 0.4)",
-        padding: "3px 8px",
-        borderRadius: "12px",
-        fontSize: "10px",
-        fontWeight: "700",
-      };
-    case "Contacted":
-      return {
-        background: "rgba(59, 130, 246, 0.15)",
-        color: "#60a5fa",
-        padding: "3px 8px",
-        borderRadius: "12px",
-        fontSize: "10px",
-        fontWeight: "700",
-      };
-    case "In Progress":
-      return {
-        background: "rgba(234, 179, 8, 0.15)",
-        color: "#facc15",
-        padding: "3px 8px",
-        borderRadius: "12px",
-        fontSize: "10px",
-        fontWeight: "700",
-      };
-    case "Closed Won":
-      return {
-        background: "rgba(34, 197, 94, 0.15)",
-        color: "#4ade80",
-        padding: "3px 8px",
-        borderRadius: "12px",
-        fontSize: "10px",
-        fontWeight: "700",
-      };
-    case "Archived":
-      return {
-        background: "rgba(156, 163, 175, 0.15)",
-        color: "#9ca3af",
-        padding: "3px 8px",
-        borderRadius: "12px",
-        fontSize: "10px",
-        fontWeight: "700",
-      };
-  }
 }
 
 const styles: Record<string, CSSProperties> = {
