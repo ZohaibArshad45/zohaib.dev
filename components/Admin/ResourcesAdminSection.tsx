@@ -976,6 +976,8 @@ const styles: Record<string, CSSProperties> = {
     justifyContent: "center",
     zIndex: 9999,
     padding: "20px",
+    overflowY: "auto",
+    overflowX: "hidden",
   },
 
   modalCard: {
@@ -983,6 +985,7 @@ const styles: Record<string, CSSProperties> = {
     maxWidth: "660px",
     maxHeight: "90vh",
     overflowY: "auto",
+    overflowX: "hidden",
     background: "#131714",
     border: "1px solid #28322a",
     borderRadius: "20px",

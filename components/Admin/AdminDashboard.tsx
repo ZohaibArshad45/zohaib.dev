@@ -100,6 +100,7 @@ export default function AdminDashboard() {
   const [isEditingService, setIsEditingService] = useState<boolean>(false);
   const [serviceForm, setServiceForm] = useState<Service>(EMPTY_SERVICE);
   const [serviceItemsInput, setServiceItemsInput] = useState<string>("");
+  const [isCustomServiceCategory, setIsCustomServiceCategory] = useState<boolean>(false);
 
   // Form simplified text inputs
   const [techTagsInput, setTechTagsInput] = useState<string>("");
@@ -592,12 +593,13 @@ export default function AdminDashboard() {
   // -------------------------------------------------------------
   const openAddServiceModal = () => {
     setIsEditingService(false);
+    setIsCustomServiceCategory(false);
     const nextNum =
       services.length >= 9
         ? `${services.length + 1}`
         : `0${services.length + 1}`;
 
-    const defaultCat = categories[0] || "FULL-STACK DEVELOPMENT";
+    const defaultCat = categories[0] || "Web Apps";
 
     setServiceForm({
       ...EMPTY_SERVICE,
@@ -612,6 +614,7 @@ export default function AdminDashboard() {
 
   const openEditServiceModal = (srv: Service) => {
     setIsEditingService(true);
+    setIsCustomServiceCategory(Boolean(srv.category && !categories.includes(srv.category)));
     setServiceForm(srv);
     setServiceItemsInput((srv.items || []).join("\n"));
     setIsServiceModalOpen(true);
@@ -1984,7 +1987,7 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* 3. DYNAMIC CATEGORY PICKER */}
-                <div>
+                <div style={{ minWidth: 0 }}>
                   <label style={styles.formLabel}>Category / Eyebrow *</label>
                   <select
                     value={projectForm.status}
@@ -1996,10 +1999,14 @@ export default function AdminDashboard() {
                         categories: [chosen],
                       });
                     }}
-                    style={styles.formInput}
+                    style={styles.formSelect}
                   >
                     {categories.map((c) => (
-                      <option key={c} value={c}>
+                      <option
+                        key={c}
+                        value={c}
+                        style={{ background: "#181d19", color: "#ffffff" }}
+                      >
                         {c}
                       </option>
                     ))}
@@ -2433,10 +2440,14 @@ export default function AdminDashboard() {
                       previewType: e.target.value as Project["previewType"],
                     })
                   }
-                  style={styles.formInput}
+                  style={styles.formSelect}
                 >
                   {PREVIEW_TYPES.map((pt) => (
-                    <option key={pt.id} value={pt.id}>
+                    <option
+                      key={pt.id}
+                      value={pt.id}
+                      style={{ background: "#181d19", color: "#ffffff" }}
+                    >
                       {pt.label}
                     </option>
                   ))}
@@ -2520,7 +2531,7 @@ export default function AdminDashboard() {
             <form onSubmit={handleSaveService} style={styles.projectFormGrid}>
               {/* 1. Service Title & Number */}
               <div style={styles.formRow2}>
-                <div>
+                <div style={{ minWidth: 0 }}>
                   <label style={styles.formLabel}>Service Title *</label>
                   <input
                     type="text"
@@ -2548,7 +2559,7 @@ export default function AdminDashboard() {
                   />
                 </div>
 
-                <div>
+                <div style={{ minWidth: 0 }}>
                   <label style={styles.formLabel}>Order Number (e.g. 01, 02)</label>
                   <input
                     type="text"
@@ -2565,7 +2576,7 @@ export default function AdminDashboard() {
 
               {/* 2. URL Slug & Category */}
               <div style={styles.formRow2}>
-                <div>
+                <div style={{ minWidth: 0 }}>
                   <label style={styles.formLabel}>Service Slug (Identifier) *</label>
                   <input
                     type="text"
@@ -2584,37 +2595,106 @@ export default function AdminDashboard() {
                   />
                 </div>
 
-                <div>
-                  <label style={styles.formLabel}>Category / Eyebrow *</label>
-                  <div style={{ display: "flex", gap: "6px" }}>
-                    <select
+                <div style={{ minWidth: 0 }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginBottom: "6px",
+                    }}
+                  >
+                    <label style={{ ...styles.formLabel, marginBottom: 0 }}>
+                      Category / Eyebrow *
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setIsCustomServiceCategory(!isCustomServiceCategory)
+                      }
+                      style={{
+                        background: "transparent",
+                        border: "none",
+                        color: "#caff46",
+                        fontSize: "11px",
+                        fontWeight: "600",
+                        cursor: "pointer",
+                        padding: "0 2px",
+                        textDecoration: "underline",
+                      }}
+                    >
+                      {isCustomServiceCategory
+                        ? "← Select from list"
+                        : "+ Type custom"}
+                    </button>
+                  </div>
+
+                  {isCustomServiceCategory ? (
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. AI Agents & Workflows"
                       value={serviceForm.category}
                       onChange={(e) =>
-                        setServiceForm({ ...serviceForm, category: e.target.value })
+                        setServiceForm({
+                          ...serviceForm,
+                          category: e.target.value,
+                        })
                       }
-                      style={{ ...styles.formSelect, flex: 1 }}
+                      style={styles.formInput}
+                      autoFocus
+                    />
+                  ) : (
+                    <select
+                      value={serviceForm.category}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (val === "__custom__") {
+                          setIsCustomServiceCategory(true);
+                        } else {
+                          setServiceForm({
+                            ...serviceForm,
+                            category: val,
+                          });
+                        }
+                      }}
+                      style={styles.formSelect}
                     >
                       {categories.map((c) => (
-                        <option key={c} value={c}>
+                        <option
+                          key={c}
+                          value={c}
+                          style={{ background: "#181d19", color: "#ffffff" }}
+                        >
                           {c}
                         </option>
                       ))}
-                      {!categories.includes(serviceForm.category) && serviceForm.category && (
-                        <option value={serviceForm.category}>
-                          {serviceForm.category}
-                        </option>
-                      )}
+                      {!categories.includes(serviceForm.category) &&
+                        serviceForm.category && (
+                          <option
+                            value={serviceForm.category}
+                            style={{ background: "#181d19", color: "#ffffff" }}
+                          >
+                            {serviceForm.category}
+                          </option>
+                        )}
+                      <option
+                        value="__custom__"
+                        style={{
+                          background: "#181d19",
+                          color: "#caff46",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        + Type custom category...
+                      </option>
                     </select>
-                    <input
-                      type="text"
-                      placeholder="Or type custom"
-                      value={serviceForm.category}
-                      onChange={(e) =>
-                        setServiceForm({ ...serviceForm, category: e.target.value })
-                      }
-                      style={{ ...styles.formInput, width: "160px" }}
-                    />
-                  </div>
+                  )}
+                  <span style={styles.inputHint}>
+                    {isCustomServiceCategory
+                      ? "Custom category name enter karein ya list se choose karein."
+                      : "Categories list se select karein ya '+ Type custom' karein."}
+                  </span>
                 </div>
               </div>
 
@@ -2666,7 +2746,7 @@ export default function AdminDashboard() {
 
               {/* 6. Turnaround (Timeline) & Starting Price */}
               <div style={styles.formRow2}>
-                <div>
+                <div style={{ minWidth: 0 }}>
                   <label style={styles.formLabel}>Estimated Turnaround (Timeline)</label>
                   <input
                     type="text"
@@ -2679,7 +2759,7 @@ export default function AdminDashboard() {
                   />
                 </div>
 
-                <div>
+                <div style={{ minWidth: 0 }}>
                   <label style={styles.formLabel}>Starting Price / Scope (Optional)</label>
                   <input
                     type="text"
@@ -2711,7 +2791,7 @@ export default function AdminDashboard() {
 
               {/* 8. Call to Action & Link */}
               <div style={styles.formRow2}>
-                <div>
+                <div style={{ minWidth: 0 }}>
                   <label style={styles.formLabel}>Button Text (CTA)</label>
                   <input
                     type="text"
@@ -2724,7 +2804,7 @@ export default function AdminDashboard() {
                   />
                 </div>
 
-                <div>
+                <div style={{ minWidth: 0 }}>
                   <label style={styles.formLabel}>Action Target Link</label>
                   <input
                     type="text"
@@ -3504,6 +3584,7 @@ const styles: Record<string, CSSProperties> = {
     justifyContent: "center",
     padding: "20px",
     overflowY: "auto",
+    overflowX: "hidden",
   },
   modalCard: {
     width: "100%",
@@ -3513,12 +3594,14 @@ const styles: Record<string, CSSProperties> = {
     borderRadius: "12px",
     padding: "28px",
     boxSizing: "border-box",
+    overflowX: "hidden",
   },
   projectModalCard: {
     width: "100%",
     maxWidth: "680px",
     maxHeight: "90vh",
     overflowY: "auto",
+    overflowX: "hidden",
     background: "#121512",
     border: "1px solid #caff46",
     borderRadius: "14px",
@@ -3548,11 +3631,16 @@ const styles: Record<string, CSSProperties> = {
     display: "flex",
     flexDirection: "column",
     gap: "16px",
+    width: "100%",
+    maxWidth: "100%",
+    boxSizing: "border-box",
   },
   formRow2: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 240px), 1fr))",
     gap: "14px",
+    width: "100%",
+    boxSizing: "border-box",
   },
   formLabel: {
     fontSize: "11px",
@@ -3563,6 +3651,7 @@ const styles: Record<string, CSSProperties> = {
   },
   formInput: {
     width: "100%",
+    maxWidth: "100%",
     padding: "10px 12px",
     borderRadius: "6px",
     background: "#181d19",
@@ -3572,8 +3661,30 @@ const styles: Record<string, CSSProperties> = {
     boxSizing: "border-box",
     outline: "none",
   },
+  formSelect: {
+    width: "100%",
+    maxWidth: "100%",
+    padding: "10px 14px",
+    paddingRight: "36px",
+    borderRadius: "6px",
+    background: "#181d19",
+    border: "1px solid #2c362e",
+    color: "#ffffff",
+    fontSize: "13px",
+    boxSizing: "border-box",
+    outline: "none",
+    cursor: "pointer",
+    appearance: "none",
+    WebkitAppearance: "none",
+    MozAppearance: "none",
+    backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23caff46' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "right 12px center",
+    backgroundSize: "15px 15px",
+  },
   formTextarea: {
     width: "100%",
+    maxWidth: "100%",
     padding: "10px 12px",
     borderRadius: "6px",
     background: "#181d19",
