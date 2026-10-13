@@ -955,7 +955,7 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
 
           <div style={styles.footerBottom}>
             <div style={styles.copyright}>
-              © 2026 Zohaib. All rights reserved.
+              © 2026 Zohaib. All rights reserved. • v2.1
             </div>
 
             <a

@@ -124,7 +124,6 @@ function mapProjectToDb(proj: Project): Record<string, unknown> {
     description: proj.description,
     outcome: proj.outcome,
     tags: proj.tags,
-    images: proj.images || [],
     preview_type: proj.previewType,
     client: proj.client,
     role: proj.role,
@@ -469,10 +468,10 @@ export async function getServices(): Promise<{
           description: row.description,
           items: Array.isArray(row.items) ? row.items : [],
           bestFor: row.best_for || row.bestFor || "",
-          stack: row.stack || "",
-          timeline: row.timeline,
+          stack: Array.isArray(row.stack) ? row.stack.join(" / ") : (row.stack || ""),
+          timeline: row.timeline || row.turnaround,
           startingPrice: row.starting_price || row.startingPrice,
-          cta: row.cta || "Let's Talk ↗",
+          cta: row.cta || row.cta_text || "Let's Talk ↗",
           href: row.href || "/contact",
           featured: row.featured,
         })),
@@ -501,12 +500,16 @@ export async function addService(
       description: service.description,
       items: service.items,
       best_for: service.bestFor,
-      stack: service.stack,
-      timeline: service.timeline || null,
+      stack: Array.isArray(service.stack)
+        ? service.stack
+        : typeof service.stack === "string"
+        ? service.stack.split("/").map((x: string) => x.trim()).filter(Boolean)
+        : [],
+      turnaround: service.timeline || null,
       starting_price: service.startingPrice || null,
-      cta: service.cta,
-      href: service.href,
-      featured: service.featured || false,
+      cta_text: service.cta || "Let's Talk ↗",
+      href: service.href || "/contact",
+      updated_at: new Date().toISOString(),
     };
 
     const { data, error } = await supabase

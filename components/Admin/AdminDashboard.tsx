@@ -813,7 +813,7 @@ export default function AdminDashboard() {
             <Link href="/" style={styles.brandTitle}>
               Zohaib<span style={{ color: "#caff46" }}>.</span>
             </Link>
-            <span style={styles.adminTag}>PORTFOLIO ADMIN</span>
+            <span style={styles.adminTag}>PORTFOLIO ADMIN • v2.1</span>
 
             <span
               style={{
