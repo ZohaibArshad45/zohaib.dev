@@ -43,6 +43,10 @@ export async function updateLocalSettings(
   const current = await getLocalSettings();
   const updated = { ...current, ...updates };
 
-  await fs.writeFile(SETTINGS_FILE, JSON.stringify(updated, null, 2), "utf8");
+  try {
+    await fs.writeFile(SETTINGS_FILE, JSON.stringify(updated, null, 2), "utf8");
+  } catch (fsErr) {
+    console.warn("Could not write local settings.json (expected in read-only serverless):", fsErr);
+  }
   return updated;
 }

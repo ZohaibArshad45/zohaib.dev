@@ -35,7 +35,11 @@ export async function getLocalProjects(): Promise<Project[]> {
 
 export async function saveLocalProjects(projects: Project[]): Promise<void> {
   await ensureProjectsFile();
-  await fs.writeFile(PROJECTS_FILE, JSON.stringify(projects, null, 2), "utf-8");
+  try {
+    await fs.writeFile(PROJECTS_FILE, JSON.stringify(projects, null, 2), "utf-8");
+  } catch (fsErr) {
+    console.warn("Could not write local projects.json (expected in read-only serverless):", fsErr);
+  }
 }
 
 export async function addLocalProject(project: Project): Promise<Project> {

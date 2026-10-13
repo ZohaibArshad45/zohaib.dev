@@ -1,5 +1,16 @@
 [
   {
+    "id": "inq-mv6cc6by-xdwo",
+    "name": "Live Pipeline Test",
+    "email": "zohaibfta@gmail.com",
+    "projectType": "Web App",
+    "timeline": "Flexible",
+    "details": "Testing Supabase cloud persistence and email delivery",
+    "status": "New",
+    "priority": "Medium",
+    "createdAt": "2026-10-13T07:09:43.054Z"
+  },
+  {
     "id": "inq-mv674bsl-mq0a",
     "name": "Zohaib Test",
     "email": "zohaibfta@gmail.com",

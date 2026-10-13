@@ -266,7 +266,7 @@ export async function getInquiries(): Promise<{
       .select("*")
       .order("created_at", { ascending: false });
 
-    if (!error && Array.isArray(data) && data.length > 0) {
+    if (!error && Array.isArray(data)) {
       return {
         source: "supabase",
         inquiries: data.map((row) => ({
@@ -283,6 +283,8 @@ export async function getInquiries(): Promise<{
           estimatedBudget: row.estimated_budget || row.estimatedBudget,
         })),
       };
+    } else if (error) {
+      console.warn("Supabase fetch inquiries error:", error);
     }
   } catch (err) {
     console.warn("Supabase fetch inquiries error:", err);
@@ -298,21 +300,28 @@ export async function addInquiry(
     estimatedBudget?: string;
   }
 ): Promise<{ source: "supabase" | "local"; inquiry: Inquiry }> {
-  const local = await addLocalInquiry(inquiry);
+  const newInquiry: Inquiry = {
+    id: `inq-${Date.now().toString(36)}-${Math.random().toString(36).substring(2, 6)}`,
+    ...inquiry,
+    status: "New",
+    priority: inquiry.priority || "Medium",
+    createdAt: new Date().toISOString(),
+  };
 
+  // 1. Try Supabase first (primary for production / serverless)
   try {
     const dbPayload = {
-      id: local.id,
-      name: local.name,
-      email: local.email,
-      project_type: local.projectType,
-      timeline: local.timeline,
-      details: local.details,
-      status: local.status,
-      priority: local.priority,
-      created_at: local.createdAt,
-      notes: local.notes || null,
-      estimated_budget: local.estimatedBudget || null,
+      id: newInquiry.id,
+      name: newInquiry.name,
+      email: newInquiry.email,
+      project_type: newInquiry.projectType,
+      timeline: newInquiry.timeline,
+      details: newInquiry.details,
+      status: newInquiry.status,
+      priority: newInquiry.priority,
+      created_at: newInquiry.createdAt,
+      notes: newInquiry.notes || null,
+      estimated_budget: newInquiry.estimatedBudget || null,
     };
 
     const { data, error } = await supabase
@@ -322,21 +331,47 @@ export async function addInquiry(
       .single();
 
     if (!error && data) {
-      return { source: "supabase", inquiry: local };
+      // Silently mirror to local file for dev if possible
+      try {
+        await addLocalInquiry(inquiry);
+      } catch {}
+
+      return {
+        source: "supabase",
+        inquiry: {
+          id: data.id,
+          name: data.name,
+          email: data.email,
+          projectType: data.project_type || data.projectType,
+          timeline: data.timeline,
+          details: data.details,
+          status: data.status,
+          priority: data.priority,
+          createdAt: data.created_at,
+          notes: data.notes,
+          estimatedBudget: data.estimated_budget || data.estimatedBudget,
+        },
+      };
+    } else if (error) {
+      console.warn("Supabase insert inquiry error:", error);
     }
   } catch (err) {
     console.warn("Supabase insert inquiry error:", err);
   }
 
-  return { source: "local", inquiry: local };
+  // 2. Fallback to local store (for offline local development)
+  try {
+    const local = await addLocalInquiry(inquiry);
+    return { source: "local", inquiry: local };
+  } catch {
+    return { source: "local", inquiry: newInquiry };
+  }
 }
 
 export async function updateInquiry(
   id: string,
   updates: Partial<Omit<Inquiry, "id" | "createdAt">>
 ): Promise<{ source: "supabase" | "local"; inquiry: Inquiry | null }> {
-  const local = await updateLocalInquiry(id, updates);
-
   try {
     const dbUpdates: Record<string, unknown> = {};
     if (updates.status) dbUpdates.status = updates.status;
@@ -353,29 +388,51 @@ export async function updateInquiry(
       .single();
 
     if (!error && data) {
-      return { source: "supabase", inquiry: local };
+      try {
+        await updateLocalInquiry(id, updates);
+      } catch {}
+
+      return {
+        source: "supabase",
+        inquiry: {
+          id: data.id,
+          name: data.name,
+          email: data.email,
+          projectType: data.project_type || data.projectType,
+          timeline: data.timeline,
+          details: data.details,
+          status: data.status,
+          priority: data.priority,
+          createdAt: data.created_at,
+          notes: data.notes,
+          estimatedBudget: data.estimated_budget || data.estimatedBudget,
+        },
+      };
     }
   } catch (err) {
     console.warn("Supabase update inquiry error:", err);
   }
 
+  const local = await updateLocalInquiry(id, updates);
   return { source: "local", inquiry: local };
 }
 
 export async function deleteInquiry(
   id: string
 ): Promise<{ source: "supabase" | "local"; success: boolean }> {
-  const localSuccess = await deleteLocalInquiry(id);
-
   try {
     const { error } = await supabase.from("inquiries").delete().eq("id", id);
     if (!error) {
+      try {
+        await deleteLocalInquiry(id);
+      } catch {}
       return { source: "supabase", success: true };
     }
   } catch (err) {
     console.warn("Supabase delete inquiry error:", err);
   }
 
+  const localSuccess = await deleteLocalInquiry(id);
   return { source: "local", success: localSuccess };
 }
 

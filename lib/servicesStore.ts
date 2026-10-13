@@ -41,7 +41,11 @@ export async function addLocalService(service: Service): Promise<Service> {
     return updateLocalService(service);
   }
   services.push(service);
-  await fs.writeFile(SERVICES_FILE, JSON.stringify(services, null, 2), "utf-8");
+  try {
+    await fs.writeFile(SERVICES_FILE, JSON.stringify(services, null, 2), "utf-8");
+  } catch (fsErr) {
+    console.warn("Could not write local services.json (expected in read-only serverless):", fsErr);
+  }
   return service;
 }
 
@@ -54,7 +58,11 @@ export async function updateLocalService(service: Service): Promise<Service> {
   } else {
     services[index] = { ...services[index], ...service };
   }
-  await fs.writeFile(SERVICES_FILE, JSON.stringify(services, null, 2), "utf-8");
+  try {
+    await fs.writeFile(SERVICES_FILE, JSON.stringify(services, null, 2), "utf-8");
+  } catch (fsErr) {
+    console.warn("Could not write local services.json (expected in read-only serverless):", fsErr);
+  }
   return service;
 }
 
@@ -63,6 +71,10 @@ export async function deleteLocalService(slugOrId: string): Promise<boolean> {
   const services = await getLocalServices();
   const filtered = services.filter((s) => s.slug !== slugOrId && s.id !== slugOrId);
   if (filtered.length === services.length) return false;
-  await fs.writeFile(SERVICES_FILE, JSON.stringify(filtered, null, 2), "utf-8");
+  try {
+    await fs.writeFile(SERVICES_FILE, JSON.stringify(filtered, null, 2), "utf-8");
+  } catch (fsErr) {
+    console.warn("Could not write local services.json (expected in read-only serverless):", fsErr);
+  }
   return true;
 }

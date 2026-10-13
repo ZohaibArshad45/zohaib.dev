@@ -66,7 +66,11 @@ export async function addInquiry(
   };
 
   inquiries.unshift(newInquiry);
-  await fs.writeFile(INQUIRIES_FILE, JSON.stringify(inquiries, null, 2), "utf-8");
+  try {
+    await fs.writeFile(INQUIRIES_FILE, JSON.stringify(inquiries, null, 2), "utf-8");
+  } catch (fsErr) {
+    console.warn("Could not write local inquiries.json (expected in read-only serverless):", fsErr);
+  }
   return newInquiry;
 }
 
@@ -84,7 +88,11 @@ export async function updateInquiry(
     ...updates,
   };
 
-  await fs.writeFile(INQUIRIES_FILE, JSON.stringify(inquiries, null, 2), "utf-8");
+  try {
+    await fs.writeFile(INQUIRIES_FILE, JSON.stringify(inquiries, null, 2), "utf-8");
+  } catch (fsErr) {
+    console.warn("Could not write local inquiries.json (expected in read-only serverless):", fsErr);
+  }
   return inquiries[index];
 }
 
@@ -94,6 +102,10 @@ export async function deleteInquiry(id: string): Promise<boolean> {
   const filtered = inquiries.filter((inq) => inq.id !== id);
   if (filtered.length === inquiries.length) return false;
 
-  await fs.writeFile(INQUIRIES_FILE, JSON.stringify(filtered, null, 2), "utf-8");
+  try {
+    await fs.writeFile(INQUIRIES_FILE, JSON.stringify(filtered, null, 2), "utf-8");
+  } catch (fsErr) {
+    console.warn("Could not write local inquiries.json (expected in read-only serverless):", fsErr);
+  }
   return true;
 }
