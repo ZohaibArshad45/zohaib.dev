@@ -795,7 +795,7 @@ export async function updateResource(
 
 export async function deleteResource(
   id: string
-): Promise<{ source: "supabase" | "local"; success: boolean }> {
+): Promise<{ source: "supabase" | "local"; success: boolean; error?: string }> {
   try {
     const { error } = await supabase
       .from("resources")
@@ -809,6 +809,10 @@ export async function deleteResource(
       return { source: "supabase", success: true };
     } else {
       console.warn("Supabase delete resource error:", error);
+      // If Supabase table exists and returned error, report it
+      if (error.code !== "PGRST205") {
+        return { source: "supabase", success: false, error: error.message };
+      }
     }
   } catch (err) {
     console.warn("Supabase delete resource exception:", err);
