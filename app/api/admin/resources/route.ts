@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import {
   getResources,
   addResource,
@@ -7,10 +8,20 @@ import {
 } from "@/lib/supabase";
 import type { Resource } from "@/lib/resources";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET() {
   try {
     const { source, resources } = await getResources();
-    return NextResponse.json({ success: true, resources, source });
+    return NextResponse.json(
+      { success: true, resources, source },
+      {
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+        },
+      }
+    );
   } catch (error) {
     console.error("GET /api/admin/resources error:", error);
     return NextResponse.json(
@@ -83,6 +94,10 @@ export async function POST(request: Request) {
     };
 
     const { source, resource } = await addResource(newResource);
+    try {
+      revalidatePath("/resources");
+      revalidatePath("/api/resources");
+    } catch {}
     return NextResponse.json({ success: true, resource, source });
   } catch (error) {
     console.error("POST /api/admin/resources error:", error);
@@ -117,6 +132,10 @@ export async function PATCH(request: Request) {
       );
     }
 
+    try {
+      revalidatePath("/resources");
+      revalidatePath("/api/resources");
+    } catch {}
     return NextResponse.json({ success: true, resource, source });
   } catch (error) {
     console.error("PATCH /api/admin/resources error:", error);
@@ -147,6 +166,10 @@ export async function DELETE(request: Request) {
       );
     }
 
+    try {
+      revalidatePath("/resources");
+      revalidatePath("/api/resources");
+    } catch {}
     return NextResponse.json({ success: true, message: "Resource deleted", source });
   } catch (error) {
     console.error("DELETE /api/admin/resources error:", error);

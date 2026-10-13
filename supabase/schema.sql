@@ -325,3 +325,31 @@ INSERT INTO public.projects (
   '/projects/support-copilot'
 )
 ON CONFLICT (slug) DO NOTHING;
+
+-- ==============================================================================
+-- 7. Resources Table
+-- ==============================================================================
+CREATE TABLE IF NOT EXISTS public.resources (
+  id TEXT PRIMARY KEY,
+  slug TEXT UNIQUE NOT NULL,
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  category TEXT NOT NULL DEFAULT 'Source Code & Starters',
+  type TEXT NOT NULL DEFAULT 'code',
+  file_url TEXT NOT NULL,
+  file_size TEXT,
+  cover_image TEXT,
+  tags TEXT[] NOT NULL DEFAULT '{}',
+  downloads_count INTEGER NOT NULL DEFAULT 0,
+  featured BOOLEAN NOT NULL DEFAULT false,
+  external_link TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+ALTER TABLE public.resources ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Allow anon on resources" ON public.resources;
+CREATE POLICY "Allow anon on resources" ON public.resources
+  FOR ALL TO public USING (true) WITH CHECK (true);
+

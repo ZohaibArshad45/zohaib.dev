@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import ResourcesClient from "@/components/Resources/ResourcesClient";
 import { getResources } from "@/lib/supabase";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: "Free Developer Resources, Code & PDF Guides • Zohaib",
   description:

@@ -37,13 +37,14 @@ const supabaseUrl =
   process.env.SUPABASE_URL ||
   "https://mzsvmxdeyrxiddbwjctt.supabase.co";
 
-const supabaseAnonKey =
+const supabaseKey =
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
   process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
   process.env.SUPABASE_ANON_KEY ||
   "sb_publishable_p2aqeeQBWR_oYMOKNAAg0Q_zzawtR5R";
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = createClient(supabaseUrl, supabaseKey);
 
 // =====================================================================
 // DATA CONVERSION HELPERS
@@ -806,9 +807,11 @@ export async function deleteResource(
         await deleteLocalResource(id);
       } catch {}
       return { source: "supabase", success: true };
+    } else {
+      console.warn("Supabase delete resource error:", error);
     }
   } catch (err) {
-    console.warn("Supabase delete resource error:", err);
+    console.warn("Supabase delete resource exception:", err);
   }
 
   const localSuccess = await deleteLocalResource(id);

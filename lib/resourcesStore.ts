@@ -27,7 +27,7 @@ export async function getLocalResources(): Promise<Resource[]> {
   try {
     const raw = await fs.readFile(RESOURCES_FILE, "utf-8");
     const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed) && parsed.length > 0) {
+    if (Array.isArray(parsed)) {
       return parsed;
     }
     return INITIAL_RESOURCES;

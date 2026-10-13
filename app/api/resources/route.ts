@@ -1,10 +1,20 @@
 import { NextResponse } from "next/server";
 import { getResources, updateResource } from "@/lib/supabase";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET() {
   try {
     const { resources } = await getResources();
-    return NextResponse.json({ success: true, resources });
+    return NextResponse.json(
+      { success: true, resources },
+      {
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+        },
+      }
+    );
   } catch (error) {
     console.error("GET /api/resources error:", error);
     return NextResponse.json(
