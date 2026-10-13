@@ -7,6 +7,9 @@ import type { SiteSettings } from "@/lib/settings";
 export default function Hero({ settings }: { settings?: SiteSettings }) {
   const [width, setWidth] = useState(1200);
   const [hoveredTag, setHoveredTag] = useState<string | null>(null);
+  const [isCardHovered, setIsCardHovered] = useState(false);
+  const [hoveredRow, setHoveredRow] = useState<number | null>(null);
+  const [isProfileHovered, setIsProfileHovered] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -135,12 +138,22 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
       maxWidth: isTablet ? "520px" : "430px",
       background:
         "linear-gradient(145deg, rgba(27, 39, 22, 0.98) 0%, rgba(15, 20, 14, 0.98) 100%)",
-      border: "1px solid #35452b",
+      border: isCardHovered ? "1px solid #caff46" : "1px solid #35452b",
       borderRadius: "18px",
       padding: isMobile ? "28px 22px" : "34px",
-      transform: isMobile || isTablet ? "none" : "rotate(1.5deg)",
+      transform: isMobile || isTablet
+        ? isCardHovered
+          ? "translateY(-6px) scale(1.01)"
+          : "none"
+        : isCardHovered
+        ? "rotate(-0.5deg) translateY(-10px) translateX(-6px) scale(1.02)"
+        : "rotate(1.5deg)",
       boxSizing: "border-box",
-      boxShadow: "0 24px 70px rgba(0, 0, 0, 0.25)",
+      boxShadow: isCardHovered
+        ? "0 30px 85px rgba(0, 0, 0, 0.5), 0 0 35px rgba(202, 255, 70, 0.16)"
+        : "0 24px 70px rgba(0, 0, 0, 0.25)",
+      transition:
+        "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease",
     },
 
     cardLabel: {
@@ -275,16 +288,47 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
       </div>
 
       <div style={styles.cardWrap}>
-        <div style={styles.card}>
+        <div
+          style={styles.card}
+          onMouseEnter={() => setIsCardHovered(true)}
+          onMouseLeave={() => {
+            setIsCardHovered(false);
+            setHoveredRow(null);
+            setIsProfileHovered(false);
+          }}
+        >
           <div style={styles.cardLabel}>
             WHAT I CAN BUILD FOR YOU
           </div>
 
-          <div style={styles.cardRow}>
-            <div style={styles.number}>01</div>
+          <div
+            style={{
+              ...styles.cardRow,
+              transform: hoveredRow === 1 ? "translateX(6px)" : "translateX(0)",
+              transition: "transform 0.25s ease",
+              cursor: "pointer",
+            }}
+            onMouseEnter={() => setHoveredRow(1)}
+            onMouseLeave={() => setHoveredRow(null)}
+          >
+            <div
+              style={{
+                ...styles.number,
+                color: hoveredRow === 1 ? "#caff46" : styles.number.color,
+                transition: "color 0.2s ease",
+              }}
+            >
+              01
+            </div>
 
             <div>
-              <h3 style={styles.rowTitle}>
+              <h3
+                style={{
+                  ...styles.rowTitle,
+                  color: hoveredRow === 1 ? "#caff46" : "#ffffff",
+                  transition: "color 0.2s ease",
+                }}
+              >
                 Web Apps
               </h3>
 
@@ -294,11 +338,34 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
             </div>
           </div>
 
-          <div style={styles.cardRow}>
-            <div style={styles.number}>02</div>
+          <div
+            style={{
+              ...styles.cardRow,
+              transform: hoveredRow === 2 ? "translateX(6px)" : "translateX(0)",
+              transition: "transform 0.25s ease",
+              cursor: "pointer",
+            }}
+            onMouseEnter={() => setHoveredRow(2)}
+            onMouseLeave={() => setHoveredRow(null)}
+          >
+            <div
+              style={{
+                ...styles.number,
+                color: hoveredRow === 2 ? "#caff46" : styles.number.color,
+                transition: "color 0.2s ease",
+              }}
+            >
+              02
+            </div>
 
             <div>
-              <h3 style={styles.rowTitle}>
+              <h3
+                style={{
+                  ...styles.rowTitle,
+                  color: hoveredRow === 2 ? "#caff46" : "#ffffff",
+                  transition: "color 0.2s ease",
+                }}
+              >
                 AI Solutions
               </h3>
 
@@ -308,11 +375,34 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
             </div>
           </div>
 
-          <div style={styles.cardRow}>
-            <div style={styles.number}>03</div>
+          <div
+            style={{
+              ...styles.cardRow,
+              transform: hoveredRow === 3 ? "translateX(6px)" : "translateX(0)",
+              transition: "transform 0.25s ease",
+              cursor: "pointer",
+            }}
+            onMouseEnter={() => setHoveredRow(3)}
+            onMouseLeave={() => setHoveredRow(null)}
+          >
+            <div
+              style={{
+                ...styles.number,
+                color: hoveredRow === 3 ? "#caff46" : styles.number.color,
+                transition: "color 0.2s ease",
+              }}
+            >
+              03
+            </div>
 
             <div>
-              <h3 style={styles.rowTitle}>
+              <h3
+                style={{
+                  ...styles.rowTitle,
+                  color: hoveredRow === 3 ? "#caff46" : "#ffffff",
+                  transition: "color 0.2s ease",
+                }}
+              >
                 Automation
               </h3>
 
@@ -322,13 +412,39 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
             </div>
           </div>
 
-          <Link href="/contact" style={styles.profile}>
-            <div style={styles.avatar}>
+          <Link
+            href="/contact"
+            style={{
+              ...styles.profile,
+              transform: isProfileHovered ? "translateX(4px)" : "none",
+              transition: "transform 0.25s ease",
+            }}
+            onMouseEnter={() => setIsProfileHovered(true)}
+            onMouseLeave={() => setIsProfileHovered(false)}
+          >
+            <div
+              style={{
+                ...styles.avatar,
+                boxShadow: isProfileHovered
+                  ? "0 0 24px rgba(202, 255, 70, 0.6)"
+                  : isCardHovered
+                  ? "0 0 14px rgba(202, 255, 70, 0.3)"
+                  : "none",
+                transform: isProfileHovered ? "scale(1.06)" : "scale(1)",
+                transition: "transform 0.25s ease, box-shadow 0.25s ease",
+              }}
+            >
               Z.
             </div>
 
             <div>
-              <div style={styles.profileName}>
+              <div
+                style={{
+                  ...styles.profileName,
+                  color: isProfileHovered ? "#caff46" : "#ffffff",
+                  transition: "color 0.2s ease",
+                }}
+              >
                 Zohaib
               </div>
 
