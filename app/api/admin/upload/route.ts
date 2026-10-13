@@ -5,6 +5,37 @@ import { supabase } from "@/lib/supabase";
 
 const UPLOADS_DIR = path.join(process.cwd(), "public", "uploads");
 
+// Allowed extensions for project images and downloadable developer resources (PDF, ZIP, Code)
+const ALLOWED_EXTENSIONS = new Set([
+  ".png",
+  ".jpg",
+  ".jpeg",
+  ".webp",
+  ".gif",
+  ".svg",
+  ".pdf",
+  ".zip",
+  ".gz",
+  ".tar",
+  ".json",
+  ".md",
+  ".txt",
+  ".ts",
+  ".tsx",
+  ".js",
+  ".jsx",
+  ".py",
+]);
+
+function formatBytes(bytes: number, decimals = 1): string {
+  if (bytes === 0) return "0 Bytes";
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ["Bytes", "KB", "MB", "GB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+}
+
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
@@ -17,57 +48,70 @@ export async function POST(request: Request) {
       );
     }
 
-    // Validate image mime type
-    const validTypes = [
-      "image/jpeg",
-      "image/png",
-      "image/webp",
-      "image/gif",
-      "image/svg+xml",
-    ];
+    const ext = path.extname(file.name).toLowerCase();
 
-    if (!validTypes.includes(file.type)) {
+    if (!ALLOWED_EXTENSIONS.has(ext)) {
       return NextResponse.json(
         {
           success: false,
-          message: "Only image files (PNG, JPG, WEBP, GIF, SVG) are allowed.",
+          message:
+            "Invalid file format. Allowed types: PDF, ZIP, TAR, JSON, MD, TXT, Code files, and images (PNG, JPG, WEBP, SVG).",
         },
         { status: 400 }
       );
     }
 
+    // Max 50MB
+    const MAX_SIZE = 50 * 1024 * 1024;
+    if (file.size > MAX_SIZE) {
+      return NextResponse.json(
+        { success: false, message: "File exceeds 50MB maximum limit." },
+        { status: 400 }
+      );
+    }
+
     // Ensure public/uploads exists
-    await fs.mkdir(UPLOADS_DIR, { recursive: true });
+    try {
+      await fs.mkdir(UPLOADS_DIR, { recursive: true });
+    } catch {
+      // Ignored if exists
+    }
 
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
     // Generate safe unique filename
-    const ext = path.extname(file.name) || ".png";
     const cleanBase = path
       .basename(file.name, ext)
       .toLowerCase()
-      .replace(/[^a-z0-9]/g, "-")
-      .substring(0, 30);
+      .replace(/[^a-z0-9_-]/g, "-")
+      .substring(0, 40);
     const fileName = `${cleanBase}-${Date.now().toString(36)}${ext}`;
     const filePath = path.join(UPLOADS_DIR, fileName);
 
     // Save locally to public/uploads
-    await fs.writeFile(filePath, buffer);
+    try {
+      await fs.writeFile(filePath, buffer);
+    } catch (fsErr) {
+      console.warn("Could not write file to local disk (expected in serverless):", fsErr);
+    }
+
     const localUrl = `/uploads/${fileName}`;
+    const formattedSize = formatBytes(file.size);
 
     // Also attempt Supabase Storage upload if bucket exists
     try {
+      const bucket = ext === ".pdf" || ext === ".zip" ? "resources" : "project-images";
       const { data: uploadData, error: uploadErr } = await supabase.storage
-        .from("project-images")
+        .from(bucket)
         .upload(fileName, buffer, {
-          contentType: file.type,
+          contentType: file.type || "application/octet-stream",
           upsert: true,
         });
 
       if (!uploadErr && uploadData) {
         const { data: publicUrlData } = supabase.storage
-          .from("project-images")
+          .from(bucket)
           .getPublicUrl(fileName);
 
         if (publicUrlData?.publicUrl) {
@@ -75,21 +119,28 @@ export async function POST(request: Request) {
             success: true,
             url: publicUrlData.publicUrl,
             localUrl,
+            fileName,
+            fileSize: formattedSize,
+            rawSize: file.size,
           });
         }
       }
     } catch {
-      // Supabase storage bucket might not be created, local URL works guaranteed
+      // Supabase storage bucket fallback
     }
 
     return NextResponse.json({
       success: true,
       url: localUrl,
+      localUrl,
+      fileName,
+      fileSize: formattedSize,
+      rawSize: file.size,
     });
   } catch (error) {
-    console.error("Image upload error:", error);
+    console.error("File upload error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to upload image" },
+      { success: false, message: "Failed to upload file" },
       { status: 500 }
     );
   }

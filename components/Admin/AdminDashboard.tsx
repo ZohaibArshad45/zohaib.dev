@@ -6,8 +6,16 @@ import type { Project } from "@/lib/projects";
 import type { Inquiry, InquiryStatus } from "@/lib/inquiriesStore";
 import type { Service } from "@/lib/services";
 import { DEFAULT_SETTINGS, type SiteSettings } from "@/lib/settings";
+import type { Resource } from "@/lib/resources";
+import ResourcesAdminSection from "./ResourcesAdminSection";
 
-type TabType = "projects" | "categories" | "services" | "inquiries" | "settings";
+type TabType =
+  | "projects"
+  | "categories"
+  | "services"
+  | "resources"
+  | "inquiries"
+  | "settings";
 
 const PREVIEW_TYPES: { id: Project["previewType"]; label: string }[] = [
   { id: "inbox", label: "AI Inbox & Lead Stream" },
@@ -71,6 +79,7 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<TabType>("projects");
   const [projects, setProjects] = useState<Project[]>([]);
   const [services, setServices] = useState<Service[]>([]);
+  const [resources, setResources] = useState<Resource[]>([]);
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [projectsSource, setProjectsSource] = useState<string>("local");
@@ -141,13 +150,15 @@ export default function AdminDashboard() {
 
     async function loadAll() {
       try {
-        const [projRes, srvRes, inqRes, catRes, setRes] = await Promise.all([
-          fetch("/api/admin/projects").then((r) => r.json()),
-          fetch("/api/admin/services").then((r) => r.json()),
-          fetch("/api/admin/inquiries").then((r) => r.json()),
-          fetch("/api/admin/categories").then((r) => r.json()),
-          fetch("/api/admin/settings").then((r) => r.json()),
-        ]);
+        const [projRes, srvRes, inqRes, catRes, setRes, resRes] =
+          await Promise.all([
+            fetch("/api/admin/projects").then((r) => r.json()),
+            fetch("/api/admin/services").then((r) => r.json()),
+            fetch("/api/admin/inquiries").then((r) => r.json()),
+            fetch("/api/admin/categories").then((r) => r.json()),
+            fetch("/api/admin/settings").then((r) => r.json()),
+            fetch("/api/admin/resources").then((r) => r.json()),
+          ]);
 
         if (ignore) return;
 
@@ -157,6 +168,9 @@ export default function AdminDashboard() {
         }
         if (srvRes.success && Array.isArray(srvRes.services)) {
           setServices(srvRes.services);
+        }
+        if (resRes.success && Array.isArray(resRes.resources)) {
+          setResources(resRes.resources);
         }
         if (inqRes.success && Array.isArray(inqRes.inquiries)) {
           setInquiries(inqRes.inquiries);
@@ -891,6 +905,20 @@ export default function AdminDashboard() {
 
           <button
             type="button"
+            onClick={() => setActiveTab("resources")}
+            style={{
+              ...styles.tabItem,
+              borderBottomColor:
+                activeTab === "resources" ? "#caff46" : "transparent",
+              color: activeTab === "resources" ? "#ffffff" : "#8e988f",
+              fontWeight: activeTab === "resources" ? "700" : "500",
+            }}
+          >
+            📚 Free Resources ({resources.length})
+          </button>
+
+          <button
+            type="button"
             onClick={() => setActiveTab("inquiries")}
             style={{
               ...styles.tabItem,
@@ -1228,6 +1256,18 @@ export default function AdminDashboard() {
                 ))}
               </div>
             )}
+          </div>
+        )}
+
+        {/* ------------------------------------------------------------- */}
+        {/* TAB 4: FREE RESOURCES CMS */}
+        {/* ------------------------------------------------------------- */}
+        {activeTab === "resources" && (
+          <div style={styles.tabContent}>
+            <ResourcesAdminSection
+              resources={resources}
+              setResources={setResources}
+            />
           </div>
         )}
 

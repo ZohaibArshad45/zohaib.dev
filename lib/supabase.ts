@@ -24,6 +24,13 @@ import {
   updateLocalSettings,
   type SiteSettings,
 } from "./settingsStore";
+import type { Resource } from "./resources";
+import {
+  getLocalResources,
+  addLocalResource,
+  updateLocalResource,
+  deleteLocalResource,
+} from "./resourcesStore";
 
 const supabaseUrl =
   process.env.NEXT_PUBLIC_SUPABASE_URL ||
@@ -614,5 +621,192 @@ export async function saveSiteSettings(
   }
 
   return { source: "local", settings: local };
+}
+
+// =====================================================================
+// RESOURCES CRUD (SUPABASE WITH LOCAL FALLBACK)
+// =====================================================================
+export async function getResources(): Promise<{
+  source: "supabase" | "local";
+  resources: Resource[];
+}> {
+  try {
+    const { data, error } = await supabase
+      .from("resources")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (!error && Array.isArray(data)) {
+      return {
+        source: "supabase",
+        resources: data.map((row) => ({
+          id: row.id,
+          slug: row.slug,
+          title: row.title,
+          description: row.description,
+          category: row.category,
+          type: row.type,
+          fileUrl: row.file_url || row.fileUrl,
+          fileSize: row.file_size || row.fileSize,
+          tags: Array.isArray(row.tags) ? row.tags : [],
+          downloadsCount: Number(row.downloads_count || row.downloadsCount || 0),
+          featured: Boolean(row.featured),
+          createdAt: row.created_at || row.createdAt,
+          updatedAt: row.updated_at || row.updatedAt,
+          externalLink: row.external_link || row.externalLink,
+        })),
+      };
+    } else if (error) {
+      console.warn("Supabase fetch resources error:", error);
+    }
+  } catch (err) {
+    console.warn("Supabase fetch resources exception:", err);
+  }
+
+  const local = await getLocalResources();
+  return { source: "local", resources: local };
+}
+
+export async function addResource(
+  resource: Resource
+): Promise<{ source: "supabase" | "local"; resource: Resource }> {
+  try {
+    const dbPayload = {
+      id: resource.id,
+      slug: resource.slug,
+      title: resource.title,
+      description: resource.description,
+      category: resource.category,
+      type: resource.type,
+      file_url: resource.fileUrl,
+      file_size: resource.fileSize || null,
+      tags: resource.tags,
+      downloads_count: resource.downloadsCount || 0,
+      featured: Boolean(resource.featured),
+      created_at: resource.createdAt,
+      updated_at: resource.updatedAt || new Date().toISOString(),
+      external_link: resource.externalLink || null,
+    };
+
+    const { data, error } = await supabase
+      .from("resources")
+      .upsert([dbPayload], { onConflict: "slug" })
+      .select()
+      .single();
+
+    if (!error && data) {
+      try {
+        await addLocalResource(resource);
+      } catch {}
+
+      return {
+        source: "supabase",
+        resource: {
+          id: data.id,
+          slug: data.slug,
+          title: data.title,
+          description: data.description,
+          category: data.category,
+          type: data.type,
+          fileUrl: data.file_url || data.fileUrl,
+          fileSize: data.file_size || data.fileSize,
+          tags: Array.isArray(data.tags) ? data.tags : [],
+          downloadsCount: Number(data.downloads_count || 0),
+          featured: Boolean(data.featured),
+          createdAt: data.created_at,
+          updatedAt: data.updated_at,
+          externalLink: data.external_link,
+        },
+      };
+    } else if (error) {
+      console.warn("Supabase add resource error:", error);
+    }
+  } catch (err) {
+    console.warn("Supabase add resource exception:", err);
+  }
+
+  const local = await addLocalResource(resource);
+  return { source: "local", resource: local };
+}
+
+export async function updateResource(
+  id: string,
+  updates: Partial<Resource>
+): Promise<{ source: "supabase" | "local"; resource: Resource | null }> {
+  try {
+    const dbUpdates: Record<string, unknown> = {};
+    if (updates.title) dbUpdates.title = updates.title;
+    if (updates.description) dbUpdates.description = updates.description;
+    if (updates.category) dbUpdates.category = updates.category;
+    if (updates.type) dbUpdates.type = updates.type;
+    if (updates.fileUrl) dbUpdates.file_url = updates.fileUrl;
+    if (updates.fileSize !== undefined) dbUpdates.file_size = updates.fileSize;
+    if (updates.tags) dbUpdates.tags = updates.tags;
+    if (updates.downloadsCount !== undefined) dbUpdates.downloads_count = updates.downloadsCount;
+    if (updates.featured !== undefined) dbUpdates.featured = updates.featured;
+    if (updates.externalLink !== undefined) dbUpdates.external_link = updates.externalLink;
+    dbUpdates.updated_at = new Date().toISOString();
+
+    const { data, error } = await supabase
+      .from("resources")
+      .update(dbUpdates)
+      .or(`id.eq.${id},slug.eq.${id}`)
+      .select()
+      .single();
+
+    if (!error && data) {
+      try {
+        await updateLocalResource(id, updates);
+      } catch {}
+
+      return {
+        source: "supabase",
+        resource: {
+          id: data.id,
+          slug: data.slug,
+          title: data.title,
+          description: data.description,
+          category: data.category,
+          type: data.type,
+          fileUrl: data.file_url,
+          fileSize: data.file_size,
+          tags: Array.isArray(data.tags) ? data.tags : [],
+          downloadsCount: Number(data.downloads_count || 0),
+          featured: Boolean(data.featured),
+          createdAt: data.created_at,
+          updatedAt: data.updated_at,
+          externalLink: data.external_link,
+        },
+      };
+    }
+  } catch (err) {
+    console.warn("Supabase update resource error:", err);
+  }
+
+  const local = await updateLocalResource(id, updates);
+  return { source: "local", resource: local };
+}
+
+export async function deleteResource(
+  id: string
+): Promise<{ source: "supabase" | "local"; success: boolean }> {
+  try {
+    const { error } = await supabase
+      .from("resources")
+      .delete()
+      .or(`id.eq.${id},slug.eq.${id}`);
+
+    if (!error) {
+      try {
+        await deleteLocalResource(id);
+      } catch {}
+      return { source: "supabase", success: true };
+    }
+  } catch (err) {
+    console.warn("Supabase delete resource error:", err);
+  }
+
+  const localSuccess = await deleteLocalResource(id);
+  return { source: "local", success: localSuccess };
 }
 

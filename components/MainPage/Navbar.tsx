@@ -238,6 +238,10 @@ export default function Navbar() {
                 Services
               </Link>
 
+              <Link href="/resources" style={getNavLinkStyle("/resources")}>
+                Resources
+              </Link>
+
               <Link href="/process" style={getNavLinkStyle("/process")}>
                 Process
               </Link>
@@ -281,6 +285,14 @@ export default function Navbar() {
             style={getMobileLinkStyle("/services")}
           >
             Services
+          </Link>
+
+          <Link
+            href="/resources"
+            onClick={closeMenu}
+            style={getMobileLinkStyle("/resources")}
+          >
+            Resources
           </Link>
 
           <Link
