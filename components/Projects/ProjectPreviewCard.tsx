@@ -11,19 +11,37 @@ type Props = {
 export default function ProjectPreviewCard({ project, isMobile = false }: Props) {
   // If project has uploaded pictures, display the real screenshot!
   if (project.images && project.images.length > 0 && project.images[0]) {
+    const displayUrl = project.demoUrl
+      ? project.demoUrl.replace(/^https?:\/\//, "").replace(/\/$/, "")
+      : `${project.slug}.app`;
+
     return (
-      <div style={styles.imagePreviewWrapper}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={project.images[0]}
-          alt={project.title}
-          style={styles.imagePreviewTag}
-        />
-        {project.images.length > 1 && (
-          <div style={styles.imageCountBadge}>
-            📸 {project.images.length} Screenshots
+      <div style={styles.imageOuterWrapper}>
+        <div style={styles.imageWindowCard}>
+          <div style={styles.imageWindowHeader}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <span style={styles.windowDotRed} />
+              <span style={styles.windowDotYellow} />
+              <span style={styles.windowDotGreen} />
+              <span style={styles.dashboardTitle}>{displayUrl}</span>
+            </div>
+            <span style={styles.badgeLime}>LIVE SCREENSHOT</span>
           </div>
-        )}
+
+          <div style={styles.imagePreviewWrapper}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={project.images[0]}
+              alt={project.title}
+              style={styles.imagePreviewTag}
+            />
+            {project.images.length > 1 && (
+              <div style={styles.imageCountBadge}>
+                📸 {project.images.length} Screenshots
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     );
   }
@@ -863,20 +881,48 @@ const styles: Record<string, CSSProperties> = {
   },
 
   // Real Uploaded Images Preview
+  imageOuterWrapper: {
+    minHeight: "360px",
+    background: "#161b17",
+    padding: "24px",
+    borderRadius: "10px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    boxSizing: "border-box",
+    width: "100%",
+  },
+  imageWindowCard: {
+    width: "100%",
+    maxWidth: "520px",
+    background: "#0d100e",
+    border: "1px solid rgba(255,255,255,0.08)",
+    borderRadius: "8px",
+    overflow: "hidden",
+    boxShadow: "0 18px 40px rgba(0,0,0,0.4)",
+    display: "flex",
+    flexDirection: "column",
+  },
+  imageWindowHeader: {
+    padding: "12px 18px",
+    background: "#161a17",
+    borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
   imagePreviewWrapper: {
     position: "relative",
     width: "100%",
     height: "100%",
-    minHeight: "260px",
-    maxHeight: "340px",
+    minHeight: "240px",
+    maxHeight: "320px",
     aspectRatio: "16 / 10",
     background: "#0c0e0c",
-    borderRadius: "10px",
     overflow: "hidden",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    border: "1px solid rgba(255, 255, 255, 0.08)",
   },
   imagePreviewTag: {
     width: "100%",

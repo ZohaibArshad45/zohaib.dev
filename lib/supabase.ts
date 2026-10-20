@@ -124,6 +124,7 @@ function mapProjectToDb(proj: Project): Record<string, unknown> {
     description: proj.description,
     outcome: proj.outcome,
     tags: proj.tags,
+    images: Array.isArray(proj.images) ? proj.images : [],
     preview_type: proj.previewType,
     client: proj.client,
     role: proj.role,
@@ -153,9 +154,24 @@ export async function getProjects(): Promise<{
       .order("number", { ascending: true });
 
     if (!error && Array.isArray(data)) {
+      // Merge with local images in case Supabase schema does not have the 'images' column yet
+      const local = await getLocalProjects();
+      const localMap = new Map(local.map((p) => [p.slug, p]));
+
+      const projects = data.map((row) => {
+        const proj = mapDbToProject(row);
+        if ((!proj.images || proj.images.length === 0) && localMap.has(proj.slug)) {
+          const localItem = localMap.get(proj.slug);
+          if (localItem?.images && localItem.images.length > 0) {
+            proj.images = localItem.images;
+          }
+        }
+        return proj;
+      });
+
       return {
         source: "supabase",
-        projects: data.map(mapDbToProject),
+        projects,
       };
     }
   } catch (err) {
@@ -175,14 +191,31 @@ export async function addProject(
   try {
     const dbPayload = mapProjectToDb(project);
     dbPayload.created_at = new Date().toISOString();
-    const { data, error } = await supabase
+    let { data, error } = await supabase
       .from("projects")
       .insert([dbPayload])
       .select()
       .single();
 
+    // If Supabase failed because 'images' column is missing in database schema
+    if (error && (error.code === "PGRST204" || error.message?.includes("images"))) {
+      console.warn("Supabase projects table missing 'images' column, retrying insert without images:", error.message);
+      const { images: _ignored, ...payloadWithoutImages } = dbPayload;
+      const retryResult = await supabase
+        .from("projects")
+        .insert([payloadWithoutImages])
+        .select()
+        .single();
+      data = retryResult.data;
+      error = retryResult.error;
+    }
+
     if (!error && data) {
-      return { source: "supabase", project: mapDbToProject(data) };
+      const mapped = mapDbToProject(data);
+      if ((!mapped.images || mapped.images.length === 0) && project.images?.length) {
+        mapped.images = project.images;
+      }
+      return { source: "supabase", project: mapped };
     }
   } catch (err) {
     console.warn("Supabase insert project error:", err);
@@ -226,15 +259,33 @@ export async function updateProject(
       dbUpdates.github_url = updates.githubUrl;
     dbUpdates.updated_at = new Date().toISOString();
 
-    const { data, error } = await supabase
+    let { data, error } = await supabase
       .from("projects")
       .update(dbUpdates)
       .eq("slug", slug)
       .select()
       .single();
 
+    // If Supabase failed because 'images' column is missing in database schema
+    if (error && (error.code === "PGRST204" || error.message?.includes("images"))) {
+      console.warn("Supabase projects table missing 'images' column, retrying update without images:", error.message);
+      const { images: _ignored, ...updatesWithoutImages } = dbUpdates;
+      const retryResult = await supabase
+        .from("projects")
+        .update(updatesWithoutImages)
+        .eq("slug", slug)
+        .select()
+        .single();
+      data = retryResult.data;
+      error = retryResult.error;
+    }
+
     if (!error && data) {
-      return { source: "supabase", project: mapDbToProject(data) };
+      const mapped = mapDbToProject(data);
+      if ((!mapped.images || mapped.images.length === 0) && localUpdated?.images?.length) {
+        mapped.images = localUpdated.images;
+      }
+      return { source: "supabase", project: mapped };
     }
   } catch (err) {
     console.warn("Supabase update project error:", err);

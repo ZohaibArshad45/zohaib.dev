@@ -53,6 +53,7 @@ async function syncAll() {
       description: p.description || '',
       outcome: p.outcome || '',
       tags: Array.isArray(p.tags) ? p.tags : [],
+      images: Array.isArray(p.images) ? p.images : [],
       preview_type: p.previewType || 'dashboard',
       client: p.client || '',
       role: p.role || '',

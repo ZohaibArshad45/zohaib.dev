@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS public.projects (
   description TEXT NOT NULL,
   outcome TEXT NOT NULL,
   tags TEXT[] NOT NULL DEFAULT '{}',
+  images TEXT[] NOT NULL DEFAULT '{}',
   preview_type TEXT NOT NULL DEFAULT 'inbox',
   client TEXT NOT NULL DEFAULT 'Personal Project',
   role TEXT NOT NULL DEFAULT 'Full-Stack Developer',
@@ -48,6 +49,9 @@ CREATE TABLE IF NOT EXISTS public.projects (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- Ensure images column exists if projects table was created previously
+ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS images TEXT[] NOT NULL DEFAULT '{}';
 
 -- 3. CATEGORIES TABLE
 CREATE TABLE IF NOT EXISTS public.categories (
