@@ -1647,7 +1647,7 @@ export default function AdminDashboard() {
                       onChange={(e) =>
                         setSiteSettings({ ...siteSettings, availabilityStatus: e.target.value })
                       }
-                      placeholder="e.g. Available for new projects • Q2 2026"
+                      placeholder="e.g. Available for new projects •"
                       style={styles.formInput}
                     />
                   </div>

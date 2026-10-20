@@ -19,7 +19,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   phone: "",
   location: "Bahawalpur, Punjab, Pakistan",
   founderTitle: "Founder of Codingskillup • Full-Stack & AI Systems Engineer",
-  availabilityStatus: "Available for new projects • Q2 2026",
+  availabilityStatus: "Available for new projects •",
   githubUrl: "https://github.com/codingskillup",
   linkedinUrl: "https://linkedin.com/in/",
   twitterUrl: "https://x.com/",
