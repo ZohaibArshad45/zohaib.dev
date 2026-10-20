@@ -882,9 +882,9 @@ const styles: Record<string, CSSProperties> = {
 
   // Real Uploaded Images Preview
   imageOuterWrapper: {
-    minHeight: "360px",
+    minHeight: "260px",
     background: "#161b17",
-    padding: "24px",
+    padding: "16px",
     borderRadius: "10px",
     display: "flex",
     alignItems: "center",
@@ -899,12 +899,12 @@ const styles: Record<string, CSSProperties> = {
     border: "1px solid rgba(255,255,255,0.08)",
     borderRadius: "8px",
     overflow: "hidden",
-    boxShadow: "0 18px 40px rgba(0,0,0,0.4)",
+    boxShadow: "0 14px 32px rgba(0,0,0,0.4)",
     display: "flex",
     flexDirection: "column",
   },
   imageWindowHeader: {
-    padding: "12px 18px",
+    padding: "8px 14px",
     background: "#161a17",
     borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
     display: "flex",
@@ -915,8 +915,8 @@ const styles: Record<string, CSSProperties> = {
     position: "relative",
     width: "100%",
     height: "100%",
-    minHeight: "240px",
-    maxHeight: "320px",
+    minHeight: "190px",
+    maxHeight: "270px",
     aspectRatio: "16 / 10",
     background: "#0c0e0c",
     overflow: "hidden",

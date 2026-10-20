@@ -8,7 +8,7 @@
     "categories": [
       "Web Apps"
     ],
-    "headline": "Smart Outreach Infrastructure, Simplified.",
+    "headline": "Outreach Ops — Cold Email Infrastructure Monitoring & Automation Platform",
     "subhead": "A centralized email deliverability monitoring & automated operations hub.",
     "description": "Outreach Ops is a centralized outreach management platform designed to simplify cold email operations, monitor deliverability, manage domains, and automate daily tasks. It unites domain health tracking, campaign diagnostics, and inbox warmup oversight into a unified reactive dashboard. Built with Next.js, TypeScript, Tailwind CSS, Supabase, and Vercel Cron, Outreach Ops eliminates manual triage and protects sending reputation.",
     "outcome": "Automated cold email domain health monitoring, reducing manual triage by 85% while guaranteeing zero silent deliverability drops.",
@@ -72,7 +72,7 @@
     "categories": [
       "Web Apps"
     ],
-    "headline": "AI Powered Resumes, Tailored for Every Job.",
+    "headline": "AI Powered Resume Tailor",
     "subhead": "",
     "description": "An AI powered resume optimization tool that tailors resumes to specific job descriptions. It analyzes job requirements, highlights relevant skills and experience, improves resume content, and helps users create ATS friendly resumes to increase their chances of getting noticed by recruiters. Built with Next.js, TypeScript, OpenAI, and Tailwind CSS.",
     "outcome": "Simplified the resume customization process by using AI to align resumes with specific job descriptions, improve keyword relevance, and support ATS friendly formatting. Helped job seekers save time and present their skills and experience more effectively for targeted job applications.",
@@ -131,7 +131,7 @@
     "categories": [
       "Web Apps"
     ],
-    "headline": "CodingSkillUp is an online learning platform",
+    "headline": "Coding Skill-UP",
     "subhead": "Developer education platform and coding roadmaps hub.",
     "description": "CodingSkillUp is an online learning platform and content community focused on web development, programming fundamentals, and AI integration. Founded by a developer named Zohaib based in Bahawalpur, Pakistan, the brand provides structured, beginner-friendly coding roadmaps and practical tech tips.",
     "outcome": "",
