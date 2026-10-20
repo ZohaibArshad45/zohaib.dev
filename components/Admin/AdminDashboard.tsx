@@ -450,15 +450,17 @@ export default function AdminDashboard() {
 
       const data = await res.json();
       if (data.success && data.url) {
-        const currentImages = [...(projectForm.images || [])];
-        while (currentImages.length <= slotIndex) {
-          currentImages.push("");
-        }
-        currentImages[slotIndex] = data.url;
-        setProjectForm((prev) => ({
-          ...prev,
-          images: currentImages,
-        }));
+        setProjectForm((prev) => {
+          const currentImages = [...(prev.images || [])];
+          while (currentImages.length <= slotIndex) {
+            currentImages.push("");
+          }
+          currentImages[slotIndex] = data.url;
+          return {
+            ...prev,
+            images: currentImages,
+          };
+        });
       } else {
         setUploadError(data.message || "Failed to upload image");
       }
@@ -470,24 +472,28 @@ export default function AdminDashboard() {
   };
 
   const handleRemoveImage = (slotIndex: number) => {
-    const currentImages = [...(projectForm.images || [])];
-    currentImages[slotIndex] = "";
-    setProjectForm((prev) => ({
-      ...prev,
-      images: currentImages,
-    }));
+    setProjectForm((prev) => {
+      const currentImages = [...(prev.images || [])];
+      currentImages[slotIndex] = "";
+      return {
+        ...prev,
+        images: currentImages,
+      };
+    });
   };
 
   const handleImageUrlChange = (url: string, slotIndex: number) => {
-    const currentImages = [...(projectForm.images || [])];
-    while (currentImages.length <= slotIndex) {
-      currentImages.push("");
-    }
-    currentImages[slotIndex] = url;
-    setProjectForm((prev) => ({
-      ...prev,
-      images: currentImages,
-    }));
+    setProjectForm((prev) => {
+      const currentImages = [...(prev.images || [])];
+      while (currentImages.length <= slotIndex) {
+        currentImages.push("");
+      }
+      currentImages[slotIndex] = url;
+      return {
+        ...prev,
+        images: currentImages,
+      };
+    });
   };
 
   // Save Project (Add or Edit)

@@ -4,6 +4,7 @@ import type { Inquiry } from "./inquiriesStore";
 import type { Service } from "./services";
 import {
   getLocalProjects,
+  saveLocalProjects,
   addLocalProject,
   updateLocalProject,
   deleteLocalProject,
@@ -157,9 +158,11 @@ export async function getProjects(): Promise<{
       // Merge with local images in case Supabase schema does not have the 'images' column yet
       const local = await getLocalProjects();
       const localMap = new Map(local.map((p) => [p.slug, p]));
+      const seenSlugs = new Set<string>();
 
       const projects = data.map((row) => {
         const proj = mapDbToProject(row);
+        seenSlugs.add(proj.slug);
         if ((!proj.images || proj.images.length === 0) && localMap.has(proj.slug)) {
           const localItem = localMap.get(proj.slug);
           if (localItem?.images && localItem.images.length > 0) {
@@ -168,6 +171,17 @@ export async function getProjects(): Promise<{
         }
         return proj;
       });
+
+      // Also include any local projects that might not be in Supabase yet
+      for (const localProj of local) {
+        if (!seenSlugs.has(localProj.slug)) {
+          projects.push(localProj);
+          seenSlugs.add(localProj.slug);
+        }
+      }
+
+      // Keep local projects in sync so every project is safely recorded locally
+      await saveLocalProjects(projects);
 
       return {
         source: "supabase",
@@ -282,8 +296,9 @@ export async function updateProject(
 
     if (!error && data) {
       const mapped = mapDbToProject(data);
-      if ((!mapped.images || mapped.images.length === 0) && localUpdated?.images?.length) {
-        mapped.images = localUpdated.images;
+      const fallbackImages = updates.images?.length ? updates.images : (localUpdated?.images || []);
+      if ((!mapped.images || mapped.images.length === 0) && fallbackImages.length > 0) {
+        mapped.images = fallbackImages;
       }
       return { source: "supabase", project: mapped };
     }
