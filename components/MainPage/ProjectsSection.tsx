@@ -17,7 +17,6 @@ export default function SelectedWork({
     propProjects && propProjects.length > 0 ? propProjects : []
   );
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
-  const [hoveredLink, setHoveredLink] = useState<string | null>(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -108,14 +107,14 @@ export default function SelectedWork({
     projects: {
       display: "flex",
       flexDirection: "column",
-      gap: "20px",
+      gap: isMobile ? "24px" : "32px",
     },
 
     card: {
       width: "100%",
       display: "grid",
-      gridTemplateColumns: isMobile || isTablet ? "1fr" : "1.05fr 0.95fr",
-      borderRadius: "10px",
+      gridTemplateColumns: isMobile || isTablet ? "1fr" : "repeat(auto-fit, minmax(320px, 1fr))",
+      borderRadius: "12px",
       overflow: "hidden",
       background: "#121512",
       boxSizing: "border-box",
@@ -126,105 +125,133 @@ export default function SelectedWork({
     },
 
     previewContainer: {
-      padding: isMobile ? "12px" : "16px",
+      padding: isMobile ? "12px" : "14px",
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
-      background: "rgba(0, 0, 0, 0.2)",
+      background: "rgba(0, 0, 0, 0.25)",
       boxSizing: "border-box",
     },
 
-    content: {
-      padding: isMobile ? "18px 16px" : "24px 28px",
+    contentContainer: {
+      padding: isMobile ? "20px 18px" : "24px 28px",
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
       boxSizing: "border-box",
     },
 
-    status: {
+    projectEyebrow: {
       color: "#caff46",
       fontSize: "10px",
+      fontWeight: "700",
       letterSpacing: "1px",
       marginBottom: "8px",
-      fontWeight: "700",
       display: "flex",
       gap: "6px",
     },
 
     projectTitle: {
       margin: 0,
+      fontSize: "clamp(20px, 2.2vw, 25px)",
+      lineHeight: "1.2",
+      fontWeight: "500",
       color: "#ffffff",
-      fontSize: isMobile ? "20px" : "23px",
+    },
+
+    projectSubhead: {
+      margin: "4px 0 0",
+      fontSize: "12px",
+      color: "#9da49e",
       fontWeight: "600",
-      lineHeight: "1.25",
     },
 
-    description: {
-      margin: "10px 0 0",
-      color: "#a4aca6",
+    projectDescription: {
+      margin: "8px 0 0",
       fontSize: "13px",
-      lineHeight: "1.6",
+      lineHeight: "1.55",
+      color: "#bac0bb",
     },
 
-    outcome: {
-      marginTop: "12px",
-      padding: "8px 12px",
-      background: "rgba(202, 255, 70, 0.05)",
+    outcomeBox: {
+      margin: "10px 0 0",
+      paddingLeft: "10px",
       borderLeft: "2px solid #caff46",
-      borderRadius: "0 4px 4px 0",
-      color: "#c2ccc4",
       fontSize: "12px",
       lineHeight: "1.55",
+      color: "#d7dbd7",
       display: "-webkit-box",
       WebkitLineClamp: 3,
       WebkitBoxOrient: "vertical",
       overflow: "hidden",
     },
 
-    tags: {
+    metricsRow: {
+      display: "flex",
+      flexWrap: "wrap",
+      gap: "8px",
+      marginTop: "12px",
+    },
+
+    metricPill: {
+      background: "#181d19",
+      border: "1px solid #2e372f",
+      borderRadius: "6px",
+      padding: "4px 8px",
+      display: "flex",
+      alignItems: "center",
+      gap: "5px",
+    },
+
+    metricPillVal: {
+      fontSize: "11px",
+      fontWeight: "700",
+      color: "#caff46",
+    },
+
+    metricPillLabel: {
+      fontSize: "10px",
+      color: "#8a948c",
+    },
+
+    tagsRow: {
       display: "flex",
       flexWrap: "wrap",
       gap: "6px",
-      marginTop: "14px",
+      marginTop: "12px",
     },
 
     tag: {
-      padding: "4px 10px",
-      border: "1px solid rgba(255, 255, 255, 0.1)",
-      borderRadius: "20px",
-      fontSize: "11px",
-      color: "#d0d6d1",
-      background: "rgba(255, 255, 255, 0.03)",
+      padding: "4px 9px",
+      borderRadius: "14px",
+      border: "1px solid #363d37",
+      fontSize: "10px",
+      color: "#ffffff",
+      background: "#151916",
     },
 
     actionsRow: {
       display: "flex",
-      alignItems: "center",
-      gap: "16px",
-      marginTop: "18px",
       flexWrap: "wrap",
+      alignItems: "center",
+      justifyContent: "space-between",
+      gap: "14px",
+      marginTop: "16px",
+      paddingTop: "14px",
+      borderTop: "1px solid #252b26",
     },
 
     projectLink: {
-      fontSize: "13px",
+      fontSize: "14px",
       fontWeight: "600",
       paddingBottom: "2px",
       transition: "color 0.2s ease, border-color 0.2s ease",
     },
 
-    demoLink: {
-      fontSize: "12px",
-      fontWeight: "600",
-      color: "#caff46",
-      textDecoration: "none",
-    },
-
-    githubLink: {
-      fontSize: "12px",
-      fontWeight: "500",
-      color: "#8d968f",
-      textDecoration: "none",
+    clientMeta: {
+      fontSize: "11px",
+      color: "#7e8880",
+      letterSpacing: "0.4px",
     },
 
     bottom: {
@@ -343,31 +370,47 @@ export default function SelectedWork({
                 </div>
 
                 {/* CONTENT CONTAINER */}
-                <div style={styles.content}>
-                  <div style={styles.status}>
+                <div style={styles.contentContainer}>
+                  <div style={styles.projectEyebrow}>
                     <span>{project.number || "01"}</span>
                     <span>/</span>
-                    <span>{project.status.toUpperCase()}</span>
+                    <span>{project.status || "Web Apps"}</span>
                   </div>
 
                   <h3 style={styles.projectTitle}>
                     {project.title || project.headline}
                   </h3>
 
-                  <p className="line-clamp-2" style={styles.description}>
+                  {project.subhead && (
+                    <p style={styles.projectSubhead}>{project.subhead}</p>
+                  )}
+
+                  <p className="line-clamp-3" style={styles.projectDescription}>
                     {project.description}
                   </p>
 
                   {project.outcome && (
-                    <div className="line-clamp-3" style={styles.outcome}>
-                      <strong style={{ color: "#caff46" }}>Outcome:</strong>{" "}
-                      {project.outcome}
+                    <div className="line-clamp-3" style={styles.outcomeBox}>
+                      <strong style={{ color: "#caff46" }}>Outcome:</strong> {project.outcome}
                     </div>
                   )}
 
+                  {/* METRICS PILLS */}
+                  {project.metrics && project.metrics.length > 0 && (
+                    <div style={styles.metricsRow}>
+                      {project.metrics.slice(0, 3).map((m) => (
+                        <div key={m.label} style={styles.metricPill}>
+                          <span style={styles.metricPillVal}>{m.value}</span>
+                          <span style={styles.metricPillLabel}>{m.label}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* TAGS */}
                   {project.tags && project.tags.length > 0 && (
-                    <div style={styles.tags}>
-                      {project.tags.slice(0, 4).map((tag) => (
+                    <div style={styles.tagsRow}>
+                      {project.tags.slice(0, 5).map((tag) => (
                         <span key={tag} style={styles.tag}>
                           {tag}
                         </span>
@@ -375,45 +418,73 @@ export default function SelectedWork({
                     </div>
                   )}
 
+                  {/* ACTION LINKS & META */}
                   <div style={styles.actionsRow}>
-                    <span
+                    <div
                       style={{
-                        ...styles.projectLink,
-                        color:
-                          hoveredProject === project.slug || hoveredLink === project.slug
-                            ? "#caff46"
-                            : "#ffffff",
-                        borderBottom:
-                          hoveredProject === project.slug || hoveredLink === project.slug
-                            ? "1px solid #caff46"
-                            : "1px solid #76805e",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "16px",
+                        flexWrap: "wrap",
                       }}
                     >
-                      Explore Case Study ↗
-                    </span>
-
-                    {project.demoUrl && (
-                      <a
-                        href={project.demoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        style={styles.demoLink}
+                      <span
+                        style={{
+                          ...styles.projectLink,
+                          color:
+                            hoveredProject === project.slug
+                              ? "#caff46"
+                              : "#ffffff",
+                          borderBottom:
+                            hoveredProject === project.slug
+                              ? "1px solid #caff46"
+                              : "1px solid #76805e",
+                        }}
                       >
-                        Live Demo ↗
-                      </a>
-                    )}
+                        Explore Case Study ↗
+                      </span>
 
-                    {project.githubUrl && (
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        style={styles.githubLink}
-                      >
-                        GitHub ↗
-                      </a>
+                      {project.demoUrl && (
+                        <a
+                          href={project.demoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          style={{
+                            fontSize: "13px",
+                            fontWeight: "700",
+                            color: "#caff46",
+                            textDecoration: "none",
+                            paddingBottom: "2px",
+                          }}
+                        >
+                          Live Demo ↗
+                        </a>
+                      )}
+
+                      {project.githubUrl && (
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          style={{
+                            fontSize: "13px",
+                            fontWeight: "500",
+                            color: "#a4aca6",
+                            textDecoration: "none",
+                            paddingBottom: "2px",
+                          }}
+                        >
+                          GitHub ↗
+                        </a>
+                      )}
+                    </div>
+
+                    {[project.client, project.timeline].filter(Boolean).length > 0 && (
+                      <span style={styles.clientMeta}>
+                        {[project.client, project.timeline].filter(Boolean).join(" • ")}
+                      </span>
                     )}
                   </div>
                 </div>
