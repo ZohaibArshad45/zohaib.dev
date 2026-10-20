@@ -24,11 +24,11 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    if (!body.slug || !body.title || !body.headline) {
+    if (!body.slug || !body.title) {
       return NextResponse.json(
         {
           success: false,
-          message: "Slug, title, and headline are required fields.",
+          message: "Slug and title are required fields.",
         },
         { status: 400 }
       );
@@ -39,9 +39,9 @@ export async function POST(request: Request) {
       number: body.number || "01",
       title: body.title,
       shortTitle: body.shortTitle || body.title,
-      status: body.status || "WEB APPLICATION",
-      categories: Array.isArray(body.categories) ? body.categories : ["Web Apps"],
-      headline: body.headline,
+      status: body.status || "Web Apps",
+      categories: Array.isArray(body.categories) ? body.categories : [body.status || "Web Apps"],
+      headline: body.headline || body.title,
       subhead: body.subhead || "",
       description: body.description || "",
       outcome: body.outcome || "",

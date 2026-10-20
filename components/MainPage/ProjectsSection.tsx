@@ -1160,7 +1160,7 @@ export default function SelectedWork({
                 </div>
 
                 <h3 style={styles.projectTitle}>
-                  {project.headline || project.title}
+                  {project.title || project.headline}
                 </h3>
 
                 <p style={styles.description}>

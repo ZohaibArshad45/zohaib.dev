@@ -393,9 +393,7 @@ export default function AdminDashboard() {
       images: [],
     });
     setTechTagsInput("Next.js, TypeScript, Tailwind CSS");
-    setFeaturesInput(
-      "Real-time data synchronization\nResponsive mobile & desktop interface\nClean modern design with dark mode"
-    );
+    setFeaturesInput("");
     setProjectMetrics([]);
     setUploadError(null);
     setUploadingSlot(null);
@@ -527,7 +525,9 @@ export default function AdminDashboard() {
         .toLowerCase()
         .trim()
         .replace(/[^a-z0-9-]/g, "-"),
-      shortTitle: projectForm.shortTitle || projectForm.title,
+      title: projectForm.title.trim(),
+      shortTitle: projectForm.shortTitle || projectForm.title.trim(),
+      headline: projectForm.title.trim(),
       client: (projectForm.client || "").trim(),
       role: (projectForm.role || "").trim(),
       timeline: (projectForm.timeline || "").trim(),
@@ -539,10 +539,8 @@ export default function AdminDashboard() {
       images: cleanImages,
       deliverables: featuresArray,
       architectureHighlights: featuresArray,
-      categories:
-        projectForm.categories.length > 0
-          ? projectForm.categories
-          : [projectForm.status],
+      status: (projectForm.status || "Web Apps").trim(),
+      categories: [(projectForm.status || "Web Apps").trim()],
     };
 
     try {
@@ -1995,7 +1993,11 @@ export default function AdminDashboard() {
                 {/* 3. DYNAMIC CATEGORY PICKER */}
                 <div style={{ minWidth: 0 }}>
                   <label style={styles.formLabel}>Category / Eyebrow *</label>
-                  <select
+                  <input
+                    type="text"
+                    required
+                    list="category-picker-options"
+                    placeholder="e.g. Web Apps, AI Systems, Automation, Full-Stack"
                     value={projectForm.status}
                     onChange={(e) => {
                       const chosen = e.target.value;
@@ -2005,20 +2007,15 @@ export default function AdminDashboard() {
                         categories: [chosen],
                       });
                     }}
-                    style={styles.formSelect}
-                  >
+                    style={styles.formInput}
+                  />
+                  <datalist id="category-picker-options">
                     {categories.map((c) => (
-                      <option
-                        key={c}
-                        value={c}
-                        style={{ background: "#181d19", color: "#ffffff" }}
-                      >
-                        {c}
-                      </option>
+                      <option key={c} value={c} />
                     ))}
-                  </select>
+                  </datalist>
                   <span style={styles.inputHint}>
-                    Nayi category add karne ke liye &quot;Categories&quot; tab use karein.
+                    Existing category select karein ya khud apni marzi ki category / eyebrow type karein.
                   </span>
                 </div>
               </div>
@@ -2074,22 +2071,7 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              {/* 4. Tagline / Headline */}
-              <div>
-                <label style={styles.formLabel}>Short Tagline / Headline *</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. An inbox that knows what matters."
-                  value={projectForm.headline}
-                  onChange={(e) =>
-                    setProjectForm({ ...projectForm, headline: e.target.value })
-                  }
-                  style={styles.formInput}
-                />
-              </div>
-
-              {/* 4b. PRIMARY OUTCOME */}
+              {/* 4. PRIMARY OUTCOME */}
               <div>
                 <label style={styles.formLabel}>Primary Outcome / Key Result (1-2 Sentences)</label>
                 <input
@@ -2106,7 +2088,7 @@ export default function AdminDashboard() {
                 </span>
               </div>
 
-              {/* 4c. CASE STUDY: THE PROBLEM & THE SOLUTION */}
+              {/* 4b. CASE STUDY: THE PROBLEM & THE SOLUTION */}
               <div style={styles.formRow2}>
                 <div>
                   <label style={styles.formLabel}>The Challenge / The Problem</label>
@@ -2139,149 +2121,6 @@ export default function AdminDashboard() {
                     Case study me &quot;02 / THE APPROACH — The Solution&quot; section banata hai.
                   </span>
                 </div>
-              </div>
-
-              {/* 4d. KEY IMPACT & MEASURED RESULTS (METRICS BANNER) */}
-              <div
-                style={{
-                  background: "#161b17",
-                  border: "1px solid #283329",
-                  borderRadius: "8px",
-                  padding: "16px",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "12px",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    flexWrap: "wrap",
-                    gap: "8px",
-                  }}
-                >
-                  <div>
-                    <label style={styles.formLabelBold}>
-                      📊 Key Impact &amp; Measured Results (Banner Metrics)
-                    </label>
-                    <span style={styles.imageSectionSubtitle}>
-                      Case study ke top green banner me metrics pills show honge (e.g. Value: 85%, Label: Manual Overhead Reduced).
-                    </span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (projectMetrics.length < 4) {
-                        setProjectMetrics([
-                          ...projectMetrics,
-                          { value: "", label: "" },
-                        ]);
-                      }
-                    }}
-                    disabled={projectMetrics.length >= 4}
-                    style={{
-                      background:
-                        projectMetrics.length >= 4 ? "#1a201c" : "#242e26",
-                      color:
-                        projectMetrics.length >= 4 ? "#627064" : "#caff46",
-                      border: "1px solid #334235",
-                      padding: "6px 14px",
-                      borderRadius: "6px",
-                      fontSize: "11px",
-                      fontWeight: 600,
-                      cursor:
-                        projectMetrics.length >= 4 ? "not-allowed" : "pointer",
-                    }}
-                  >
-                    + Add Metric Pill
-                  </button>
-                </div>
-
-                {projectMetrics.length === 0 ? (
-                  <div
-                    style={{
-                      padding: "14px",
-                      textAlign: "center",
-                      fontSize: "12px",
-                      color: "#7e8f80",
-                      border: "1px dashed #263328",
-                      borderRadius: "6px",
-                    }}
-                  >
-                    No impact metrics added yet. Click &quot;+ Add Metric Pill&quot; to highlight numbers like &quot;85% Reduced&quot;, &quot;99.9% Uptime&quot;, etc.
-                  </div>
-                ) : (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "10px",
-                    }}
-                  >
-                    {projectMetrics.map((m, idx) => (
-                      <div
-                        key={idx}
-                        style={{
-                          display: "grid",
-                          gridTemplateColumns: "140px 1fr auto",
-                          gap: "10px",
-                          alignItems: "center",
-                        }}
-                      >
-                        <input
-                          type="text"
-                          placeholder="Value (e.g. 85%)"
-                          value={m.value}
-                          onChange={(e) => {
-                            const updated = [...projectMetrics];
-                            updated[idx] = {
-                              ...updated[idx],
-                              value: e.target.value,
-                            };
-                            setProjectMetrics(updated);
-                          }}
-                          style={styles.formInput}
-                        />
-                        <input
-                          type="text"
-                          placeholder="Label (e.g. Manual Overhead Reduced)"
-                          value={m.label}
-                          onChange={(e) => {
-                            const updated = [...projectMetrics];
-                            updated[idx] = {
-                              ...updated[idx],
-                              label: e.target.value,
-                            };
-                            setProjectMetrics(updated);
-                          }}
-                          style={styles.formInput}
-                        />
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setProjectMetrics(
-                              projectMetrics.filter((_, i) => i !== idx)
-                            );
-                          }}
-                          style={{
-                            background: "transparent",
-                            border: "1px solid #3d2323",
-                            color: "#f87171",
-                            borderRadius: "6px",
-                            padding: "9px 12px",
-                            cursor: "pointer",
-                            fontSize: "12px",
-                          }}
-                          title="Remove Metric"
-                        >
-                          ✕
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
 
               {/* 5. Project Description (What it does) */}

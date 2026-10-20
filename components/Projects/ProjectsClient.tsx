@@ -250,7 +250,7 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
                   <span>{project.status}</span>
                 </div>
 
-                <h2 style={styles.projectTitle}>{project.headline || project.title}</h2>
+                <h2 style={styles.projectTitle}>{project.title || project.headline}</h2>
 
                 {project.subhead && (
                   <p style={styles.projectSubhead}>{project.subhead}</p>
