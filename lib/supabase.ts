@@ -32,6 +32,13 @@ import {
   updateLocalResource,
   deleteLocalResource,
 } from "./resourcesStore";
+import type { UpcomingProject } from "./upcoming";
+import {
+  getLocalUpcomingProjects,
+  addLocalUpcomingProject,
+  updateLocalUpcomingProject,
+  deleteLocalUpcomingProject,
+} from "./upcomingStore";
 
 const supabaseUrl =
   process.env.NEXT_PUBLIC_SUPABASE_URL ||
@@ -107,6 +114,7 @@ function mapDbToProject(row: DbProjectRow): Project {
       ? row.architecture_highlights
       : row.architectureHighlights || [],
     metrics: Array.isArray(row.metrics) ? row.metrics : [],
+    features: Array.isArray(row.features) ? row.features : undefined,
     demoUrl: row.demo_url || row.demoUrl,
     githubUrl: row.github_url || row.githubUrl,
   };
@@ -135,6 +143,7 @@ function mapProjectToDb(proj: Project): Record<string, unknown> {
     solution: proj.solution,
     architecture_highlights: proj.architectureHighlights,
     metrics: proj.metrics,
+    features: proj.features || [],
     demo_url: proj.demoUrl || null,
     github_url: proj.githubUrl || null,
     updated_at: new Date().toISOString(),
@@ -890,4 +899,244 @@ export async function deleteResource(
   const localSuccess = await deleteLocalResource(id);
   return { source: "local", success: localSuccess };
 }
+
+// =====================================================================
+// UPCOMING PROJECTS CRUD (SUPABASE WITH LOCAL FALLBACK)
+// =====================================================================
+type DbUpcomingRow = {
+  id?: string;
+  slug?: string;
+  number?: string;
+  title?: string;
+  short_title?: string;
+  shortTitle?: string;
+  category?: string;
+  status?: UpcomingProject["status"];
+  target_release?: string;
+  targetRelease?: string;
+  progress?: number;
+  priority?: UpcomingProject["priority"];
+  headline?: string;
+  description?: string;
+  problem?: string;
+  solution?: string;
+  tech_stack?: string[];
+  techStack?: string[];
+  key_features?: string[];
+  keyFeatures?: string[];
+  architecture_highlights?: string[];
+  architectureHighlights?: string[];
+  deliverables?: string[];
+  preview_type?: UpcomingProject["previewType"];
+  previewType?: UpcomingProject["previewType"];
+  waitlist_count?: number;
+  waitlistCount?: number;
+  created_at?: string;
+  updated_at?: string;
+  [key: string]: unknown;
+};
+
+function mapDbToUpcomingProject(row: DbUpcomingRow): UpcomingProject {
+  return {
+    id: row.id || `up-${Date.now()}`,
+    slug: row.slug || "",
+    number: row.number || "01",
+    title: row.title || "",
+    shortTitle: row.short_title || row.shortTitle || row.title || "",
+    category: row.category || "AI Agents",
+    status: row.status || "In Development",
+    targetRelease: row.target_release || row.targetRelease || "Q1 2027",
+    progress: typeof row.progress === "number" ? row.progress : 50,
+    priority: row.priority || "High",
+    headline: row.headline || row.title || "",
+    description: row.description || "",
+    problem: row.problem || "",
+    solution: row.solution || "",
+    techStack: Array.isArray(row.tech_stack)
+      ? row.tech_stack
+      : Array.isArray(row.techStack)
+      ? row.techStack
+      : [],
+    keyFeatures: Array.isArray(row.key_features)
+      ? row.key_features
+      : Array.isArray(row.keyFeatures)
+      ? row.keyFeatures
+      : [],
+    architectureHighlights: Array.isArray(row.architecture_highlights)
+      ? row.architecture_highlights
+      : Array.isArray(row.architectureHighlights)
+      ? row.architectureHighlights
+      : [],
+    deliverables: Array.isArray(row.deliverables) ? row.deliverables : [],
+    previewType: row.preview_type || row.previewType || "dashboard",
+    waitlistCount: Number(row.waitlist_count || row.waitlistCount || 0),
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+function mapUpcomingProjectToDb(proj: UpcomingProject): Record<string, unknown> {
+  return {
+    id: proj.id,
+    slug: proj.slug,
+    number: proj.number,
+    title: proj.title,
+    short_title: proj.shortTitle,
+    category: proj.category,
+    status: proj.status,
+    target_release: proj.targetRelease,
+    progress: proj.progress,
+    priority: proj.priority,
+    headline: proj.headline,
+    description: proj.description,
+    problem: proj.problem,
+    solution: proj.solution,
+    tech_stack: proj.techStack,
+    key_features: proj.keyFeatures,
+    architecture_highlights: proj.architectureHighlights,
+    deliverables: proj.deliverables,
+    preview_type: proj.previewType || "dashboard",
+    waitlist_count: proj.waitlistCount || 0,
+    created_at: proj.createdAt || new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  };
+}
+
+export async function getUpcomingProjects(): Promise<{
+  source: "supabase" | "local";
+  upcomingProjects: UpcomingProject[];
+}> {
+  try {
+    const { data, error } = await supabase
+      .from("upcoming_projects")
+      .select("*")
+      .order("number", { ascending: true });
+
+    if (!error && Array.isArray(data) && data.length > 0) {
+      return {
+        source: "supabase",
+        upcomingProjects: data.map(mapDbToUpcomingProject),
+      };
+    } else if (error) {
+      console.warn("Supabase fetch upcoming projects error:", error);
+    }
+  } catch (err) {
+    console.warn("Supabase fetch upcoming projects exception:", err);
+  }
+
+  const local = await getLocalUpcomingProjects();
+  return { source: "local", upcomingProjects: local };
+}
+
+export async function addUpcomingProject(
+  project: UpcomingProject
+): Promise<{ source: "supabase" | "local"; upcomingProject: UpcomingProject }> {
+  try {
+    const dbPayload = mapUpcomingProjectToDb(project);
+    const { data, error } = await supabase
+      .from("upcoming_projects")
+      .upsert([dbPayload], { onConflict: "slug" })
+      .select()
+      .single();
+
+    if (!error && data) {
+      try {
+        await addLocalUpcomingProject(project);
+      } catch {}
+
+      return {
+        source: "supabase",
+        upcomingProject: mapDbToUpcomingProject(data),
+      };
+    } else if (error) {
+      console.warn("Supabase add upcoming project error:", error);
+    }
+  } catch (err) {
+    console.warn("Supabase add upcoming project exception:", err);
+  }
+
+  const local = await addLocalUpcomingProject(project);
+  return { source: "local", upcomingProject: local };
+}
+
+export async function updateUpcomingProject(
+  idOrSlug: string,
+  updates: Partial<UpcomingProject>
+): Promise<{ source: "supabase" | "local"; upcomingProject: UpcomingProject | null }> {
+  try {
+    const dbUpdates: Record<string, unknown> = {};
+    if (updates.title !== undefined) dbUpdates.title = updates.title;
+    if (updates.shortTitle !== undefined) dbUpdates.short_title = updates.shortTitle;
+    if (updates.number !== undefined) dbUpdates.number = updates.number;
+    if (updates.category !== undefined) dbUpdates.category = updates.category;
+    if (updates.status !== undefined) dbUpdates.status = updates.status;
+    if (updates.targetRelease !== undefined) dbUpdates.target_release = updates.targetRelease;
+    if (updates.progress !== undefined) dbUpdates.progress = updates.progress;
+    if (updates.priority !== undefined) dbUpdates.priority = updates.priority;
+    if (updates.headline !== undefined) dbUpdates.headline = updates.headline;
+    if (updates.description !== undefined) dbUpdates.description = updates.description;
+    if (updates.problem !== undefined) dbUpdates.problem = updates.problem;
+    if (updates.solution !== undefined) dbUpdates.solution = updates.solution;
+    if (updates.techStack !== undefined) dbUpdates.tech_stack = updates.techStack;
+    if (updates.keyFeatures !== undefined) dbUpdates.key_features = updates.keyFeatures;
+    if (updates.architectureHighlights !== undefined)
+      dbUpdates.architecture_highlights = updates.architectureHighlights;
+    if (updates.deliverables !== undefined) dbUpdates.deliverables = updates.deliverables;
+    if (updates.previewType !== undefined) dbUpdates.preview_type = updates.previewType;
+    if (updates.waitlistCount !== undefined) dbUpdates.waitlist_count = updates.waitlistCount;
+    dbUpdates.updated_at = new Date().toISOString();
+
+    const { data, error } = await supabase
+      .from("upcoming_projects")
+      .update(dbUpdates)
+      .or(`id.eq.${idOrSlug},slug.eq.${idOrSlug}`)
+      .select()
+      .single();
+
+    if (!error && data) {
+      try {
+        await updateLocalUpcomingProject(idOrSlug, updates);
+      } catch {}
+
+      return {
+        source: "supabase",
+        upcomingProject: mapDbToUpcomingProject(data),
+      };
+    }
+  } catch (err) {
+    console.warn("Supabase update upcoming project exception:", err);
+  }
+
+  const local = await updateLocalUpcomingProject(idOrSlug, updates);
+  return { source: "local", upcomingProject: local };
+}
+
+export async function deleteUpcomingProject(
+  idOrSlug: string
+): Promise<{ source: "supabase" | "local"; success: boolean; error?: string }> {
+  try {
+    const { error } = await supabase
+      .from("upcoming_projects")
+      .delete()
+      .or(`id.eq.${idOrSlug},slug.eq.${idOrSlug}`);
+
+    if (!error) {
+      try {
+        await deleteLocalUpcomingProject(idOrSlug);
+      } catch {}
+      return { source: "supabase", success: true };
+    } else {
+      console.warn("Supabase delete upcoming project error:", error);
+      if (error.code !== "PGRST205") {
+        return { source: "supabase", success: false, error: error.message };
+      }
+    }
+  } catch (err) {
+    console.warn("Supabase delete upcoming project exception:", err);
+  }
+
+  const localSuccess = await deleteLocalUpcomingProject(idOrSlug);
+  return { source: "local", success: localSuccess };
+}
+
 

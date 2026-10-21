@@ -343,6 +343,39 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
           </div>
         </section>
 
+        {/* 10 CORE PRODUCTION SAAS CAPABILITIES */}
+        <div style={styles.divider} />
+        <section style={styles.saasCapabilitiesSection}>
+          <div style={styles.label}>05 / PRODUCTION ARCHITECTURE STANDARD</div>
+          <h2 style={styles.sectionHeading}>10 Core Engineering Checkpoints Built Into This System</h2>
+          <p style={styles.bodyText}>
+            Every production build adheres to a complete enterprise specification guaranteeing security, observability, monetization, and fault tolerance:
+          </p>
+
+          <div style={styles.saasGrid}>
+            {[
+              { name: "Authentication", desc: "Secure token sessions, passwordless magic links & multi-tenant auth (Supabase / NextAuth)" },
+              { name: "Operations Dashboard", desc: "Interactive command console with live system telemetry, metrics & filters" },
+              { name: "Admin Panel", desc: "Full administrative controls, content management & diagnostic drawers" },
+              { name: "Dark Mode UI", desc: "Handcrafted cyber-dark aesthetics with glassmorphic cards & high contrast" },
+              { name: "100% Responsive", desc: "Fluid layouts optimized from 320px mobile displays to 4K ultrawide monitors" },
+              { name: "Stripe Billing", desc: "Recurring subscription checkout, tiered pricing & self-serve customer portal" },
+              { name: "AI Integration", desc: "OpenAI GPT-4o / Realtime API / RAG vector embeddings & autonomous agents" },
+              { name: "Database Architecture", desc: "PostgreSQL relational schemas with Prisma ORM, migrations & strict RLS" },
+              { name: "Role Based Access (RBAC)", desc: "Granular permissions separating Admins, Team Members, and Read-Only clients" },
+              { name: "Cloud Edge Deployment", desc: "High-availability deployment on Vercel Edge with zero silent failover drops" },
+            ].map((item) => (
+              <div key={item.name} style={styles.saasCard}>
+                <div style={styles.saasCardHeader}>
+                  <span style={styles.saasCheck}>✅</span>
+                  <span style={styles.saasCardTitle}>{item.name}</span>
+                </div>
+                <p style={styles.saasCardDesc}>{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <div style={styles.divider} />
 
         {/* NEXT PROJECT CARD */}
@@ -825,5 +858,41 @@ const styles: Record<string, CSSProperties> = {
     height: "100%",
     objectFit: "cover",
     borderRadius: "4px",
+  },
+  saasCapabilitiesSection: {
+    marginTop: "20px",
+  },
+  saasGrid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+    gap: "14px",
+    marginTop: "20px",
+  },
+  saasCard: {
+    background: "#131814",
+    border: "1px solid #242f26",
+    borderRadius: "10px",
+    padding: "16px 18px",
+    transition: "border-color 0.2s ease",
+  },
+  saasCardHeader: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    marginBottom: "6px",
+  },
+  saasCheck: {
+    fontSize: "14px",
+  },
+  saasCardTitle: {
+    fontSize: "14px",
+    fontWeight: "700",
+    color: "#ffffff",
+  },
+  saasCardDesc: {
+    fontSize: "12px",
+    color: "#a4aca6",
+    lineHeight: "1.5",
+    margin: 0,
   },
 };

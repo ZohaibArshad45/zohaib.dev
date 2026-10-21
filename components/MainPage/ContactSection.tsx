@@ -9,9 +9,12 @@ import {
 } from "react";
 
 type ProjectType =
-  | "Web App"
-  | "AI Agents & Features"
-  | "Automation & Integrations"
+  | "AI SaaS Development"
+  | "Autonomous AI Agents"
+  | "n8n & CRM Automation"
+  | "RAG & Vector Knowledge"
+  | "Realtime Voice AI"
+  | "Full-Stack Web App"
   | "Other";
 
 type Timeline =
@@ -52,7 +55,7 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
   const [form, setForm] = useState<FormState>({
     name: "",
     email: "",
-    projectType: "Web App",
+    projectType: "AI SaaS Development",
     timeline: "Flexible",
     details: "",
   });
@@ -139,7 +142,7 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
       setForm({
         name: "",
         email: "",
-        projectType: "Web App",
+        projectType: "AI SaaS Development",
         timeline: "Flexible",
         details: "",
       });
@@ -793,16 +796,28 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
                   onChange={handleChange}
                   style={styles.select}
                 >
-                  <option value="Web App">
-                    Web App
+                  <option value="AI SaaS Development">
+                    AI SaaS Development
                   </option>
 
-                  <option value="AI Agents & Features">
-                    AI Agents &amp; Features
+                  <option value="Autonomous AI Agents">
+                    Autonomous AI Agents
                   </option>
 
-                  <option value="Automation & Integrations">
-                    Automation &amp; Integrations
+                  <option value="n8n & CRM Automation">
+                    n8n &amp; CRM Automation
+                  </option>
+
+                  <option value="RAG & Vector Knowledge">
+                    RAG &amp; Vector Knowledge
+                  </option>
+
+                  <option value="Realtime Voice AI">
+                    Realtime Voice AI
+                  </option>
+
+                  <option value="Full-Stack Web App">
+                    Full-Stack Web App
                   </option>
 
                   <option value="Other">
@@ -953,9 +968,31 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
             </div>
           </div>
 
+          <div
+            style={{
+              display: "flex",
+              gap: "20px",
+              flexWrap: "wrap",
+              padding: "16px 0",
+              fontSize: "13px",
+              borderTop: "1px solid #202621",
+              borderBottom: "1px solid #202621",
+              margin: "20px 0",
+            }}
+          >
+            <a href="/projects" style={{ color: "#a4b0a6", textDecoration: "none" }}>Projects</a>
+            <a href="/upcoming" style={{ color: "#caff46", textDecoration: "none", fontWeight: "700" }}>Upcoming Roadmap 🚀</a>
+            <a href="/services" style={{ color: "#a4b0a6", textDecoration: "none" }}>Services</a>
+            <a href="/resources" style={{ color: "#a4b0a6", textDecoration: "none" }}>Resources</a>
+            <a href="/process" style={{ color: "#a4b0a6", textDecoration: "none" }}>Process</a>
+            <a href="/about" style={{ color: "#a4b0a6", textDecoration: "none" }}>About</a>
+            <a href="/contact" style={{ color: "#a4b0a6", textDecoration: "none" }}>Contact</a>
+            <a href="/admin" style={{ color: "#7a857b", textDecoration: "none", marginLeft: "auto" }}>Admin Console 🔒</a>
+          </div>
+
           <div style={styles.footerBottom}>
             <div style={styles.copyright}>
-              © 2026 Zohaib. All rights reserved. • v2.1
+              © 2026 Zohaib • AI SaaS Developer • All rights reserved.
             </div>
 
             <a

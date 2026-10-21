@@ -27,6 +27,7 @@ export type Project = {
   solution: string;
   architectureHighlights: string[];
   metrics: ProjectMetric[];
+  features?: string[];
   demoUrl?: string;
   githubUrl?: string;
 };

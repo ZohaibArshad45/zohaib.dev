@@ -8,9 +8,12 @@ import type { Service } from "@/lib/services";
 import { DEFAULT_SETTINGS, type SiteSettings } from "@/lib/settings";
 import type { Resource } from "@/lib/resources";
 import ResourcesAdminSection from "./ResourcesAdminSection";
+import type { UpcomingProject } from "@/lib/upcoming";
+import UpcomingAdminSection from "./UpcomingAdminSection";
 
 type TabType =
   | "projects"
+  | "upcoming"
   | "categories"
   | "services"
   | "resources"
@@ -78,6 +81,7 @@ export default function AdminDashboard() {
   // Dashboard state
   const [activeTab, setActiveTab] = useState<TabType>("projects");
   const [projects, setProjects] = useState<Project[]>([]);
+  const [upcomingProjects, setUpcomingProjects] = useState<UpcomingProject[]>([]);
   const [services, setServices] = useState<Service[]>([]);
   const [resources, setResources] = useState<Resource[]>([]);
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
@@ -151,7 +155,7 @@ export default function AdminDashboard() {
 
     async function loadAll() {
       try {
-        const [projRes, srvRes, inqRes, catRes, setRes, resRes] =
+        const [projRes, srvRes, inqRes, catRes, setRes, resRes, upRes] =
           await Promise.all([
             fetch("/api/admin/projects").then((r) => r.json()),
             fetch("/api/admin/services").then((r) => r.json()),
@@ -159,6 +163,7 @@ export default function AdminDashboard() {
             fetch("/api/admin/categories").then((r) => r.json()),
             fetch("/api/admin/settings").then((r) => r.json()),
             fetch("/api/admin/resources").then((r) => r.json()),
+            fetch("/api/admin/upcoming").then((r) => r.json()),
           ]);
 
         if (ignore) return;
@@ -166,6 +171,9 @@ export default function AdminDashboard() {
         if (projRes.success && Array.isArray(projRes.projects)) {
           setProjects(projRes.projects);
           if (projRes.source) setProjectsSource(projRes.source);
+        }
+        if (upRes.success && Array.isArray(upRes.upcomingProjects)) {
+          setUpcomingProjects(upRes.upcomingProjects);
         }
         if (srvRes.success && Array.isArray(srvRes.services)) {
           setServices(srvRes.services);
@@ -884,6 +892,20 @@ export default function AdminDashboard() {
 
           <button
             type="button"
+            onClick={() => setActiveTab("upcoming")}
+            style={{
+              ...styles.tabItem,
+              borderBottomColor:
+                activeTab === "upcoming" ? "#caff46" : "transparent",
+              color: activeTab === "upcoming" ? "#ffffff" : "#8e988f",
+              fontWeight: activeTab === "upcoming" ? "700" : "500",
+            }}
+          >
+            🚀 Upcoming ({upcomingProjects.length})
+          </button>
+
+          <button
+            type="button"
             onClick={() => setActiveTab("categories")}
             style={{
               ...styles.tabItem,
@@ -1062,6 +1084,18 @@ export default function AdminDashboard() {
                 ))}
               </div>
             )}
+          </div>
+        )}
+
+        {/* ------------------------------------------------------------- */}
+        {/* TAB: UPCOMING PROJECTS CMS */}
+        {/* ------------------------------------------------------------- */}
+        {activeTab === "upcoming" && (
+          <div style={styles.tabContent}>
+            <UpcomingAdminSection
+              upcomingProjects={upcomingProjects}
+              setUpcomingProjects={setUpcomingProjects}
+            />
           </div>
         )}
 

@@ -232,37 +232,51 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
   };
 
   const tags = [
-    "Web Apps",
-    "AI Agents",
-    "Automation",
-    "Integrations",
+    "AI SaaS Development",
+    "Autonomous AI Agents",
+    "OpenAI & RAG",
+    "n8n Automation",
+    "CRM Pipelines",
+    "Realtime Voice AI",
   ];
 
   return (
     <section style={styles.section}>
       <div style={styles.left}>
         <div style={styles.eyebrow}>
-          {settings?.availabilityStatus || "Web Developer • AI Builder • Available Remote"}
+          {settings?.founderTitle || "AI SaaS Developer • Next.js • TypeScript • OpenAI • AI Agents • n8n"}
         </div>
 
         <h1 style={styles.title}>
-          From idea to
+          AI SaaS &amp;
           <span style={styles.titleAccent}>
-            working product.
+            autonomous agents.
           </span>
         </h1>
 
         <p style={styles.description}>
-          {settings?.bioSnippet || "I build fast web apps, useful AI features and automated workflows that help teams save time and move faster."}
+          {settings?.bioSnippet ||
+            "Building high-performance AI SaaS products, multi-agent autonomous workflows, enterprise RAG search engines, and resilient business automations."}
         </p>
 
         <div style={styles.buttons}>
           <Link href="/contact" style={styles.primaryButton}>
-            Discuss your project ↗
+            Discuss your AI project ↗
           </Link>
 
           <Link href="/projects" style={styles.secondaryButton}>
-            View projects ↓
+            Explore AI projects ↓
+          </Link>
+
+          <Link
+            href="/upcoming"
+            style={{
+              ...styles.secondaryButton,
+              color: "#caff46",
+              borderColor: "#caff46",
+            }}
+          >
+            Upcoming Roadmap 🚀
           </Link>
         </div>
 
@@ -329,11 +343,11 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
                   transition: "color 0.2s ease",
                 }}
               >
-                Web Apps
+                AI SaaS &amp; Web Apps
               </h3>
 
               <div style={styles.rowText}>
-                Fast, responsive products built around your business.
+                Production Next.js platforms with Stripe billing, auth &amp; PostgreSQL.
               </div>
             </div>
           </div>
@@ -366,11 +380,11 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
                   transition: "color 0.2s ease",
                 }}
               >
-                AI Solutions
+                Autonomous AI Agents
               </h3>
 
               <div style={styles.rowText}>
-                AI agents, assistants and smart features that solve real tasks.
+                Multi-agent tool-calling, RAG vector retrieval &amp; realtime voice bots.
               </div>
             </div>
           </div>
@@ -403,11 +417,11 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
                   transition: "color 0.2s ease",
                 }}
               >
-                Automation
+                n8n &amp; CRM Automation
               </h3>
 
               <div style={styles.rowText}>
-                Connected workflows that reduce repetitive manual work.
+                Event-driven pipelines, webhook triage &amp; autonomous lead syncing.
               </div>
             </div>
           </div>

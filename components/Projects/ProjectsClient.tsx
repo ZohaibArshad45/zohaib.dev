@@ -106,10 +106,24 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
 
           <div style={styles.heroRight}>
             <p style={styles.intro}>
-              A comprehensive showcase of web applications, AI integrations,
-              internal tooling, and event-driven automation engineered for real
-              business operations.
+              Production autonomous AI agents, multi-doc RAG search engines, n8n automations,
+              and full-stack Next.js SaaS platforms engineered for measurable business impact.
             </p>
+            <Link
+              href="/upcoming"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                color: "#caff46",
+                fontSize: "13px",
+                fontWeight: "700",
+                textDecoration: "none",
+                marginTop: "12px",
+              }}
+            >
+              Explore Upcoming AI Builds &amp; Roadmap ↗
+            </Link>
           </div>
         </header>
 
@@ -288,6 +302,20 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
                     ))}
                   </div>
                 )}
+
+                {/* 10 CORE PRODUCTION SAAS CAPABILITIES */}
+                <div style={styles.featuresStrip}>
+                  <span style={styles.featureItem} title="Authentication & User Accounts">✅ Auth</span>
+                  <span style={styles.featureItem} title="Operations Dashboard">✅ Dashboard</span>
+                  <span style={styles.featureItem} title="Admin Panel">✅ Admin Panel</span>
+                  <span style={styles.featureItem} title="Dark Mode UI">✅ Dark Mode</span>
+                  <span style={styles.featureItem} title="100% Responsive">✅ Responsive</span>
+                  <span style={styles.featureItem} title="Stripe Subscriptions">✅ Stripe</span>
+                  <span style={styles.featureItem} title="OpenAI / Autonomous AI Engine">✅ AI</span>
+                  <span style={styles.featureItem} title="PostgreSQL Database">✅ Database</span>
+                  <span style={styles.featureItem} title="Role Based Access Control">✅ RBAC</span>
+                  <span style={styles.featureItem} title="Cloud Edge Deployment">✅ Deployed</span>
+                </div>
 
                 {/* ACTION LINKS */}
                 <div style={styles.actionsRow}>
@@ -704,6 +732,24 @@ const styles: Record<string, CSSProperties> = {
     fontSize: "10px",
     color: "#ffffff",
     background: "#151916",
+  },
+  featuresStrip: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "6px 10px",
+    background: "rgba(12, 16, 13, 0.75)",
+    border: "1px solid #1f2721",
+    padding: "8px 10px",
+    borderRadius: "6px",
+    marginTop: "12px",
+    fontSize: "10px",
+    color: "#97a699",
+  },
+  featureItem: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "3px",
+    whiteSpace: "nowrap",
   },
   actionsRow: {
     display: "flex",

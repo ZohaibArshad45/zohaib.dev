@@ -88,7 +88,7 @@ export default function SelectedWork({
 
     heading: {
       margin: 0,
-      maxWidth: "620px",
+      maxWidth: "680px",
       color: "#f6f6f4",
       fontSize: isMobile ? "34px" : isTablet ? "44px" : "50px",
       lineHeight: "1.06",
@@ -96,7 +96,7 @@ export default function SelectedWork({
     },
 
     intro: {
-      maxWidth: "280px",
+      maxWidth: "300px",
       margin: 0,
       color: "#a6aca7",
       fontSize: isMobile ? "13px" : "14px",
@@ -289,6 +289,78 @@ export default function SelectedWork({
       letterSpacing: "1.6px",
       fontWeight: "600",
     },
+
+    featuresStrip: {
+      display: "flex",
+      flexWrap: "wrap",
+      gap: "6px 10px",
+      background: "rgba(10, 14, 11, 0.75)",
+      border: "1px solid #1c241e",
+      padding: "8px 10px",
+      borderRadius: "6px",
+      marginTop: "12px",
+      fontSize: "10px",
+      color: "#97a699",
+    },
+
+    featureItem: {
+      display: "inline-flex",
+      alignItems: "center",
+      gap: "3px",
+      whiteSpace: "nowrap",
+    },
+
+    roadmapCallout: {
+      marginTop: "48px",
+      background: "linear-gradient(145deg, #161e18 0%, #101411 100%)",
+      border: "1px solid #2d3b2f",
+      borderRadius: "14px",
+      padding: isMobile ? "24px 20px" : "28px 34px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      gap: "24px",
+      flexWrap: "wrap",
+    },
+
+    roadmapTag: {
+      display: "inline-block",
+      fontSize: "10px",
+      color: "#caff46",
+      fontWeight: "800",
+      letterSpacing: "1px",
+      background: "rgba(202, 255, 70, 0.1)",
+      padding: "3px 8px",
+      borderRadius: "4px",
+      marginBottom: "8px",
+    },
+
+    roadmapTitle: {
+      fontSize: isMobile ? "18px" : "20px",
+      color: "#ffffff",
+      fontWeight: "600",
+      margin: "0 0 6px",
+    },
+
+    roadmapSub: {
+      fontSize: "13px",
+      color: "#9ea8a0",
+      margin: 0,
+      maxWidth: "520px",
+      lineHeight: "1.5",
+    },
+
+    roadmapBtn: {
+      background: "#caff46",
+      color: "#0c0e0d",
+      textDecoration: "none",
+      padding: "12px 22px",
+      borderRadius: "8px",
+      fontSize: "13px",
+      fontWeight: "800",
+      whiteSpace: "nowrap",
+      transition: "transform 0.2s ease",
+    },
   };
 
   const getCardStyle = (slug: string): CSSProperties => ({
@@ -308,14 +380,14 @@ export default function SelectedWork({
       <div style={styles.container}>
         <div style={styles.top}>
           <div>
-            <div style={styles.label}>01 / SELECTED WORK</div>
+            <div style={styles.label}>01 / SELECTED AI WORK &amp; PRODUCTION SAAS</div>
             <h2 style={styles.heading}>
-              Crafted for scale, performance &amp; revenue.
+              Autonomous AI agents, RAG engines &amp; production SaaS platforms.
             </h2>
           </div>
 
           <p style={styles.intro}>
-            Full-stack apps, AI systems, and automated operations built for high-growth businesses.
+            Full-stack AI systems, voice agents, and event-driven n8n automations engineered for scalable business revenue.
           </p>
         </div>
 
@@ -418,6 +490,20 @@ export default function SelectedWork({
                     </div>
                   )}
 
+                  {/* 10 CORE PRODUCTION SAAS CAPABILITIES */}
+                  <div style={styles.featuresStrip}>
+                    <span style={styles.featureItem} title="Authentication & User Accounts">✅ Auth</span>
+                    <span style={styles.featureItem} title="Operations Dashboard">✅ Dashboard</span>
+                    <span style={styles.featureItem} title="Admin Panel">✅ Admin</span>
+                    <span style={styles.featureItem} title="Dark Mode UI">✅ Dark Mode</span>
+                    <span style={styles.featureItem} title="Responsive Design">✅ Responsive</span>
+                    <span style={styles.featureItem} title="Stripe Billing">✅ Stripe</span>
+                    <span style={styles.featureItem} title="OpenAI / Autonomous AI">✅ AI</span>
+                    <span style={styles.featureItem} title="PostgreSQL Database">✅ Database</span>
+                    <span style={styles.featureItem} title="Role Based Access Control">✅ RBAC</span>
+                    <span style={styles.featureItem} title="Cloud Edge Deployment">✅ Deployed</span>
+                  </div>
+
                   {/* ACTION LINKS & META */}
                   <div style={styles.actionsRow}>
                     <div
@@ -491,6 +577,20 @@ export default function SelectedWork({
               </article>
             ))
           )}
+        </div>
+
+        {/* UPCOMING AI ROADMAP BANNER */}
+        <div style={styles.roadmapCallout}>
+          <div>
+            <span style={styles.roadmapTag}>ACTIVE R&amp;D PIPELINE • 6 BUILDS IN FLIGHT</span>
+            <h3 style={styles.roadmapTitle}>Looking for next-generation builds in active development?</h3>
+            <p style={styles.roadmapSub}>
+              Explore our upcoming autonomous voice calling agents, enterprise MCP hubs, legal contract RAG auditors, and self-healing n8n automations.
+            </p>
+          </div>
+          <Link href="/upcoming" style={styles.roadmapBtn}>
+            Explore Upcoming AI Roadmap ↗
+          </Link>
         </div>
 
         <div style={styles.bottom}>

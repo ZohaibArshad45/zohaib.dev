@@ -250,3 +250,40 @@ SELECT * FROM (VALUES
   )
 ) AS v(id, slug, title, description, category, type, file_url, file_size, cover_image, tags, downloads_count, featured, created_at, external_link)
 WHERE NOT EXISTS (SELECT 1 FROM public.resources);
+
+-- 7. UPCOMING PROJECTS TABLE
+CREATE TABLE IF NOT EXISTS public.upcoming_projects (
+  id TEXT PRIMARY KEY,
+  slug TEXT UNIQUE NOT NULL,
+  number TEXT NOT NULL DEFAULT '01',
+  title TEXT NOT NULL,
+  short_title TEXT NOT NULL,
+  category TEXT NOT NULL DEFAULT 'AI Agents',
+  status TEXT NOT NULL DEFAULT 'In Development',
+  target_release TEXT NOT NULL DEFAULT 'Q1 2027',
+  progress INTEGER NOT NULL DEFAULT 50,
+  priority TEXT NOT NULL DEFAULT 'High',
+  headline TEXT NOT NULL DEFAULT '',
+  description TEXT NOT NULL DEFAULT '',
+  problem TEXT NOT NULL DEFAULT '',
+  solution TEXT NOT NULL DEFAULT '',
+  tech_stack TEXT[] NOT NULL DEFAULT '{}',
+  key_features TEXT[] NOT NULL DEFAULT '{}',
+  architecture_highlights TEXT[] NOT NULL DEFAULT '{}',
+  deliverables TEXT[] NOT NULL DEFAULT '{}',
+  preview_type TEXT NOT NULL DEFAULT 'dashboard',
+  waitlist_count INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+ALTER TABLE public.upcoming_projects ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Public read upcoming projects" ON public.upcoming_projects;
+DROP POLICY IF EXISTS "Full access to upcoming projects" ON public.upcoming_projects;
+
+CREATE POLICY "Public read upcoming projects"
+  ON public.upcoming_projects FOR SELECT USING (true);
+
+CREATE POLICY "Full access to upcoming projects"
+  ON public.upcoming_projects FOR ALL USING (true) WITH CHECK (true);
+
