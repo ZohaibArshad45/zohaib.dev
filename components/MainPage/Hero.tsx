@@ -35,8 +35,8 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
       padding: isMobile
         ? "125px 20px 64px"
         : isTablet
-        ? "150px 32px 76px"
-        : "165px 56px 100px",
+          ? "150px 32px 76px"
+          : "165px 56px 100px",
       boxSizing: "border-box",
       display: "grid",
       gridTemplateColumns: isTablet ? "1fr" : "1.15fr 0.85fr",
@@ -146,8 +146,8 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
           ? "translateY(-6px) scale(1.01)"
           : "none"
         : isCardHovered
-        ? "rotate(-0.5deg) translateY(-10px) translateX(-6px) scale(1.02)"
-        : "rotate(1.5deg)",
+          ? "rotate(-0.5deg) translateY(-10px) translateX(-6px) scale(1.02)"
+          : "rotate(1.5deg)",
       boxSizing: "border-box",
       boxShadow: isCardHovered
         ? "0 30px 85px rgba(0, 0, 0, 0.5), 0 0 35px rgba(202, 255, 70, 0.16)"
@@ -442,8 +442,8 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
                 boxShadow: isProfileHovered
                   ? "0 0 24px rgba(202, 255, 70, 0.6)"
                   : isCardHovered
-                  ? "0 0 14px rgba(202, 255, 70, 0.3)"
-                  : "none",
+                    ? "0 0 14px rgba(202, 255, 70, 0.3)"
+                    : "none",
                 transform: isProfileHovered ? "scale(1.06)" : "scale(1)",
                 transition: "transform 0.25s ease, box-shadow 0.25s ease",
               }}
@@ -463,7 +463,7 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
               </div>
 
               <div style={styles.profileRole}>
-                {settings?.founderTitle || "Web Developer & AI Builder"}
+                {settings?.founderTitle || "Web Developer & AI Builder "}
               </div>
             </div>
           </Link>
