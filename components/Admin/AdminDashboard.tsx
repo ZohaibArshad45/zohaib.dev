@@ -98,6 +98,8 @@ export default function AdminDashboard() {
   const [isProjectModalOpen, setIsProjectModalOpen] = useState<boolean>(false);
   const [isEditingProject, setIsEditingProject] = useState<boolean>(false);
   const [projectForm, setProjectForm] = useState<Project>(EMPTY_PROJECT);
+  const [isSavingProject, setIsSavingProject] = useState<boolean>(false);
+  const [projectSaveError, setProjectSaveError] = useState<string | null>(null);
 
   // Services Modal state
   const [isServiceModalOpen, setIsServiceModalOpen] = useState<boolean>(false);
@@ -405,6 +407,8 @@ export default function AdminDashboard() {
     setProjectMetrics([]);
     setUploadError(null);
     setUploadingSlot(null);
+    setProjectSaveError(null);
+    setIsSavingProject(false);
     setIsProjectModalOpen(true);
   };
 
@@ -436,6 +440,8 @@ export default function AdminDashboard() {
     );
     setUploadError(null);
     setUploadingSlot(null);
+    setProjectSaveError(null);
+    setIsSavingProject(false);
     setIsProjectModalOpen(true);
   };
 
@@ -505,6 +511,8 @@ export default function AdminDashboard() {
   // Save Project (Add or Edit)
   const handleSaveProject = async (e: FormEvent) => {
     e.preventDefault();
+    setIsSavingProject(true);
+    setProjectSaveError(null);
 
     const tagsArray = techTagsInput
       .split(",")
@@ -527,15 +535,25 @@ export default function AdminDashboard() {
       }))
       .filter((m) => m.value.length > 0 && m.label.length > 0);
 
+    const rawSlug = projectForm.slug || projectForm.title;
+    const cleanSlug = rawSlug
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9-]/g, "-")
+      .replace(/^-+|-+$/g, "");
+
+    if (!cleanSlug) {
+      setProjectSaveError("Please provide a valid slug or project title.");
+      setIsSavingProject(false);
+      return;
+    }
+
     const preparedProject: Project = {
       ...projectForm,
-      slug: projectForm.slug
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9-]/g, "-"),
+      slug: cleanSlug,
       title: projectForm.title.trim(),
-      shortTitle: projectForm.shortTitle || projectForm.title.trim(),
-      headline: projectForm.title.trim(),
+      shortTitle: (projectForm.shortTitle || projectForm.title).trim(),
+      headline: (projectForm.headline || projectForm.title).trim(),
       client: (projectForm.client || "").trim(),
       role: (projectForm.role || "").trim(),
       timeline: (projectForm.timeline || "").trim(),
@@ -566,6 +584,8 @@ export default function AdminDashboard() {
             )
           );
           setIsProjectModalOpen(false);
+        } else {
+          setProjectSaveError(data.message || "Failed to update project.");
         }
       } else {
         const res = await fetch("/api/admin/projects", {
@@ -575,12 +595,17 @@ export default function AdminDashboard() {
         });
         const data = await res.json();
         if (data.success && data.project) {
-          setProjects((prev) => [data.project, ...prev]);
+          setProjects((prev) => [data.project, ...prev.filter((p) => p.slug !== data.project.slug)]);
           setIsProjectModalOpen(false);
+        } else {
+          setProjectSaveError(data.message || "Failed to create project.");
         }
       }
     } catch (err) {
       console.error("Failed to save project:", err);
+      setProjectSaveError("Connection error. Could not save project.");
+    } finally {
+      setIsSavingProject(false);
     }
   };
 
@@ -2366,16 +2391,35 @@ export default function AdminDashboard() {
               </div>
 
               {/* Modal Buttons */}
+              {projectSaveError && (
+                <div style={{ ...styles.uploadErrorText, fontSize: "13px", padding: "8px 12px", background: "rgba(255, 90, 90, 0.1)", borderRadius: "6px", border: "1px solid rgba(255, 90, 90, 0.3)" }}>
+                  ⚠️ {projectSaveError}
+                </div>
+              )}
+
               <div style={styles.modalButtonsRow}>
                 <button
                   type="button"
                   onClick={() => setIsProjectModalOpen(false)}
                   style={styles.modalCancelBtn}
+                  disabled={isSavingProject}
                 >
                   Cancel
                 </button>
-                <button type="submit" style={styles.modalSubmitBtn}>
-                  {isEditingProject ? "Save Changes" : "Create Project"}
+                <button
+                  type="submit"
+                  style={{
+                    ...styles.modalSubmitBtn,
+                    opacity: isSavingProject ? 0.7 : 1,
+                    cursor: isSavingProject ? "not-allowed" : "pointer",
+                  }}
+                  disabled={isSavingProject}
+                >
+                  {isSavingProject
+                    ? "Saving Project..."
+                    : isEditingProject
+                    ? "Save Changes"
+                    : "Create Project"}
                 </button>
               </div>
             </form>
