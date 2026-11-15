@@ -579,20 +579,6 @@ export default function SelectedWork({
           )}
         </div>
 
-        {/* UPCOMING AI ROADMAP BANNER */}
-        <div style={styles.roadmapCallout}>
-          <div>
-            <span style={styles.roadmapTag}>ACTIVE R&amp;D PIPELINE • 6 BUILDS IN FLIGHT</span>
-            <h3 style={styles.roadmapTitle}>Looking for next-generation builds in active development?</h3>
-            <p style={styles.roadmapSub}>
-              Explore our upcoming autonomous voice calling agents, enterprise MCP hubs, legal contract RAG auditors, and self-healing n8n automations.
-            </p>
-          </div>
-          <Link href="/upcoming" style={styles.roadmapBtn}>
-            Explore Upcoming AI Roadmap ↗
-          </Link>
-        </div>
-
         <div style={styles.bottom}>
           <div style={styles.line} />
 

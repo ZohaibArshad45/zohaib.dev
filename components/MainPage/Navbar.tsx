@@ -234,20 +234,8 @@ export default function Navbar() {
                 Projects
               </Link>
 
-              <Link href="/upcoming" style={getNavLinkStyle("/upcoming")}>
-                Upcoming
-              </Link>
-
-              <Link href="/services" style={getNavLinkStyle("/services")}>
-                Services
-              </Link>
-
               <Link href="/resources" style={getNavLinkStyle("/resources")}>
                 Resources
-              </Link>
-
-              <Link href="/process" style={getNavLinkStyle("/process")}>
-                Process
               </Link>
 
               <Link href="/about" style={getNavLinkStyle("/about")}>
@@ -284,35 +272,11 @@ export default function Navbar() {
           </Link>
 
           <Link
-            href="/upcoming"
-            onClick={closeMenu}
-            style={getMobileLinkStyle("/upcoming")}
-          >
-            Upcoming
-          </Link>
-
-          <Link
-            href="/services"
-            onClick={closeMenu}
-            style={getMobileLinkStyle("/services")}
-          >
-            Services
-          </Link>
-
-          <Link
             href="/resources"
             onClick={closeMenu}
             style={getMobileLinkStyle("/resources")}
           >
             Resources
-          </Link>
-
-          <Link
-            href="/process"
-            onClick={closeMenu}
-            style={getMobileLinkStyle("/process")}
-          >
-            Process
           </Link>
 
           <Link

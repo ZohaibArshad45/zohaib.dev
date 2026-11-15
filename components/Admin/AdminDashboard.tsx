@@ -4,18 +4,13 @@ import Link from "next/link";
 import { useEffect, useState, type CSSProperties, type FormEvent } from "react";
 import type { Project } from "@/lib/projects";
 import type { Inquiry, InquiryStatus } from "@/lib/inquiriesStore";
-import type { Service } from "@/lib/services";
 import { DEFAULT_SETTINGS, type SiteSettings } from "@/lib/settings";
 import type { Resource } from "@/lib/resources";
 import ResourcesAdminSection from "./ResourcesAdminSection";
-import type { UpcomingProject } from "@/lib/upcoming";
-import UpcomingAdminSection from "./UpcomingAdminSection";
 
 type TabType =
   | "projects"
-  | "upcoming"
   | "categories"
-  | "services"
   | "resources"
   | "inquiries"
   | "settings";
@@ -28,23 +23,6 @@ const PREVIEW_TYPES: { id: Project["previewType"]; label: string }[] = [
   { id: "code", label: "Code Playground & Terminal" },
   { id: "support", label: "RAG Vector Knowledge Copilot" },
 ];
-
-const EMPTY_SERVICE: Service = {
-  id: "",
-  slug: "",
-  number: "01",
-  category: "FULL-STACK DEVELOPMENT",
-  title: "",
-  description: "",
-  items: [],
-  bestFor: "",
-  stack: "",
-  timeline: "2 to 3 Weeks",
-  startingPrice: "$2,000",
-  cta: "Get in touch ↗",
-  href: "/contact",
-  featured: false,
-};
 
 const EMPTY_PROJECT: Project = {
   slug: "",
@@ -81,8 +59,6 @@ export default function AdminDashboard() {
   // Dashboard state
   const [activeTab, setActiveTab] = useState<TabType>("projects");
   const [projects, setProjects] = useState<Project[]>([]);
-  const [upcomingProjects, setUpcomingProjects] = useState<UpcomingProject[]>([]);
-  const [services, setServices] = useState<Service[]>([]);
   const [resources, setResources] = useState<Resource[]>([]);
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
@@ -100,13 +76,6 @@ export default function AdminDashboard() {
   const [projectForm, setProjectForm] = useState<Project>(EMPTY_PROJECT);
   const [isSavingProject, setIsSavingProject] = useState<boolean>(false);
   const [projectSaveError, setProjectSaveError] = useState<string | null>(null);
-
-  // Services Modal state
-  const [isServiceModalOpen, setIsServiceModalOpen] = useState<boolean>(false);
-  const [isEditingService, setIsEditingService] = useState<boolean>(false);
-  const [serviceForm, setServiceForm] = useState<Service>(EMPTY_SERVICE);
-  const [serviceItemsInput, setServiceItemsInput] = useState<string>("");
-  const [isCustomServiceCategory, setIsCustomServiceCategory] = useState<boolean>(false);
 
   // Form simplified text inputs
   const [techTagsInput, setTechTagsInput] = useState<string>("");
@@ -157,15 +126,13 @@ export default function AdminDashboard() {
 
     async function loadAll() {
       try {
-        const [projRes, srvRes, inqRes, catRes, setRes, resRes, upRes] =
+        const [projRes, inqRes, catRes, setRes, resRes] =
           await Promise.all([
             fetch("/api/admin/projects").then((r) => r.json()),
-            fetch("/api/admin/services").then((r) => r.json()),
             fetch("/api/admin/inquiries").then((r) => r.json()),
             fetch("/api/admin/categories").then((r) => r.json()),
             fetch("/api/admin/settings").then((r) => r.json()),
             fetch("/api/admin/resources").then((r) => r.json()),
-            fetch("/api/admin/upcoming").then((r) => r.json()),
           ]);
 
         if (ignore) return;
@@ -173,12 +140,6 @@ export default function AdminDashboard() {
         if (projRes.success && Array.isArray(projRes.projects)) {
           setProjects(projRes.projects);
           if (projRes.source) setProjectsSource(projRes.source);
-        }
-        if (upRes.success && Array.isArray(upRes.upcomingProjects)) {
-          setUpcomingProjects(upRes.upcomingProjects);
-        }
-        if (srvRes.success && Array.isArray(srvRes.services)) {
-          setServices(srvRes.services);
         }
         if (resRes.success && Array.isArray(resRes.resources)) {
           setResources(resRes.resources);
@@ -314,7 +275,6 @@ export default function AdminDashboard() {
     const fullBackup = {
       exportedAt: new Date().toISOString(),
       projects,
-      services,
       categories,
       inquiries,
       settings: siteSettings,
@@ -626,113 +586,6 @@ export default function AdminDashboard() {
   };
 
   // -------------------------------------------------------------
-  // SERVICES CRUD HANDLERS
-  // -------------------------------------------------------------
-  const openAddServiceModal = () => {
-    setIsEditingService(false);
-    setIsCustomServiceCategory(false);
-    const nextNum =
-      services.length >= 9
-        ? `${services.length + 1}`
-        : `0${services.length + 1}`;
-
-    const defaultCat = categories[0] || "Web Apps";
-
-    setServiceForm({
-      ...EMPTY_SERVICE,
-      number: nextNum,
-      category: defaultCat,
-    });
-    setServiceItemsInput(
-      "Custom responsive dashboards & client portals\nAuthentication, role permissions & database design\nHigh performance SEO and Google Core Web Vitals"
-    );
-    setIsServiceModalOpen(true);
-  };
-
-  const openEditServiceModal = (srv: Service) => {
-    setIsEditingService(true);
-    setIsCustomServiceCategory(Boolean(srv.category && !categories.includes(srv.category)));
-    setServiceForm(srv);
-    setServiceItemsInput((srv.items || []).join("\n"));
-    setIsServiceModalOpen(true);
-  };
-
-  const handleSaveService = async (e: FormEvent) => {
-    e.preventDefault();
-
-    const itemsArray = serviceItemsInput
-      .split("\n")
-      .map((i) => i.trim())
-      .filter(Boolean);
-
-    const slug = (serviceForm.slug || serviceForm.title)
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9-]/g, "-")
-      .replace(/^-+|-+$/g, "");
-
-    const preparedService: Service = {
-      ...serviceForm,
-      id: serviceForm.id || `srv-${Date.now().toString(36)}`,
-      slug: slug || `srv-${Date.now().toString(36)}`,
-      items: itemsArray,
-      href: serviceForm.href || `/contact?service=${slug}`,
-    };
-
-    try {
-      if (isEditingService) {
-        const res = await fetch("/api/admin/services", {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(preparedService),
-        });
-        const data = await res.json();
-        if (data.success && data.service) {
-          setServices((prev) =>
-            prev.map((s) =>
-              s.slug === preparedService.slug || s.id === preparedService.id
-                ? data.service
-                : s
-            )
-          );
-          setIsServiceModalOpen(false);
-        }
-      } else {
-        const res = await fetch("/api/admin/services", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(preparedService),
-        });
-        const data = await res.json();
-        if (data.success && data.service) {
-          setServices((prev) => [...prev, data.service]);
-          setIsServiceModalOpen(false);
-        }
-      }
-    } catch (err) {
-      console.error("Failed to save service:", err);
-    }
-  };
-
-  const handleDeleteService = async (slugOrId: string) => {
-    if (!window.confirm("Delete this service offering?")) return;
-
-    try {
-      const res = await fetch(`/api/admin/services?slug=${slugOrId}`, {
-        method: "DELETE",
-      });
-      const data = await res.json();
-      if (data.success) {
-        setServices((prev) =>
-          prev.filter((s) => s.slug !== slugOrId && s.id !== slugOrId)
-        );
-      }
-    } catch (err) {
-      console.error("Failed to delete service:", err);
-    }
-  };
-
-  // -------------------------------------------------------------
   // INQUIRIES ACTIONS
   // -------------------------------------------------------------
   const handleStatusChange = async (id: string, newStatus: InquiryStatus) => {
@@ -917,20 +770,6 @@ export default function AdminDashboard() {
 
           <button
             type="button"
-            onClick={() => setActiveTab("upcoming")}
-            style={{
-              ...styles.tabItem,
-              borderBottomColor:
-                activeTab === "upcoming" ? "#caff46" : "transparent",
-              color: activeTab === "upcoming" ? "#ffffff" : "#8e988f",
-              fontWeight: activeTab === "upcoming" ? "700" : "500",
-            }}
-          >
-            🚀 Upcoming ({upcomingProjects.length})
-          </button>
-
-          <button
-            type="button"
             onClick={() => setActiveTab("categories")}
             style={{
               ...styles.tabItem,
@@ -941,20 +780,6 @@ export default function AdminDashboard() {
             }}
           >
             🏷️ Categories &amp; Eyebrows ({categories.length})
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab("services")}
-            style={{
-              ...styles.tabItem,
-              borderBottomColor:
-                activeTab === "services" ? "#caff46" : "transparent",
-              color: activeTab === "services" ? "#ffffff" : "#8e988f",
-              fontWeight: activeTab === "services" ? "700" : "500",
-            }}
-          >
-            🛠️ Services ({services.length})
           </button>
 
           <button
@@ -1113,18 +938,6 @@ export default function AdminDashboard() {
         )}
 
         {/* ------------------------------------------------------------- */}
-        {/* TAB: UPCOMING PROJECTS CMS */}
-        {/* ------------------------------------------------------------- */}
-        {activeTab === "upcoming" && (
-          <div style={styles.tabContent}>
-            <UpcomingAdminSection
-              upcomingProjects={upcomingProjects}
-              setUpcomingProjects={setUpcomingProjects}
-            />
-          </div>
-        )}
-
-        {/* ------------------------------------------------------------- */}
         {/* TAB 2: CATEGORIES & EYEBROWS (ADD DYNAMICALLY) */}
         {/* ------------------------------------------------------------- */}
         {activeTab === "categories" && (
@@ -1197,131 +1010,6 @@ export default function AdminDashboard() {
                 })}
               </div>
             </div>
-          </div>
-        )}
-
-        {/* ------------------------------------------------------------- */}
-        {/* TAB: SERVICES CMS */}
-        {/* ------------------------------------------------------------- */}
-        {activeTab === "services" && (
-          <div style={styles.tabContent}>
-            <div style={styles.projectsCmsHeader}>
-              <div>
-                <h3 style={styles.panelTitle}>Services &amp; Offerings</h3>
-                <p style={styles.panelSub}>
-                  Manage your public service packages, deliverables, tech stacks, and turnaround timelines.
-                </p>
-              </div>
-
-              <div style={{ display: "flex", gap: "10px" }}>
-                <button
-                  type="button"
-                  onClick={openAddServiceModal}
-                  style={styles.addProjectLargeBtn}
-                >
-                  + Add Service
-                </button>
-                <Link
-                  href="/services"
-                  target="_blank"
-                  style={styles.viewLiveSiteBtn}
-                >
-                  View Public Services Page ↗
-                </Link>
-              </div>
-            </div>
-
-            {loading ? (
-              <div style={styles.emptyState}>Loading services...</div>
-            ) : services.length === 0 ? (
-              <div style={styles.emptyState}>
-                No services added yet. Click &quot;+ Add Service&quot; above to create
-                your first service package!
-              </div>
-            ) : (
-              <div style={styles.servicesAdminGrid}>
-                {services.map((srv: Service) => (
-                  <div key={srv.slug || srv.id} style={styles.serviceAdminCard}>
-                    <div style={styles.projectCmsTop}>
-                      <span style={styles.projectNumber}>{srv.number}</span>
-                      <span style={styles.projectStatusBadge}>
-                        {srv.category}
-                      </span>
-                    </div>
-
-                    <h4 style={styles.projectCmsTitle}>{srv.title}</h4>
-                    <div style={styles.projectSlugLine}>
-                      Target Link:{" "}
-                      <span style={{ color: "#caff46" }}>{srv.href || `/contact?service=${srv.slug}`}</span>
-                    </div>
-                    <p style={styles.projectCmsSub}>{srv.description}</p>
-
-                    {srv.bestFor && (
-                      <div style={styles.serviceBestForAdmin}>
-                        <strong style={{ color: "#caff46" }}>Best For: </strong>
-                        <span>{srv.bestFor}</span>
-                      </div>
-                    )}
-
-                    {srv.items && srv.items.length > 0 && (
-                      <div style={styles.serviceDeliverablesMini}>
-                        <div style={styles.serviceMiniTitle}>Key Deliverables ({srv.items.length}):</div>
-                        {srv.items.slice(0, 4).map((item, idx) => (
-                          <div key={idx} style={styles.serviceMiniItem}>
-                            <span style={{ color: "#caff46" }}>✓</span> {item}
-                          </div>
-                        ))}
-                        {srv.items.length > 4 && (
-                          <div style={{ fontSize: "11px", color: "#8a948c", fontStyle: "italic", marginTop: "4px" }}>
-                            +{srv.items.length - 4} more deliverables
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {srv.stack && (
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", margin: "12px 0" }}>
-                        {(Array.isArray(srv.stack) ? srv.stack : srv.stack.split(",")).map((tech: string) => (
-                          <span key={tech.trim()} style={styles.stackBadgeAdmin}>
-                            {tech.trim()}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-
-                    <div style={styles.serviceMetaRowAdmin}>
-                      {srv.timeline && (
-                        <span style={styles.metaBadgeAdmin}>
-                          ⏱️ {srv.timeline}
-                        </span>
-                      )}
-                      {srv.startingPrice && (
-                        <span style={styles.priceBadgeAdmin}>
-                          💰 {srv.startingPrice}
-                        </span>
-                      )}
-                    </div>
-
-                    <div style={styles.projectCmsActions}>
-                      <button
-                        type="button"
-                        onClick={() => openEditServiceModal(srv)}
-                        style={styles.editProjectBtn}
-                      >
-                        ✏️ Edit Service
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleDeleteService(srv.slug || srv.id)}
-                        style={styles.deleteProjectBtn}
-                      >
-                        🗑️ Delete
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
         )}
 
@@ -1925,7 +1613,7 @@ export default function AdminDashboard() {
                   <div style={styles.infoRow}>
                     <span style={styles.infoKey}>Local File Storage:</span>
                     <span style={styles.infoVal}>
-                      data/projects.json, data/services.json, data/categories.json, data/settings.json
+                      data/projects.json, data/categories.json, data/settings.json, data/resources.json
                     </span>
                   </div>
                 </div>
@@ -2420,338 +2108,6 @@ export default function AdminDashboard() {
                     : isEditingProject
                     ? "Save Changes"
                     : "Create Project"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* ------------------------------------------------------------- */}
-      {/* SERVICE ADD/EDIT MODAL */}
-      {/* ------------------------------------------------------------- */}
-      {isServiceModalOpen && (
-        <div style={styles.modalOverlay}>
-          <div style={styles.projectModalCard}>
-            <div style={styles.modalHeader}>
-              <div>
-                <h3 style={styles.modalTitle}>
-                  {isEditingService ? "Edit Service Offering" : "Add New Service Offering"}
-                </h3>
-                <p style={{ margin: "4px 0 0", fontSize: "12px", color: "#8a948c" }}>
-                  Configure what you offer, key deliverables, technologies, and estimated turnaround.
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsServiceModalOpen(false)}
-                style={styles.drawerCloseBtn}
-              >
-                ✕
-              </button>
-            </div>
-
-            <form onSubmit={handleSaveService} style={styles.projectFormGrid}>
-              {/* 1. Service Title & Number */}
-              <div style={styles.formRow2}>
-                <div style={{ minWidth: 0 }}>
-                  <label style={styles.formLabel}>Service Title *</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. AI Agents & Autonomous Workflows"
-                    value={serviceForm.title}
-                    onChange={(e) => {
-                      const newTitle = e.target.value;
-                      if (!isEditingService && !serviceForm.slug) {
-                        const autoSlug = newTitle
-                          .toLowerCase()
-                          .replace(/[^a-z0-9]+/g, "-")
-                          .replace(/^-|-$/g, "");
-                        setServiceForm({
-                          ...serviceForm,
-                          title: newTitle,
-                          slug: autoSlug,
-                          href: `/contact?service=${autoSlug}`,
-                        });
-                      } else {
-                        setServiceForm({ ...serviceForm, title: newTitle });
-                      }
-                    }}
-                    style={styles.formInput}
-                  />
-                </div>
-
-                <div style={{ minWidth: 0 }}>
-                  <label style={styles.formLabel}>Order Number (e.g. 01, 02)</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="01"
-                    value={serviceForm.number}
-                    onChange={(e) =>
-                      setServiceForm({ ...serviceForm, number: e.target.value })
-                    }
-                    style={styles.formInput}
-                  />
-                </div>
-              </div>
-
-              {/* 2. URL Slug & Category */}
-              <div style={styles.formRow2}>
-                <div style={{ minWidth: 0 }}>
-                  <label style={styles.formLabel}>Service Slug (Identifier) *</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="ai-agents-autonomous-workflows"
-                    value={serviceForm.slug}
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      setServiceForm({
-                        ...serviceForm,
-                        slug: val,
-                        href: `/contact?service=${val}`,
-                      });
-                    }}
-                    style={styles.formInput}
-                  />
-                </div>
-
-                <div style={{ minWidth: 0 }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    <label style={{ ...styles.formLabel, marginBottom: 0 }}>
-                      Category / Eyebrow *
-                    </label>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setIsCustomServiceCategory(!isCustomServiceCategory)
-                      }
-                      style={{
-                        background: "transparent",
-                        border: "none",
-                        color: "#caff46",
-                        fontSize: "11px",
-                        fontWeight: "600",
-                        cursor: "pointer",
-                        padding: "0 2px",
-                        textDecoration: "underline",
-                      }}
-                    >
-                      {isCustomServiceCategory
-                        ? "← Select from list"
-                        : "+ Type custom"}
-                    </button>
-                  </div>
-
-                  {isCustomServiceCategory ? (
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. AI Agents & Workflows"
-                      value={serviceForm.category}
-                      onChange={(e) =>
-                        setServiceForm({
-                          ...serviceForm,
-                          category: e.target.value,
-                        })
-                      }
-                      style={styles.formInput}
-                      autoFocus
-                    />
-                  ) : (
-                    <select
-                      value={serviceForm.category}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        if (val === "__custom__") {
-                          setIsCustomServiceCategory(true);
-                        } else {
-                          setServiceForm({
-                            ...serviceForm,
-                            category: val,
-                          });
-                        }
-                      }}
-                      style={styles.formSelect}
-                    >
-                      {categories.map((c) => (
-                        <option
-                          key={c}
-                          value={c}
-                          style={{ background: "#181d19", color: "#ffffff" }}
-                        >
-                          {c}
-                        </option>
-                      ))}
-                      {!categories.includes(serviceForm.category) &&
-                        serviceForm.category && (
-                          <option
-                            value={serviceForm.category}
-                            style={{ background: "#181d19", color: "#ffffff" }}
-                          >
-                            {serviceForm.category}
-                          </option>
-                        )}
-                      <option
-                        value="__custom__"
-                        style={{
-                          background: "#181d19",
-                          color: "#caff46",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        + Type custom category...
-                      </option>
-                    </select>
-                  )}
-                  <span style={styles.inputHint}>
-                    {isCustomServiceCategory
-                      ? "Custom category name enter karein ya list se choose karein."
-                      : "Categories list se select karein ya '+ Type custom' karein."}
-                  </span>
-                </div>
-              </div>
-
-              {/* 3. Description */}
-              <div>
-                <label style={styles.formLabel}>Service Overview / Description *</label>
-                <textarea
-                  required
-                  rows={3}
-                  placeholder="Clear 1-2 sentence description explaining what client value this delivers..."
-                  value={serviceForm.description}
-                  onChange={(e) =>
-                    setServiceForm({ ...serviceForm, description: e.target.value })
-                  }
-                  style={styles.formTextarea}
-                />
-              </div>
-
-              {/* 4. Deliverables Checklist */}
-              <div>
-                <label style={styles.formLabel}>
-                  Deliverables Checklist (1 item per line) *
-                </label>
-                <textarea
-                  required
-                  rows={4}
-                  placeholder="Custom autonomous agents connected to APIs&#10;Tool calling, structured JSON output&#10;Prompt security, guardrails & observability"
-                  value={serviceItemsInput}
-                  onChange={(e) => setServiceItemsInput(e.target.value)}
-                  style={styles.formTextarea}
-                />
-              </div>
-
-              {/* 5. Best For */}
-              <div>
-                <label style={styles.formLabel}>
-                  Best Suited For (Ideal Client / Use Case)
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. Founders wanting to automate customer intake or data aggregation"
-                  value={serviceForm.bestFor || ""}
-                  onChange={(e) =>
-                    setServiceForm({ ...serviceForm, bestFor: e.target.value })
-                  }
-                  style={styles.formInput}
-                />
-              </div>
-
-              {/* 6. Turnaround (Timeline) & Starting Price */}
-              <div style={styles.formRow2}>
-                <div style={{ minWidth: 0 }}>
-                  <label style={styles.formLabel}>Estimated Turnaround (Timeline)</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. 1 - 2 Weeks, 2 - 4 Weeks"
-                    value={serviceForm.timeline || ""}
-                    onChange={(e) =>
-                      setServiceForm({ ...serviceForm, timeline: e.target.value })
-                    }
-                    style={styles.formInput}
-                  />
-                </div>
-
-                <div style={{ minWidth: 0 }}>
-                  <label style={styles.formLabel}>Starting Price / Scope (Optional)</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Custom quote / From $1,200"
-                    value={serviceForm.startingPrice || ""}
-                    onChange={(e) =>
-                      setServiceForm({ ...serviceForm, startingPrice: e.target.value })
-                    }
-                    style={styles.formInput}
-                  />
-                </div>
-              </div>
-
-              {/* 7. Tech Stack */}
-              <div>
-                <label style={styles.formLabel}>
-                  Technologies &amp; Frameworks (Comma-separated)
-                </label>
-                <input
-                  type="text"
-                  placeholder="Next.js, TypeScript, OpenAI API, LangChain, Supabase"
-                  value={serviceForm.stack || ""}
-                  onChange={(e) =>
-                    setServiceForm({ ...serviceForm, stack: e.target.value })
-                  }
-                  style={styles.formInput}
-                />
-              </div>
-
-              {/* 8. Call to Action & Link */}
-              <div style={styles.formRow2}>
-                <div style={{ minWidth: 0 }}>
-                  <label style={styles.formLabel}>Button Text (CTA)</label>
-                  <input
-                    type="text"
-                    placeholder="Inquire About This Service"
-                    value={serviceForm.cta || "Inquire About This Service"}
-                    onChange={(e) =>
-                      setServiceForm({ ...serviceForm, cta: e.target.value })
-                    }
-                    style={styles.formInput}
-                  />
-                </div>
-
-                <div style={{ minWidth: 0 }}>
-                  <label style={styles.formLabel}>Action Target Link</label>
-                  <input
-                    type="text"
-                    placeholder="/contact?service=slug"
-                    value={serviceForm.href || `/contact?service=${serviceForm.slug}`}
-                    onChange={(e) =>
-                      setServiceForm({ ...serviceForm, href: e.target.value })
-                    }
-                    style={styles.formInput}
-                  />
-                </div>
-              </div>
-
-              {/* Modal Buttons */}
-              <div style={styles.modalButtonsRow}>
-                <button
-                  type="button"
-                  onClick={() => setIsServiceModalOpen(false)}
-                  style={styles.modalCancelBtn}
-                >
-                  Cancel
-                </button>
-                <button type="submit" style={styles.modalSubmitBtn}>
-                  {isEditingService ? "Save Service Changes" : "Create Service"}
                 </button>
               </div>
             </form>
@@ -3884,89 +3240,6 @@ const styles: Record<string, CSSProperties> = {
     fontSize: "12px",
     fontWeight: "600",
     cursor: "pointer",
-  },
-
-  // Services CMS Admin styles
-  servicesAdminGrid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(360px, 1fr))",
-    gap: "20px",
-  },
-  serviceAdminCard: {
-    background: "#121512",
-    border: "1px solid #222a23",
-    borderRadius: "12px",
-    padding: "24px",
-    display: "flex",
-    flexDirection: "column",
-    transition: "border-color 0.2s ease",
-  },
-  serviceBestForAdmin: {
-    fontSize: "12px",
-    lineHeight: "1.5",
-    color: "#cbd5cc",
-    background: "#161b17",
-    border: "1px solid #252e26",
-    borderRadius: "6px",
-    padding: "8px 12px",
-    marginBottom: "12px",
-  },
-  serviceDeliverablesMini: {
-    background: "#0c0e0d",
-    border: "1px solid #1f2720",
-    borderRadius: "8px",
-    padding: "12px 14px",
-    marginBottom: "12px",
-  },
-  serviceMiniTitle: {
-    fontSize: "10px",
-    fontWeight: "700",
-    letterSpacing: "0.5px",
-    textTransform: "uppercase",
-    color: "#839185",
-    marginBottom: "8px",
-  },
-  serviceMiniItem: {
-    fontSize: "12px",
-    color: "#d0d8d1",
-    lineHeight: "1.5",
-    marginBottom: "4px",
-  },
-  serviceMetaRowAdmin: {
-    display: "flex",
-    gap: "10px",
-    alignItems: "center",
-    marginTop: "auto",
-    paddingTop: "12px",
-    borderTop: "1px solid #1f2720",
-    marginBottom: "16px",
-  },
-  metaBadgeAdmin: {
-    fontSize: "11px",
-    fontWeight: "600",
-    color: "#a4b0a5",
-    background: "#161b17",
-    border: "1px solid #252e26",
-    padding: "4px 8px",
-    borderRadius: "4px",
-  },
-  priceBadgeAdmin: {
-    fontSize: "11px",
-    fontWeight: "700",
-    color: "#caff46",
-    background: "rgba(202, 255, 70, 0.08)",
-    border: "1px solid rgba(202, 255, 70, 0.3)",
-    padding: "4px 8px",
-    borderRadius: "4px",
-  },
-  stackBadgeAdmin: {
-    fontSize: "10px",
-    fontWeight: "600",
-    color: "#8e988f",
-    background: "#181d19",
-    border: "1px solid #263028",
-    padding: "3px 8px",
-    borderRadius: "4px",
   },
 
   // Settings CMS Styles

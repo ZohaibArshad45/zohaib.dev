@@ -109,21 +109,6 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
               Production autonomous AI agents, multi-doc RAG search engines, n8n automations,
               and full-stack Next.js SaaS platforms engineered for measurable business impact.
             </p>
-            <Link
-              href="/upcoming"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "6px",
-                color: "#caff46",
-                fontSize: "13px",
-                fontWeight: "700",
-                textDecoration: "none",
-                marginTop: "12px",
-              }}
-            >
-              Explore Upcoming AI Builds &amp; Roadmap ↗
-            </Link>
           </div>
         </header>
 

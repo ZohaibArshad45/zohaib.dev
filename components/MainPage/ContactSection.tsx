@@ -981,10 +981,7 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
             }}
           >
             <a href="/projects" style={{ color: "#a4b0a6", textDecoration: "none" }}>Projects</a>
-            <a href="/upcoming" style={{ color: "#caff46", textDecoration: "none", fontWeight: "700" }}>Upcoming Roadmap 🚀</a>
-            <a href="/services" style={{ color: "#a4b0a6", textDecoration: "none" }}>Services</a>
             <a href="/resources" style={{ color: "#a4b0a6", textDecoration: "none" }}>Resources</a>
-            <a href="/process" style={{ color: "#a4b0a6", textDecoration: "none" }}>Process</a>
             <a href="/about" style={{ color: "#a4b0a6", textDecoration: "none" }}>About</a>
             <a href="/contact" style={{ color: "#a4b0a6", textDecoration: "none" }}>Contact</a>
             <a href="/admin" style={{ color: "#7a857b", textDecoration: "none", marginLeft: "auto" }}>Admin Console 🔒</a>

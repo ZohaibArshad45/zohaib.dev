@@ -267,17 +267,6 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
           <Link href="/projects" style={styles.secondaryButton}>
             Explore AI projects ↓
           </Link>
-
-          <Link
-            href="/upcoming"
-            style={{
-              ...styles.secondaryButton,
-              color: "#caff46",
-              borderColor: "#caff46",
-            }}
-          >
-            Upcoming Roadmap 🚀
-          </Link>
         </div>
 
         <div style={styles.tags}>
