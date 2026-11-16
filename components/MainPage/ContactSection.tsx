@@ -139,13 +139,13 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
 
     container: {
       width: "100%",
-      maxWidth: "1180px",
+      maxWidth: "1220px",
       margin: "0 auto",
       padding: isMobile
         ? "24px 20px 0"
         : isTablet
         ? "24px 32px 0"
-        : "24px 48px 0",
+        : "24px 24px 0",
       boxSizing: "border-box",
     },
 
@@ -168,13 +168,13 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
         ? "52px"
         : isTablet
         ? "66px"
-        : "72px",
+        : "56px",
 
       padding: isMobile
         ? "68px 0 70px"
         : isTablet
         ? "78px 0 80px"
-        : "72px 0 78px",
+        : "68px 0 72px",
 
       alignItems: "start",
     },
@@ -200,7 +200,7 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
         ? "40px"
         : isTablet
         ? "50px"
-        : "58px",
+        : "54px",
 
       lineHeight: "1.05",
       fontWeight: "400",

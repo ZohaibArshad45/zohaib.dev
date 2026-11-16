@@ -37,13 +37,13 @@ export default function AboutPage() {
 
     container: {
       width: "100%",
-      maxWidth: "1180px",
+      maxWidth: "1220px",
       margin: "0 auto",
       padding: isMobile
-        ? "120px 20px 80px"
+        ? "108px 20px 72px"
         : isTablet
-        ? "140px 32px 90px"
-        : "150px 48px 100px",
+        ? "126px 32px 80px"
+        : "128px 24px 88px",
       boxSizing: "border-box",
     },
 
@@ -52,7 +52,7 @@ export default function AboutPage() {
       fontSize: isMobile ? "11px" : "12px",
       fontWeight: "700",
       letterSpacing: "1px",
-      marginBottom: "24px",
+      marginBottom: "18px",
     },
 
     hero: {
@@ -62,7 +62,7 @@ export default function AboutPage() {
         : isTablet
         ? "1fr"
         : "1.15fr 0.85fr",
-      gap: isMobile ? "36px" : "70px",
+      gap: isMobile ? "30px" : isTablet ? "36px" : "54px",
       alignItems: "end",
     },
 
@@ -71,12 +71,12 @@ export default function AboutPage() {
       fontSize: isMobile
         ? "42px"
         : isTablet
-        ? "52px"
-        : "60px",
-      lineHeight: "1.03",
+        ? "50px"
+        : "54px",
+      lineHeight: "1.06",
       fontWeight: "400",
       letterSpacing: isMobile ? "0" : "0",
-      maxWidth: "680px",
+      maxWidth: "650px",
     },
 
     accent: {
@@ -99,7 +99,7 @@ export default function AboutPage() {
       background: "#e2dfd5",
       margin: isMobile
         ? "60px 0"
-        : "80px 0",
+        : "64px 0",
     },
 
     sectionGrid: {
@@ -109,7 +109,7 @@ export default function AboutPage() {
         : isTablet
         ? "1fr"
         : "0.75fr 1.25fr",
-      gap: isMobile ? "28px" : "70px",
+      gap: isMobile ? "28px" : isTablet ? "36px" : "54px",
       alignItems: "start",
     },
 
@@ -207,7 +207,7 @@ export default function AboutPage() {
     cta: {
       marginTop: isMobile
         ? "70px"
-        : "90px",
+        : "76px",
       paddingTop: isMobile
         ? "36px"
         : "48px",
