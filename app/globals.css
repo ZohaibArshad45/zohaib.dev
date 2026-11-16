@@ -185,7 +185,7 @@
 .site-footer-inner {
   max-width: 1220px;
   margin: 0 auto;
-  padding: 34px 24px 22px;
+  padding: 28px 24px 18px;
   box-sizing: border-box;
 }
 
@@ -194,13 +194,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 28px;
 }
 
 .site-footer-top p {
-  margin: 6px 0 0;
+  margin: 4px 0 0;
   color: var(--text-muted);
   font-size: 12px;
+  line-height: 1.5;
 }
 
 .site-footer-brand {
@@ -217,43 +218,40 @@
 
 .site-footer-links {
   display: flex;
-  gap: 26px;
+  gap: 18px;
   flex-wrap: wrap;
 }
 
-.site-footer-bottom {
-  margin-top: 24px;
-  padding: 18px 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+.site-footer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 22px;
 }
 
 .site-footer-socials {
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 14px;
 }
 
 .site-footer-socials a {
-  width: 42px;
-  height: 42px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: #202329;
-  color: #ffffff;
+  color: var(--text-muted);
   text-decoration: none;
-  font-size: 11px;
-  font-weight: 700;
-  transition: background 0.2s ease, transform 0.2s ease;
+  font-size: 12px;
+  font-weight: 550;
+  transition: color 0.2s ease;
 }
 
 .site-footer-socials a:hover {
-  background: var(--accent);
-  transform: translateY(-2px);
+  color: var(--accent);
 }
 
 .site-footer-legal {
-  padding-top: 20px;
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
 }
 
 .site-footer-links a,
@@ -275,18 +273,30 @@
 
 @media (max-width: 640px) {
   .site-footer-inner {
-    padding: 28px 20px 20px;
+    padding: 24px 20px 18px;
   }
 
   .site-footer-top {
     align-items: flex-start;
     flex-direction: column;
+    gap: 18px;
+  }
+
+  .site-footer-actions {
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .site-footer-links {
+    gap: 16px;
   }
 
   .site-footer-legal {
     align-items: flex-start;
-    flex-direction: column;
-    gap: 12px;
+    gap: 8px;
+    flex-wrap: wrap;
   }
 }
 

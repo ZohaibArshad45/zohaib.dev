@@ -7,13 +7,6 @@ const links = [
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
-const socials = [
-  { href: "https://github.com/codingskillup", label: "GitHub", short: "GH" },
-  { href: "https://linkedin.com/in/", label: "LinkedIn", short: "in" },
-  { href: "https://x.com/", label: "X", short: "X" },
-  { href: "https://codingskillup.com", label: "Codingskillup", short: "CS" },
-];
-
 export default function SiteFooter({ settings }: { settings?: SiteSettings }) {
   const socials = [
     { href: settings?.githubUrl || "https://github.com/codingskillup", label: "GitHub", short: "GH" },
@@ -33,20 +26,20 @@ export default function SiteFooter({ settings }: { settings?: SiteSettings }) {
             <Link href="/" className="site-footer-brand">Zohaib<span>.</span></Link>
             <p>Web Developer · Founder of Codingskillup · Bahawalpur, Pakistan</p>
           </div>
-          <div className="site-footer-socials" aria-label="Social links">
-            {socials.map((social) => (
-              <a href={social.href} key={social.label} aria-label={social.label} target="_blank" rel="noreferrer">
-                {social.short}
-              </a>
-            ))}
+          <div className="site-footer-actions">
+            <nav aria-label="Footer navigation" className="site-footer-links">
+              {links.map((link) => (
+                <Link href={link.href} key={link.href}>{link.label}</Link>
+              ))}
+            </nav>
+            <div className="site-footer-socials" aria-label="Social links">
+              {socials.map((social) => (
+                <a href={social.href} key={social.label} target="_blank" rel="noreferrer">
+                  {social.label}
+                </a>
+              ))}
+            </div>
           </div>
-        </div>
-        <div className="site-footer-bottom">
-          <nav aria-label="Footer navigation" className="site-footer-links">
-            {links.map((link) => (
-              <Link href={link.href} key={link.href}>{link.label}</Link>
-            ))}
-          </nav>
         </div>
         <div className="site-footer-legal">
           <small>© {new Date().getFullYear()} Zohaib · Web Developer · All rights reserved.</small>
