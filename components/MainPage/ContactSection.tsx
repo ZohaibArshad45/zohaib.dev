@@ -984,7 +984,6 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
             <a href="/resources" style={{ color: "#a4b0a6", textDecoration: "none" }}>Resources</a>
             <a href="/about" style={{ color: "#a4b0a6", textDecoration: "none" }}>About</a>
             <a href="/contact" style={{ color: "#a4b0a6", textDecoration: "none" }}>Contact</a>
-            <a href="/admin" style={{ color: "#7a857b", textDecoration: "none", marginLeft: "auto" }}>Admin Console 🔒</a>
           </div>
 
           <div style={styles.footerBottom}>

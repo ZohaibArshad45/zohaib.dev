@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState, type CSSProperties } from "react";
 import ProjectPreviewCard from "@/components/Projects/ProjectPreviewCard";
 import type { Project } from "@/lib/projects";
@@ -11,7 +10,6 @@ export default function SelectedWork({
 }: {
   projects?: Project[];
 }) {
-  const router = useRouter();
   const [width, setWidth] = useState(1440);
   const [projectList, setProjectList] = useState<Project[]>(
     propProjects && propProjects.length > 0 ? propProjects : []
@@ -114,14 +112,21 @@ export default function SelectedWork({
       width: "100%",
       display: "grid",
       gridTemplateColumns: isMobile || isTablet ? "1fr" : "repeat(auto-fit, minmax(320px, 1fr))",
-      borderRadius: "12px",
+      borderRadius: "16px",
       overflow: "hidden",
-      background: "#121512",
+      background: "var(--surface)",
       boxSizing: "border-box",
       cursor: "pointer",
-      border: "1px solid #282f29",
+      border: "1px solid var(--line)",
       boxShadow: "0 10px 25px rgba(0, 0, 0, 0.25)",
       transition: "transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease",
+      position: "relative",
+    },
+
+    cardHit: {
+      position: "absolute",
+      inset: 0,
+      zIndex: 2,
     },
 
     previewContainer: {
@@ -129,16 +134,22 @@ export default function SelectedWork({
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
-      background: "rgba(0, 0, 0, 0.25)",
+      background: "rgba(0, 0, 0, 0.22)",
       boxSizing: "border-box",
+      position: "relative",
+      zIndex: 1,
+      pointerEvents: "none",
     },
 
     contentContainer: {
-      padding: isMobile ? "20px 18px" : "24px 28px",
+      padding: isMobile ? "20px 18px" : "28px 32px",
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
       boxSizing: "border-box",
+      position: "relative",
+      zIndex: 1,
+      pointerEvents: "none",
     },
 
     projectEyebrow: {
@@ -167,10 +178,10 @@ export default function SelectedWork({
     },
 
     projectDescription: {
-      margin: "8px 0 0",
-      fontSize: "13px",
-      lineHeight: "1.55",
-      color: "#bac0bb",
+      margin: "10px 0 0",
+      fontSize: "15px",
+      lineHeight: "1.65",
+      color: "var(--text-soft)",
     },
 
     outcomeBox: {
@@ -238,7 +249,10 @@ export default function SelectedWork({
       gap: "14px",
       marginTop: "16px",
       paddingTop: "14px",
-      borderTop: "1px solid #252b26",
+      borderTop: "1px solid var(--line)",
+      position: "relative",
+      zIndex: 3,
+      pointerEvents: "none",
     },
 
     projectLink: {
@@ -366,7 +380,7 @@ export default function SelectedWork({
   const getCardStyle = (slug: string): CSSProperties => ({
     ...styles.card,
     border:
-      hoveredProject === slug ? "1px solid #caff46" : "1px solid #282f29",
+      hoveredProject === slug ? "1px solid var(--accent)" : "1px solid var(--line)",
     transform:
       hoveredProject === slug ? "translateY(-4px)" : "translateY(0)",
     boxShadow:
@@ -434,8 +448,14 @@ export default function SelectedWork({
                 style={getCardStyle(project.slug)}
                 onMouseEnter={() => setHoveredProject(project.slug)}
                 onMouseLeave={() => setHoveredProject(null)}
-                onClick={() => router.push(`/projects/${project.slug}`)}
               >
+                {project.slug ? (
+                  <Link
+                    href={`/projects/${project.slug}`}
+                    aria-label={`Open case study: ${project.title || project.headline || project.slug}`}
+                    style={styles.cardHit}
+                  />
+                ) : null}
                 {/* PREVIEW CONTAINER */}
                 <div style={styles.previewContainer}>
                   <ProjectPreviewCard project={project} isMobile={isMobile} />
@@ -490,20 +510,6 @@ export default function SelectedWork({
                     </div>
                   )}
 
-                  {/* 10 CORE PRODUCTION SAAS CAPABILITIES */}
-                  <div style={styles.featuresStrip}>
-                    <span style={styles.featureItem} title="Authentication & User Accounts">✅ Auth</span>
-                    <span style={styles.featureItem} title="Operations Dashboard">✅ Dashboard</span>
-                    <span style={styles.featureItem} title="Admin Panel">✅ Admin</span>
-                    <span style={styles.featureItem} title="Dark Mode UI">✅ Dark Mode</span>
-                    <span style={styles.featureItem} title="Responsive Design">✅ Responsive</span>
-                    <span style={styles.featureItem} title="Stripe Billing">✅ Stripe</span>
-                    <span style={styles.featureItem} title="OpenAI / Autonomous AI">✅ AI</span>
-                    <span style={styles.featureItem} title="PostgreSQL Database">✅ Database</span>
-                    <span style={styles.featureItem} title="Role Based Access Control">✅ RBAC</span>
-                    <span style={styles.featureItem} title="Cloud Edge Deployment">✅ Deployed</span>
-                  </div>
-
                   {/* ACTION LINKS & META */}
                   <div style={styles.actionsRow}>
                     <div
@@ -519,15 +525,15 @@ export default function SelectedWork({
                           ...styles.projectLink,
                           color:
                             hoveredProject === project.slug
-                              ? "#caff46"
-                              : "#ffffff",
+                              ? "var(--accent)"
+                              : "var(--text)",
                           borderBottom:
                             hoveredProject === project.slug
-                              ? "1px solid #caff46"
-                              : "1px solid #76805e",
+                              ? "1px solid var(--accent)"
+                              : "1px solid #8f9aad",
                         }}
                       >
-                        Explore Case Study ↗
+                        Open case study
                       </span>
 
                       {project.demoUrl && (
@@ -535,13 +541,13 @@ export default function SelectedWork({
                           href={project.demoUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
                           style={{
-                            fontSize: "13px",
+                            fontSize: "14px",
                             fontWeight: "700",
-                            color: "#caff46",
+                            color: "var(--accent)",
                             textDecoration: "none",
                             paddingBottom: "2px",
+                            pointerEvents: "auto",
                           }}
                         >
                           Live Demo ↗
@@ -553,13 +559,13 @@ export default function SelectedWork({
                           href={project.githubUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
                           style={{
-                            fontSize: "13px",
-                            fontWeight: "500",
-                            color: "#a4aca6",
+                            fontSize: "14px",
+                            fontWeight: "600",
+                            color: "var(--text-soft)",
                             textDecoration: "none",
                             paddingBottom: "2px",
+                            pointerEvents: "auto",
                           }}
                         >
                           GitHub ↗

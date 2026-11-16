@@ -73,8 +73,8 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
     ...styles.card,
     border:
       hoveredProject === slug
-        ? "1px solid #caff46"
-        : "1px solid #282f29",
+        ? "1px solid var(--accent)"
+        : "1px solid var(--line)",
     transform:
       hoveredProject === slug ? "translateY(-4px)" : "translateY(0)",
     boxShadow:
@@ -87,8 +87,8 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
 
   const getLinkStyle = (slug: string): CSSProperties => ({
     ...styles.projectLink,
-    color: hoveredLink === slug ? "#caff46" : "#ffffff",
-    borderColor: hoveredLink === slug ? "#caff46" : "#76805e",
+    color: hoveredLink === slug ? "var(--accent)" : "var(--text)",
+    borderColor: hoveredLink === slug ? "var(--accent)" : "#8f9aad",
   });
 
   return (
@@ -111,39 +111,6 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
             </p>
           </div>
         </header>
-
-        {/* METRICS STRIP */}
-        <section style={styles.metricsStrip}>
-          <div style={styles.metricItem}>
-            <div style={styles.metricVal}>
-              {projectList.length < 10
-                ? `0${projectList.length}`
-                : `${projectList.length}`}
-              {projectList.length > 1 ? "+" : ""}
-            </div>
-            <div style={styles.metricDesc}>
-              {projectList.length === 1
-                ? "Production System Built"
-                : "Production Systems Built"}
-            </div>
-          </div>
-          <div style={styles.metricItem}>
-            <div style={styles.metricVal}>
-              {categoriesList.filter((c) => c !== "All").length < 10
-                ? `0${categoriesList.filter((c) => c !== "All").length}`
-                : `${categoriesList.filter((c) => c !== "All").length}`}
-            </div>
-            <div style={styles.metricDesc}>Core Solution Domains</div>
-          </div>
-          <div style={styles.metricItem}>
-            <div style={styles.metricVal}>100%</div>
-            <div style={styles.metricDesc}>Production Tested &amp; Typed</div>
-          </div>
-          <div style={styles.metricItem}>
-            <div style={styles.metricVal}>99.9%</div>
-            <div style={styles.metricDesc}>System Reliability &amp; Uptime</div>
-          </div>
-        </section>
 
         {/* CATEGORY FILTER TABS */}
         <nav aria-label="Project categories" style={styles.filterBar}>
@@ -236,6 +203,13 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
                 onMouseEnter={() => setHoveredProject(project.slug)}
                 onMouseLeave={() => setHoveredProject(null)}
               >
+              {project.slug ? (
+                <Link
+                  href={`/projects/${project.slug}`}
+                  aria-label={`Open case study: ${project.title || project.headline || project.slug}`}
+                  style={styles.cardHit}
+                />
+              ) : null}
               {/* PREVIEW CONTAINER */}
               <div style={styles.previewContainer}>
                 <ProjectPreviewCard project={project} isMobile={isMobile} />
@@ -288,31 +262,16 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
                   </div>
                 )}
 
-                {/* 10 CORE PRODUCTION SAAS CAPABILITIES */}
-                <div style={styles.featuresStrip}>
-                  <span style={styles.featureItem} title="Authentication & User Accounts">✅ Auth</span>
-                  <span style={styles.featureItem} title="Operations Dashboard">✅ Dashboard</span>
-                  <span style={styles.featureItem} title="Admin Panel">✅ Admin Panel</span>
-                  <span style={styles.featureItem} title="Dark Mode UI">✅ Dark Mode</span>
-                  <span style={styles.featureItem} title="100% Responsive">✅ Responsive</span>
-                  <span style={styles.featureItem} title="Stripe Subscriptions">✅ Stripe</span>
-                  <span style={styles.featureItem} title="OpenAI / Autonomous AI Engine">✅ AI</span>
-                  <span style={styles.featureItem} title="PostgreSQL Database">✅ Database</span>
-                  <span style={styles.featureItem} title="Role Based Access Control">✅ RBAC</span>
-                  <span style={styles.featureItem} title="Cloud Edge Deployment">✅ Deployed</span>
-                </div>
-
                 {/* ACTION LINKS */}
                 <div style={styles.actionsRow}>
                   <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
-                    <Link
-                      href={`/projects/${project.slug}`}
+                    <span
                       style={getLinkStyle(project.slug)}
                       onMouseEnter={() => setHoveredLink(project.slug)}
                       onMouseLeave={() => setHoveredLink(null)}
                     >
-                      Explore Case Study ↗
-                    </Link>
+                      Open case study
+                    </span>
 
                     {project.demoUrl && (
                       <a
@@ -320,11 +279,12 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{
-                          fontSize: "13px",
+                          fontSize: "14px",
                           fontWeight: "700",
-                          color: "#caff46",
+                          color: "var(--accent)",
                           textDecoration: "none",
                           paddingBottom: "2px",
+                          pointerEvents: "auto",
                         }}
                       >
                         Live Demo ↗
@@ -337,11 +297,12 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{
-                          fontSize: "13px",
-                          fontWeight: "500",
-                          color: "#a4aca6",
+                          fontSize: "14px",
+                          fontWeight: "600",
+                          color: "var(--text-soft)",
                           textDecoration: "none",
                           paddingBottom: "2px",
+                          pointerEvents: "auto",
                         }}
                       >
                         GitHub ↗
@@ -358,125 +319,6 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
               </div>
             </article>
           )))}
-        </section>
-
-        <div style={styles.divider} />
-
-        {/* ENGINEERING PRINCIPLES */}
-        <section style={styles.principlesSection}>
-          <div style={styles.principlesLeft}>
-            <div style={styles.label}>02 / ENGINEERING STANDARDS</div>
-            <h2 style={styles.principlesTitle}>
-              How every system
-              <br />
-              is built to last.
-            </h2>
-            <p style={styles.principlesIntro}>
-              Software shouldn&apos;t just look impressive on launch day. It
-              needs to run reliably when real business data is flowing through
-              it at scale.
-            </p>
-          </div>
-
-          <div style={styles.principlesGrid}>
-            <div style={styles.principleCard}>
-              <div style={styles.principleNum}>01</div>
-              <h3 style={styles.principleHeading}>Direct &amp; Unified Delivery</h3>
-              <p style={styles.principleText}>
-                No layers of account managers or outsourced handoffs. You work
-                directly with the engineer architecting your code from scoping to
-                production rollout.
-              </p>
-            </div>
-
-            <div style={styles.principleCard}>
-              <div style={styles.principleNum}>02</div>
-              <h3 style={styles.principleHeading}>Grounded, Practical AI</h3>
-              <p style={styles.principleText}>
-                No probabilistic guesswork where accuracy matters. All AI agents
-                are anchored to strict schemas, verifiable vector embeddings, and
-                deterministic fallbacks.
-              </p>
-            </div>
-
-            <div style={styles.principleCard}>
-              <div style={styles.principleNum}>03</div>
-              <h3 style={styles.principleHeading}>Idempotent Automations</h3>
-              <p style={styles.principleText}>
-                Workflows handle retries, rate limits, schema anomalies, and
-                edge drops gracefully with automatic audit logging and zero
-                silent failures.
-              </p>
-            </div>
-
-            <div style={styles.principleCard}>
-              <div style={styles.principleNum}>04</div>
-              <h3 style={styles.principleHeading}>High-Density, Fast UIs</h3>
-              <p style={styles.principleText}>
-                Clean interfaces focused on clarity and velocity. Zero lag,
-                accessible contrast ratios, responsive on all displays, and
-                keyboard-efficient navigation.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <div style={styles.divider} />
-
-        {/* TECH STACK SECTION */}
-        <section style={styles.techSection}>
-          <div>
-            <div style={styles.label}>03 / TECHNICAL CAPABILITIES</div>
-            <h2 style={styles.principlesTitle}>
-              Core tools &amp; frameworks.
-            </h2>
-          </div>
-
-          <div style={styles.techGrid}>
-            <div style={styles.techCategory}>
-              <div style={styles.techCatTitle}>WEB &amp; FULL-STACK</div>
-              <div style={styles.techCatTags}>
-                <span style={styles.techPill}>Next.js 16</span>
-                <span style={styles.techPill}>React 19</span>
-                <span style={styles.techPill}>TypeScript</span>
-                <span style={styles.techPill}>Tailwind CSS</span>
-                <span style={styles.techPill}>Node.js</span>
-              </div>
-            </div>
-
-            <div style={styles.techCategory}>
-              <div style={styles.techCatTitle}>DATA &amp; CLOUD</div>
-              <div style={styles.techCatTags}>
-                <span style={styles.techPill}>PostgreSQL</span>
-                <span style={styles.techPill}>Supabase</span>
-                <span style={styles.techPill}>Vercel</span>
-                <span style={styles.techPill}>Redis</span>
-                <span style={styles.techPill}>Docker</span>
-              </div>
-            </div>
-
-            <div style={styles.techCategory}>
-              <div style={styles.techCatTitle}>AI &amp; AGENTS</div>
-              <div style={styles.techCatTags}>
-                <span style={styles.techPill}>OpenAI GPT-4o</span>
-                <span style={styles.techPill}>Claude 3.5</span>
-                <span style={styles.techPill}>LangChain</span>
-                <span style={styles.techPill}>Pinecone</span>
-                <span style={styles.techPill}>RAG Pipelines</span>
-              </div>
-            </div>
-
-            <div style={styles.techCategory}>
-              <div style={styles.techCatTitle}>AUTOMATION &amp; APIS</div>
-              <div style={styles.techCatTags}>
-                <span style={styles.techPill}>n8n</span>
-                <span style={styles.techPill}>HubSpot API</span>
-                <span style={styles.techPill}>Asana API</span>
-                <span style={styles.techPill}>Webhooks</span>
-                <span style={styles.techPill}>REST / GraphQL</span>
-              </div>
-            </div>
-          </div>
         </section>
 
         {/* BOTTOM CTA BANNER */}
@@ -506,9 +348,8 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
 const styles: Record<string, CSSProperties> = {
   page: {
     minHeight: "100vh",
-    background: "#0c0e0d",
-    color: "#ffffff",
-    fontFamily: "Arial, Helvetica, sans-serif",
+    background: "var(--bg)",
+    color: "var(--text)",
   },
   container: {
     width: "100%",
@@ -620,25 +461,38 @@ const styles: Record<string, CSSProperties> = {
     width: "100%",
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-    borderRadius: "12px",
+    borderRadius: "16px",
     overflow: "hidden",
-    background: "#121512",
+    background: "var(--surface)",
     boxSizing: "border-box",
+    position: "relative",
+    cursor: "pointer",
+  },
+  cardHit: {
+    position: "absolute",
+    inset: 0,
+    zIndex: 2,
   },
   previewContainer: {
     padding: "14px",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    background: "rgba(0,0,0,0.25)",
+    background: "rgba(0,0,0,0.22)",
     boxSizing: "border-box",
+    position: "relative",
+    zIndex: 1,
+    pointerEvents: "none",
   },
   contentContainer: {
-    padding: "24px 28px",
+    padding: "28px 32px",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     boxSizing: "border-box",
+    position: "relative",
+    zIndex: 1,
+    pointerEvents: "none",
   },
   projectEyebrow: {
     color: "#caff46",
@@ -663,10 +517,10 @@ const styles: Record<string, CSSProperties> = {
     fontWeight: "600",
   },
   projectDescription: {
-    margin: "8px 0 0",
-    fontSize: "13px",
-    lineHeight: "1.55",
-    color: "#bac0bb",
+    margin: "10px 0 0",
+    fontSize: "15px",
+    lineHeight: "1.65",
+    color: "var(--text-soft)",
   },
   outcomeBox: {
     margin: "10px 0 0",
@@ -744,7 +598,10 @@ const styles: Record<string, CSSProperties> = {
     gap: "14px",
     marginTop: "16px",
     paddingTop: "14px",
-    borderTop: "1px solid #252b26",
+    borderTop: "1px solid var(--line)",
+    position: "relative",
+    zIndex: 3,
+    pointerEvents: "none",
   },
   projectLink: {
     fontSize: "14px",

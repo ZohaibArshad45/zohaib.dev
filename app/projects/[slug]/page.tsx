@@ -30,6 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export const dynamic = "force-dynamic";
+export const dynamicParams = true;
 
 export default async function ProjectCaseStudyPage({ params }: Props) {
   const { slug } = await params;

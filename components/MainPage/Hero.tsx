@@ -304,12 +304,15 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
             WHAT I CAN BUILD FOR YOU
           </div>
 
-          <div
+          <Link
+            href="/projects"
             style={{
               ...styles.cardRow,
               transform: hoveredRow === 1 ? "translateX(6px)" : "translateX(0)",
               transition: "transform 0.25s ease",
               cursor: "pointer",
+              textDecoration: "none",
+              color: "inherit",
             }}
             onMouseEnter={() => setHoveredRow(1)}
             onMouseLeave={() => setHoveredRow(null)}
@@ -339,14 +342,17 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
                 Production Next.js platforms with Stripe billing, auth &amp; PostgreSQL.
               </div>
             </div>
-          </div>
+          </Link>
 
-          <div
+          <Link
+            href="/projects"
             style={{
               ...styles.cardRow,
               transform: hoveredRow === 2 ? "translateX(6px)" : "translateX(0)",
               transition: "transform 0.25s ease",
               cursor: "pointer",
+              textDecoration: "none",
+              color: "inherit",
             }}
             onMouseEnter={() => setHoveredRow(2)}
             onMouseLeave={() => setHoveredRow(null)}
@@ -376,14 +382,17 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
                 Multi-agent tool-calling, RAG vector retrieval &amp; realtime voice bots.
               </div>
             </div>
-          </div>
+          </Link>
 
-          <div
+          <Link
+            href="/projects"
             style={{
               ...styles.cardRow,
               transform: hoveredRow === 3 ? "translateX(6px)" : "translateX(0)",
               transition: "transform 0.25s ease",
               cursor: "pointer",
+              textDecoration: "none",
+              color: "inherit",
             }}
             onMouseEnter={() => setHoveredRow(3)}
             onMouseLeave={() => setHoveredRow(null)}
@@ -413,7 +422,7 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
                 Event-driven pipelines, webhook triage &amp; autonomous lead syncing.
               </div>
             </div>
-          </div>
+          </Link>
 
           <Link
             href="/contact"

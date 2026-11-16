@@ -18,7 +18,7 @@ export default async function Home() {
         minHeight: "100vh",
         background: "#0c0e0d",
         color: "#f5f5f5",
-        fontFamily: "Arial, Helvetica, sans-serif",
+        fontFamily: "inherit",
       }}
     >
       <Hero settings={settings} />
