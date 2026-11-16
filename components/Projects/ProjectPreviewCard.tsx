@@ -136,7 +136,7 @@ export default function ProjectPreviewCard({ project, isMobile = false }: Props)
 
             <div style={styles.nodeCardHighlight}>
               <div style={styles.nodeHeader}>
-                <div style={{ ...styles.nodeIcon, background: "rgba(202, 255, 70, 0.2)", color: "#caff46" }}>
+                <div style={{ ...styles.nodeIcon, background: "rgba(185, 201, 154, 0.2)", color: "#b9c99a" }}>
                   ⚡
                 </div>
                 <div>
@@ -163,7 +163,7 @@ export default function ProjectPreviewCard({ project, isMobile = false }: Props)
 
           <div style={styles.flowStatusRow}>
             <span style={styles.pulseDot} />
-            <span style={styles.flowStatusText}>Sync Latency: 140ms • Zero Drop Guarantee</span>
+            <span style={styles.flowStatusText}>Sync active · 140 ms</span>
           </div>
         </div>
       );
@@ -193,7 +193,7 @@ export default function ProjectPreviewCard({ project, isMobile = false }: Props)
               </div>
               <div style={styles.statBox}>
                 <div style={styles.statLabel}>SYNC DELAY</div>
-                <div style={{ ...styles.statNumber, color: "#caff46" }}>12ms</div>
+                <div style={{ ...styles.statNumber, color: "#b9c99a" }}>12ms</div>
               </div>
             </div>
 
@@ -295,7 +295,7 @@ export default function ProjectPreviewCard({ project, isMobile = false }: Props)
             </div>
 
             <div style={styles.terminalBar}>
-              <span style={{ color: "#caff46" }}>✓ 45 tests passed</span> • 100% coverage • 0ms cold start
+              <span style={{ color: "#b9c99a" }}>✓ 45 tests passed</span> • 100% coverage • 0ms cold start
             </div>
           </div>
         </div>
@@ -319,7 +319,7 @@ export default function ProjectPreviewCard({ project, isMobile = false }: Props)
 
             <div style={styles.ragResultBox}>
               <div style={styles.docRef}>
-                <span style={{ color: "#caff46" }}>DOC MATCH:</span> /docs/security/rbac-guide.md#L42
+                <span style={{ color: "#b9c99a" }}>DOC MATCH:</span> /docs/security/rbac-guide.md#L42
               </div>
               <div style={styles.aiAnswer}>
                 &quot;Navigate to Settings → Workspaces → Permissions, then assign the Contractor role with
@@ -399,7 +399,7 @@ const styles: Record<string, CSSProperties> = {
     width: "28px",
     height: "28px",
     borderRadius: "50%",
-    background: "#caff46",
+    background: "#b9c99a",
     color: "#121512",
     fontWeight: "800",
     fontSize: "10px",
@@ -451,7 +451,7 @@ const styles: Record<string, CSSProperties> = {
     fontWeight: "700",
     padding: "3px 8px",
     borderRadius: "12px",
-    background: "#caff46",
+    background: "#b9c99a",
     color: "#121512",
     letterSpacing: "0.5px",
     whiteSpace: "nowrap",
@@ -535,11 +535,11 @@ const styles: Record<string, CSSProperties> = {
   },
   nodeCardHighlight: {
     background: "#1e2936",
-    border: "1px solid #caff46",
+    border: "1px solid #b9c99a",
     borderRadius: "8px",
     padding: "16px",
     boxSizing: "border-box",
-    boxShadow: "0 0 20px rgba(202, 255, 70, 0.12)",
+    boxShadow: "0 0 20px rgba(185, 201, 154, 0.12)",
   },
   nodeHeader: {
     display: "flex",
@@ -576,11 +576,11 @@ const styles: Record<string, CSSProperties> = {
   },
   nodePillLime: {
     fontSize: "9px",
-    color: "#caff46",
-    background: "rgba(202, 255, 70, 0.1)",
+    color: "#b9c99a",
+    background: "rgba(185, 201, 154, 0.1)",
     padding: "4px 8px",
     borderRadius: "4px",
-    border: "1px solid rgba(202, 255, 70, 0.3)",
+    border: "1px solid rgba(185, 201, 154, 0.3)",
     fontWeight: "600",
   },
   flowStatusRow: {
@@ -594,8 +594,8 @@ const styles: Record<string, CSSProperties> = {
     width: "6px",
     height: "6px",
     borderRadius: "50%",
-    background: "#caff46",
-    boxShadow: "0 0 8px #caff46",
+    background: "#b9c99a",
+    boxShadow: "0 0 8px #b9c99a",
   },
   flowStatusText: {
     fontSize: "10px",
@@ -734,7 +734,7 @@ const styles: Record<string, CSSProperties> = {
     color: "#95a195",
   },
   agentStepSuccess: {
-    color: "#caff46",
+    color: "#b9c99a",
     fontWeight: "600",
   },
   agentStepNum: {
@@ -749,7 +749,7 @@ const styles: Record<string, CSSProperties> = {
   pitchLabel: {
     fontSize: "8px",
     fontWeight: "700",
-    color: "#caff46",
+    color: "#b9c99a",
     letterSpacing: "0.8px",
     marginBottom: "4px",
   },
@@ -938,8 +938,8 @@ const styles: Record<string, CSSProperties> = {
     right: "14px",
     background: "rgba(10, 15, 12, 0.85)",
     backdropFilter: "blur(8px)",
-    color: "#caff46",
-    border: "1px solid rgba(202, 255, 70, 0.3)",
+    color: "#b9c99a",
+    border: "1px solid rgba(185, 201, 154, 0.3)",
     fontSize: "11px",
     fontWeight: "700",
     padding: "6px 12px",

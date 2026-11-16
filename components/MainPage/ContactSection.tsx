@@ -7,14 +7,15 @@ import {
   type CSSProperties,
   type FormEvent,
 } from "react";
+import SiteFooter from "@/components/MainPage/SiteFooter";
 
 type ProjectType =
-  | "AI SaaS Development"
-  | "Autonomous AI Agents"
-  | "n8n & CRM Automation"
-  | "RAG & Vector Knowledge"
-  | "Realtime Voice AI"
-  | "Full-Stack Web App"
+  | "Web application"
+  | "AI feature or integration"
+  | "Workflow automation"
+  | "Search or knowledge tools"
+  | "Voice application"
+  | "Full-stack application"
   | "Other";
 
 type Timeline =
@@ -31,12 +32,6 @@ type FormState = {
   details: string;
 };
 
-type Social = {
-  name: string;
-  href: string;
-  short: string;
-};
-
 import type { SiteSettings } from "@/lib/settings";
 
 export default function ContactSection({ settings }: { settings?: SiteSettings }) {
@@ -48,14 +43,10 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
 
   const [buttonHover, setButtonHover] = useState(false);
 
-  const [hoveredSocial, setHoveredSocial] = useState<
-    string | null
-  >(null);
-
   const [form, setForm] = useState<FormState>({
     name: "",
     email: "",
-    projectType: "AI SaaS Development",
+    projectType: "Web application",
     timeline: "Flexible",
     details: "",
   });
@@ -76,29 +67,6 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
 
   const isMobile = width <= 700;
   const isTablet = width > 700 && width <= 1024;
-
-  const socials: Social[] = [
-    {
-      name: "GitHub",
-      href: settings?.githubUrl || "https://github.com/codingskillup",
-      short: "GH",
-    },
-    {
-      name: "LinkedIn",
-      href: settings?.linkedinUrl || "https://linkedin.com/in/",
-      short: "in",
-    },
-    {
-      name: "Twitter / X",
-      href: settings?.twitterUrl || "https://x.com/",
-      short: "X",
-    },
-    {
-      name: "Codingskillup",
-      href: "https://codingskillup.com",
-      short: "CS",
-    },
-  ];
 
   const handleChange = (
     event: ChangeEvent<
@@ -142,7 +110,7 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
       setForm({
         name: "",
         email: "",
-        projectType: "AI SaaS Development",
+        projectType: "Web application",
         timeline: "Flexible",
         details: "",
       });
@@ -164,9 +132,9 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
   const styles: Record<string, CSSProperties> = {
     page: {
       minHeight: "100vh",
-      background: "#0c0e0d",
-      color: "#f5f5f3",
-      fontFamily: "Arial, Helvetica, sans-serif",
+      background: "#ffffff",
+      color: "#202329",
+      fontFamily: "inherit",
     },
 
     container: {
@@ -184,7 +152,7 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
     topLine: {
       width: "100%",
       height: "1px",
-      background: "#313630",
+      background: "#e2dfd5",
     },
 
     content: {
@@ -216,7 +184,7 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
     },
 
     eyebrow: {
-      color: "#caff46",
+      color: "#315bc7",
       fontSize: isMobile ? "11px" : "12px",
       lineHeight: "1.5",
       fontWeight: "700",
@@ -226,7 +194,7 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
 
     heading: {
       margin: 0,
-      color: "#f6f6f4",
+      color: "#202329",
 
       fontSize: isMobile
         ? "40px"
@@ -240,7 +208,7 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
     },
 
     headingAccent: {
-      color: "#caff46",
+      color: "#315bc7",
       display: "block",
       marginTop: "6px",
     },
@@ -251,7 +219,7 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
         : "24px 0 0",
 
       maxWidth: "450px",
-      color: "#c0c6c1",
+      color: "#48505a",
 
       fontSize: isMobile
         ? "14px"
@@ -263,34 +231,34 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
     profileInfo: {
       marginTop: "34px",
       paddingTop: "26px",
-      borderTop: "1px solid #303530",
+      borderTop: "1px solid #e2dfd5",
       maxWidth: "430px",
     },
 
     profileName: {
       margin: 0,
-      color: "#ffffff",
+      color: "#202329",
       fontSize: "18px",
       fontWeight: "700",
     },
 
     profileRole: {
       marginTop: "7px",
-      color: "#c7cdc8",
+      color: "#48505a",
       fontSize: "13px",
       lineHeight: "1.6",
     },
 
     founder: {
       marginTop: "5px",
-      color: "#caff46",
+      color: "#315bc7",
       fontSize: "13px",
       lineHeight: "1.6",
     },
 
     location: {
       marginTop: "5px",
-      color: "#aeb5af",
+      color: "#727882",
       fontSize: "13px",
       lineHeight: "1.6",
     },
@@ -298,7 +266,7 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
     emailLink: {
       display: "inline-block",
       marginTop: "15px",
-      color: "#ffffff",
+      color: "#202329",
       textDecoration: "none",
       fontSize: "13px",
       paddingBottom: "5px",
@@ -308,13 +276,13 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
     nextSteps: {
       marginTop: "32px",
       paddingTop: "24px",
-      borderTop: "1px solid #303530",
+      borderTop: "1px solid #e2dfd5",
       maxWidth: "430px",
     },
 
     nextTitle: {
       margin: 0,
-      color: "#ffffff",
+      color: "#202329",
       fontSize: "14px",
       fontWeight: "600",
     },
@@ -330,13 +298,13 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
       display: "flex",
       alignItems: "center",
       gap: "10px",
-      color: "#b9bfba",
+      color: "#48505a",
       fontSize: "13px",
       lineHeight: "1.6",
     },
 
     nextNumber: {
-      color: "#caff46",
+      color: "#315bc7",
       fontSize: "11px",
       fontWeight: "700",
       minWidth: "24px",
@@ -344,8 +312,8 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
 
     card: {
       width: "100%",
-      background: "#171b16",
-      border: "1px solid #343a31",
+      background: "#ffffff",
+      border: "1px solid #e2dfd5",
       borderRadius: "11px",
 
       padding: isMobile
@@ -357,7 +325,7 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
 
     cardTitle: {
       margin: "0 0 22px",
-      color: "#ffffff",
+      color: "#202329",
 
       fontSize: isMobile
         ? "19px"
@@ -385,18 +353,18 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
     label: {
       display: "block",
       marginBottom: "8px",
-      color: "#ffffff",
+      color: "#202329",
       fontSize: "13px",
     },
 
     input: {
       width: "100%",
       minHeight: "46px",
-      background: "#11140f",
-      border: "1px solid #3b4236",
+      background: "#ffffff",
+      border: "1px solid #d8d5cc",
       borderRadius: "6px",
       padding: "0 13px",
-      color: "#ffffff",
+      color: "#202329",
       fontSize: "14px",
       outline: "none",
       boxSizing: "border-box",
@@ -405,11 +373,11 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
     select: {
       width: "100%",
       minHeight: "46px",
-      background: "#11140f",
-      border: "1px solid #3b4236",
+      background: "#ffffff",
+      border: "1px solid #d8d5cc",
       borderRadius: "6px",
       padding: "0 13px",
-      color: "#ffffff",
+      color: "#202329",
       fontSize: "13px",
       outline: "none",
       boxSizing: "border-box",
@@ -419,11 +387,11 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
       width: "100%",
       minHeight: "96px",
       resize: "vertical",
-      background: "#11140f",
-      border: "1px solid #3b4236",
+      background: "#ffffff",
+      border: "1px solid #d8d5cc",
       borderRadius: "6px",
       padding: "13px",
-      color: "#ffffff",
+      color: "#202329",
       fontSize: "14px",
       lineHeight: "1.5",
       outline: "none",
@@ -439,10 +407,10 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
 
       background:
         buttonHover && !sending
-          ? "#baf03e"
-          : "#caff46",
+          ? "#284ba8"
+          : "#315bc7",
 
-      color: "#10120f",
+      color: "#ffffff",
       fontSize: "14px",
       fontWeight: "700",
 
@@ -464,14 +432,14 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
 
     note: {
       margin: "11px 0 0",
-      color: "#aeb5af",
+      color: "#727882",
       fontSize: "10px",
       lineHeight: "1.6",
     },
 
     success: {
       margin: "12px 0 0",
-      color: "#caff46",
+      color: "#315bc7",
       fontSize: "12px",
       lineHeight: "1.6",
     },
@@ -486,159 +454,35 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
     directContact: {
       marginTop: "20px",
       paddingTop: "18px",
-      borderTop: "1px solid #303530",
+      borderTop: "1px solid #e2dfd5",
     },
 
     directTitle: {
       margin: 0,
-      color: "#ffffff",
+      color: "#202329",
       fontSize: "13px",
       fontWeight: "600",
     },
 
     directText: {
       margin: "6px 0 0",
-      color: "#aeb5af",
+      color: "#727882",
       fontSize: "11px",
       lineHeight: "1.6",
     },
 
-    footer: {
-      borderTop: "1px solid #313630",
-
-      padding: isMobile
-        ? "30px 0"
-        : "30px 0 26px",
-    },
-
-    footerTop: {
-      display: "grid",
-
-      gridTemplateColumns:
-        isMobile
-          ? "1fr"
-          : "1fr auto",
-
-      gap: isMobile
-        ? "24px"
-        : "30px",
-
-      alignItems: "center",
-    },
-
-    logoArea: {
-      display: "flex",
-      flexDirection: "column",
-      gap: "6px",
-    },
-
-    logo: {
-      color: "#ffffff",
-      fontSize: "28px",
-      fontWeight: "800",
-      letterSpacing: "0",
-    },
-
-    dot: {
-      color: "#caff46",
-    },
-
-    footerFounder: {
-      color: "#aeb5af",
-      fontSize: "11px",
-    },
-
-    socials: {
-      display: "flex",
-      flexWrap: "wrap",
-      gap: "10px",
-      alignItems: "center",
-    },
-
-    socialLink: {
-      width: "40px",
-      height: "40px",
-      borderRadius: "50%",
-
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-
-      textDecoration: "none",
-      fontSize: "12px",
-      fontWeight: "700",
-
-      transition: "0.2s ease",
-    },
-
-    footerBottom: {
-      marginTop: "26px",
-      paddingTop: "22px",
-
-      borderTop: "1px solid #242924",
-
-      display: "grid",
-
-      gridTemplateColumns:
-        isMobile
-          ? "1fr"
-          : "1fr auto",
-
-      gap: isMobile
-        ? "14px"
-        : "20px",
-
-      alignItems: "center",
-    },
-
-    copyright: {
-      color: "#9fa59f",
-      fontSize: "11px",
-      lineHeight: "1.6",
-    },
-
-    backLink: {
-      color: "#d5d9d5",
-      textDecoration: "none",
-      fontSize: "11px",
-    },
   };
 
-  const getSocialStyle = (
-    name: string
-  ): CSSProperties => ({
-    ...styles.socialLink,
-
-    color:
-      hoveredSocial === name
-        ? "#10120f"
-        : "#ffffff",
-
-    background:
-      hoveredSocial === name
-        ? "#caff46"
-        : "#141814",
-
-    border:
-      hoveredSocial === name
-        ? "1px solid #caff46"
-        : "1px solid #343a31",
-
-    transform:
-      hoveredSocial === name
-        ? "translateY(2px)"
-        : "translateY(0)",
-  });
-
   return (
-    <main style={styles.page} id="top">
+    <>
+    <section style={styles.page}>
       <div style={styles.container}>
         <div style={styles.topLine} />
 
         <section style={styles.content}>
           <div style={styles.left}>
             <div style={styles.eyebrow}>
-              05 / LET&apos;S WORK TOGETHER
+              CONTACT
             </div>
 
             <h1 style={styles.heading}>
@@ -660,7 +504,7 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
               </p>
 
               <div style={styles.profileRole}>
-                Web Developer &amp; AI Builder
+                Web Developer
               </div>
 
               <div style={styles.founder}>
@@ -679,13 +523,13 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
               </a>
 
               {settings?.phone && (
-                <div style={{ marginTop: "10px", fontSize: "14px", color: "#a4b0a5" }}>
+                <div style={{ marginTop: "10px", fontSize: "14px", color: "#727882" }}>
                   <span>WhatsApp: </span>
                   <a
                     href={`https://wa.me/${settings.phone.replace(/[^0-9]/g, "")}`}
                     target="_blank"
                     rel="noreferrer"
-                    style={{ color: "#caff46", textDecoration: "none", fontWeight: "600" }}
+                    style={{ color: "#315bc7", textDecoration: "none", fontWeight: "600" }}
                   >
                     {settings.phone} ↗
                   </a>
@@ -796,28 +640,28 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
                   onChange={handleChange}
                   style={styles.select}
                 >
-                  <option value="AI SaaS Development">
-                    AI SaaS Development
+                  <option value="Web application">
+                    Web application
                   </option>
 
-                  <option value="Autonomous AI Agents">
-                    Autonomous AI Agents
+                  <option value="AI feature or integration">
+                    AI feature or integration
                   </option>
 
-                  <option value="n8n & CRM Automation">
-                    n8n &amp; CRM Automation
+                  <option value="Workflow automation">
+                    Workflow automation
                   </option>
 
-                  <option value="RAG & Vector Knowledge">
-                    RAG &amp; Vector Knowledge
+                  <option value="Search or knowledge tools">
+                    Search or knowledge tools
                   </option>
 
-                  <option value="Realtime Voice AI">
-                    Realtime Voice AI
+                  <option value="Voice application">
+                    Voice application
                   </option>
 
-                  <option value="Full-Stack Web App">
-                    Full-Stack Web App
+                  <option value="Full-stack application">
+                    Full-stack application
                   </option>
 
                   <option value="Other">
@@ -926,80 +770,9 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
           </form>
         </section>
 
-        <footer style={styles.footer}>
-          <div style={styles.footerTop}>
-            <div style={styles.logoArea}>
-              <div style={styles.logo}>
-                Zohaib
-                <span style={styles.dot}>
-                  .
-                </span>
-              </div>
-
-              <div style={styles.footerFounder}>
-                Web Developer &amp; AI Builder
-                {" • "}
-                Founder of Codingskillup
-                {" • "}
-                Bahawalpur, Punjab, Pakistan
-              </div>
-            </div>
-
-            <div style={styles.socials}>
-              {socials.map((social) => (
-                <a
-                  key={social.name}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={social.name}
-                  title={social.name}
-                  style={getSocialStyle(social.name)}
-                  onMouseEnter={() =>
-                    setHoveredSocial(social.name)
-                  }
-                  onMouseLeave={() =>
-                    setHoveredSocial(null)
-                  }
-                >
-                  {social.short}
-                </a>
-              ))}
-            </div>
-          </div>
-
-          <div
-            style={{
-              display: "flex",
-              gap: "20px",
-              flexWrap: "wrap",
-              padding: "16px 0",
-              fontSize: "13px",
-              borderTop: "1px solid #202621",
-              borderBottom: "1px solid #202621",
-              margin: "20px 0",
-            }}
-          >
-            <a href="/projects" style={{ color: "#a4b0a6", textDecoration: "none" }}>Projects</a>
-            <a href="/resources" style={{ color: "#a4b0a6", textDecoration: "none" }}>Resources</a>
-            <a href="/about" style={{ color: "#a4b0a6", textDecoration: "none" }}>About</a>
-            <a href="/contact" style={{ color: "#a4b0a6", textDecoration: "none" }}>Contact</a>
-          </div>
-
-          <div style={styles.footerBottom}>
-            <div style={styles.copyright}>
-              © 2026 Zohaib • AI SaaS Developer • All rights reserved.
-            </div>
-
-            <a
-              href="#top"
-              style={styles.backLink}
-            >
-              Back to top ↑
-            </a>
-          </div>
-        </footer>
       </div>
-    </main>
+    </section>
+    <SiteFooter settings={settings} />
+    </>
   );
 }

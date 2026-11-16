@@ -14,16 +14,17 @@ export default async function Home() {
 
   return (
     <main
+      id="top"
       style={{
         minHeight: "100vh",
-        background: "#0c0e0d",
-        color: "#f5f5f5",
+        background: "var(--bg)",
+        color: "var(--text)",
         fontFamily: "inherit",
       }}
     >
       <Hero settings={settings} />
       <ProjectsSection projects={projects} />
-      <WorkingTogether settings={settings} />
+      <WorkingTogether />
       <ContactSection settings={settings} />
     </main>
   );

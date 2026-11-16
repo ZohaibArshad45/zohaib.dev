@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState, type CSSProperties } from "react";
 import ProjectPreviewCard from "@/components/Projects/ProjectPreviewCard";
 import type { Project } from "@/lib/projects";
@@ -51,13 +52,13 @@ export default function SelectedWork({
   const styles: Record<string, CSSProperties> = {
     section: {
       width: "100%",
-      background: "#0c0e0d",
-      color: "#ffffff",
+      background: "#ffffff",
+      color: "#202329",
       padding: isMobile
-        ? "60px 18px 55px"
+        ? "54px 18px 58px"
         : isTablet
-        ? "80px 28px 70px"
-        : "95px 40px 80px",
+        ? "68px 28px 68px"
+        : "78px 40px 76px",
       boxSizing: "border-box",
     },
 
@@ -72,11 +73,11 @@ export default function SelectedWork({
       gridTemplateColumns: isMobile ? "1fr" : "1.5fr 0.5fr",
       gap: isMobile ? "20px" : "45px",
       alignItems: "end",
-      marginBottom: isMobile ? "35px" : "45px",
+      marginBottom: isMobile ? "28px" : "36px",
     },
 
     label: {
-      color: "#caff46",
+      color: "#315bc7",
       fontSize: isMobile ? "11px" : "12px",
       fontWeight: "700",
       letterSpacing: "1px",
@@ -87,7 +88,7 @@ export default function SelectedWork({
     heading: {
       margin: 0,
       maxWidth: "680px",
-      color: "#f6f6f4",
+      color: "#202329",
       fontSize: isMobile ? "34px" : isTablet ? "44px" : "50px",
       lineHeight: "1.06",
       fontWeight: "400",
@@ -96,29 +97,29 @@ export default function SelectedWork({
     intro: {
       maxWidth: "300px",
       margin: 0,
-      color: "#a6aca7",
+      color: "#727882",
       fontSize: isMobile ? "13px" : "14px",
       lineHeight: "1.65",
       justifySelf: isMobile ? "start" : "end",
     },
 
     projects: {
-      display: "flex",
-      flexDirection: "column",
-      gap: isMobile ? "24px" : "32px",
+      display: "grid",
+      gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fit, minmax(min(100%, 320px), 1fr))",
+      gap: isMobile ? "20px" : "24px",
     },
 
     card: {
       width: "100%",
-      display: "grid",
-      gridTemplateColumns: isMobile || isTablet ? "1fr" : "repeat(auto-fit, minmax(320px, 1fr))",
-      borderRadius: "16px",
+      display: "flex",
+      flexDirection: "column",
+      borderRadius: "18px",
       overflow: "hidden",
       background: "var(--surface)",
       boxSizing: "border-box",
       cursor: "pointer",
       border: "1px solid var(--line)",
-      boxShadow: "0 10px 25px rgba(0, 0, 0, 0.25)",
+      boxShadow: "0 10px 30px rgba(28, 35, 52, 0.045)",
       transition: "transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease",
       position: "relative",
     },
@@ -130,22 +131,30 @@ export default function SelectedWork({
     },
 
     previewContainer: {
-      padding: isMobile ? "12px" : "14px",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      background: "rgba(0, 0, 0, 0.22)",
+      padding: 0,
+      aspectRatio: "16 / 9",
+      overflow: "hidden",
+      background: "#f0f2f8",
       boxSizing: "border-box",
       position: "relative",
       zIndex: 1,
       pointerEvents: "none",
     },
 
+    projectImage: {
+      width: "100%",
+      height: "100%",
+      objectFit: "contain",
+      objectPosition: "center",
+      display: "block",
+    },
+
     contentContainer: {
-      padding: isMobile ? "20px 18px" : "28px 32px",
+      padding: isMobile ? "18px" : "22px 24px",
       display: "flex",
       flexDirection: "column",
-      justifyContent: "center",
+      justifyContent: "flex-start",
+      flex: 1,
       boxSizing: "border-box",
       position: "relative",
       zIndex: 1,
@@ -153,7 +162,7 @@ export default function SelectedWork({
     },
 
     projectEyebrow: {
-      color: "#caff46",
+      color: "#315bc7",
       fontSize: "10px",
       fontWeight: "700",
       letterSpacing: "1px",
@@ -164,33 +173,37 @@ export default function SelectedWork({
 
     projectTitle: {
       margin: 0,
-      fontSize: "clamp(20px, 2.2vw, 25px)",
+      fontSize: "clamp(19px, 2vw, 23px)",
       lineHeight: "1.2",
       fontWeight: "500",
-      color: "#ffffff",
+      color: "#202329",
     },
 
     projectSubhead: {
       margin: "4px 0 0",
       fontSize: "12px",
-      color: "#9da49e",
+      color: "#727882",
       fontWeight: "600",
     },
 
     projectDescription: {
-      margin: "10px 0 0",
-      fontSize: "15px",
-      lineHeight: "1.65",
+      margin: "12px 0 0",
+      fontSize: "14px",
+      lineHeight: "1.6",
       color: "var(--text-soft)",
+      display: "-webkit-box",
+      WebkitLineClamp: 2,
+      WebkitBoxOrient: "vertical",
+      overflow: "hidden",
     },
 
     outcomeBox: {
       margin: "10px 0 0",
       paddingLeft: "10px",
-      borderLeft: "2px solid #caff46",
+      borderLeft: "2px solid #dfe6fb",
       fontSize: "12px",
       lineHeight: "1.55",
-      color: "#d7dbd7",
+      color: "#3f4a40",
       display: "-webkit-box",
       WebkitLineClamp: 3,
       WebkitBoxOrient: "vertical",
@@ -205,8 +218,8 @@ export default function SelectedWork({
     },
 
     metricPill: {
-      background: "#181d19",
-      border: "1px solid #2e372f",
+      background: "#ffffff",
+      border: "1px solid #e2dfd5",
       borderRadius: "6px",
       padding: "4px 8px",
       display: "flex",
@@ -217,12 +230,12 @@ export default function SelectedWork({
     metricPillVal: {
       fontSize: "11px",
       fontWeight: "700",
-      color: "#caff46",
+      color: "#315bc7",
     },
 
     metricPillLabel: {
       fontSize: "10px",
-      color: "#8a948c",
+      color: "#727882",
     },
 
     tagsRow: {
@@ -233,12 +246,12 @@ export default function SelectedWork({
     },
 
     tag: {
-      padding: "4px 9px",
-      borderRadius: "14px",
-      border: "1px solid #363d37",
+      padding: "5px 9px",
+      borderRadius: "999px",
+      border: "1px solid #e2dfd5",
       fontSize: "10px",
-      color: "#ffffff",
-      background: "#151916",
+      color: "#202329",
+      background: "#f5f6fa",
     },
 
     actionsRow: {
@@ -264,7 +277,7 @@ export default function SelectedWork({
 
     clientMeta: {
       fontSize: "11px",
-      color: "#7e8880",
+      color: "#727882",
       letterSpacing: "0.4px",
     },
 
@@ -279,25 +292,25 @@ export default function SelectedWork({
     line: {
       width: "1px",
       height: isMobile ? "40px" : "50px",
-      background: "#3b403c",
+      background: "#eeece5",
     },
 
     circle: {
       width: "48px",
       height: "48px",
       borderRadius: "50%",
-      border: "1px solid #caff46",
+      border: "1px solid #dfe6fb",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
       fontSize: "20px",
-      color: "#ffffff",
+      color: "#202329",
       marginBottom: "14px",
       transition: "transform 0.2s ease, background 0.2s ease",
     },
 
     viewLink: {
-      color: "#c9cfca",
+      color: "#48505a",
       textDecoration: "none",
       fontSize: "11px",
       letterSpacing: "1.6px",
@@ -308,13 +321,13 @@ export default function SelectedWork({
       display: "flex",
       flexWrap: "wrap",
       gap: "6px 10px",
-      background: "rgba(10, 14, 11, 0.75)",
-      border: "1px solid #1c241e",
+      background: "#eeece5",
+      border: "1px solid #e2dfd5",
       padding: "8px 10px",
       borderRadius: "6px",
       marginTop: "12px",
       fontSize: "10px",
-      color: "#97a699",
+      color: "#727882",
     },
 
     featureItem: {
@@ -326,8 +339,8 @@ export default function SelectedWork({
 
     roadmapCallout: {
       marginTop: "48px",
-      background: "linear-gradient(145deg, #161e18 0%, #101411 100%)",
-      border: "1px solid #2d3b2f",
+      background: "var(--surface)",
+      border: "1px solid #e2dfd5",
       borderRadius: "14px",
       padding: isMobile ? "24px 20px" : "28px 34px",
       display: "flex",
@@ -340,10 +353,10 @@ export default function SelectedWork({
     roadmapTag: {
       display: "inline-block",
       fontSize: "10px",
-      color: "#caff46",
+      color: "#315bc7",
       fontWeight: "800",
       letterSpacing: "1px",
-      background: "rgba(202, 255, 70, 0.1)",
+      background: "rgba(49, 91, 199, 0.08)",
       padding: "3px 8px",
       borderRadius: "4px",
       marginBottom: "8px",
@@ -351,22 +364,22 @@ export default function SelectedWork({
 
     roadmapTitle: {
       fontSize: isMobile ? "18px" : "20px",
-      color: "#ffffff",
+      color: "#202329",
       fontWeight: "600",
       margin: "0 0 6px",
     },
 
     roadmapSub: {
       fontSize: "13px",
-      color: "#9ea8a0",
+      color: "#727882",
       margin: 0,
       maxWidth: "520px",
       lineHeight: "1.5",
     },
 
     roadmapBtn: {
-      background: "#caff46",
-      color: "#0c0e0d",
+      background: "#315bc7",
+      color: "#ffffff",
       textDecoration: "none",
       padding: "12px 22px",
       borderRadius: "8px",
@@ -382,11 +395,11 @@ export default function SelectedWork({
     border:
       hoveredProject === slug ? "1px solid var(--accent)" : "1px solid var(--line)",
     transform:
-      hoveredProject === slug ? "translateY(-4px)" : "translateY(0)",
-    boxShadow:
+      hoveredProject === slug ? "translateY(-2px)" : "translateY(0)",
+      boxShadow:
       hoveredProject === slug
-        ? "0 20px 45px rgba(0, 0, 0, 0.55)"
-        : "0 10px 25px rgba(0, 0, 0, 0.25)",
+        ? "0 18px 38px rgba(28, 35, 52, 0.1)"
+        : "0 8px 24px rgba(28, 35, 52, 0.04)",
   });
 
   return (
@@ -394,14 +407,12 @@ export default function SelectedWork({
       <div style={styles.container}>
         <div style={styles.top}>
           <div>
-            <div style={styles.label}>01 / SELECTED AI WORK &amp; PRODUCTION SAAS</div>
-            <h2 style={styles.heading}>
-              Autonomous AI agents, RAG engines &amp; production SaaS platforms.
-            </h2>
+            <div style={styles.label}>SELECTED WORK</div>
+            <h2 style={styles.heading}>Selected work.</h2>
           </div>
 
           <p style={styles.intro}>
-            Full-stack AI systems, voice agents, and event-driven n8n automations engineered for scalable business revenue.
+            Recent products and systems, built around real needs.
           </p>
         </div>
 
@@ -411,38 +422,23 @@ export default function SelectedWork({
               style={{
                 textAlign: "center",
                 padding: "60px 20px",
-                border: "1px dashed #263328",
+                border: "1px dashed #d8d5cc",
                 borderRadius: "10px",
-                background: "#101411",
+                background: "#f4f6f2",
               }}
             >
               <p
                 style={{
-                  color: "#8a948c",
+                  color: "#727882",
                   fontSize: "15px",
                   margin: "0 0 16px",
                 }}
               >
-                No projects published yet in the database.
+                New work will be added here soon.
               </p>
-              <Link
-                href="/admin"
-                style={{
-                  display: "inline-block",
-                  color: "#caff46",
-                  border: "1px solid #caff46",
-                  padding: "8px 18px",
-                  borderRadius: "20px",
-                  fontSize: "12px",
-                  textDecoration: "none",
-                  fontWeight: 600,
-                }}
-              >
-                + Add Your First Project in Admin ↗
-              </Link>
             </div>
           ) : (
-            projectList.slice(0, 4).map((project) => (
+            projectList.slice(-3).reverse().map((project) => (
               <article
                 key={project.slug}
                 style={getCardStyle(project.slug)}
@@ -458,7 +454,11 @@ export default function SelectedWork({
                 ) : null}
                 {/* PREVIEW CONTAINER */}
                 <div style={styles.previewContainer}>
-                  <ProjectPreviewCard project={project} isMobile={isMobile} />
+                  {project.images?.[0] ? (
+                    <Image src={project.images[0]} alt={`${project.title || project.headline} interface`} fill sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw" unoptimized style={styles.projectImage} />
+                  ) : (
+                    <ProjectPreviewCard project={project} isMobile={isMobile} />
+                  )}
                 </div>
 
                 {/* CONTENT CONTAINER */}
@@ -473,36 +473,14 @@ export default function SelectedWork({
                     {project.title || project.headline}
                   </h3>
 
-                  {project.subhead && (
-                    <p style={styles.projectSubhead}>{project.subhead}</p>
-                  )}
-
-                  <p className="line-clamp-3" style={styles.projectDescription}>
-                    {project.description}
+                  <p style={styles.projectDescription}>
+                    {project.subhead || project.description}
                   </p>
-
-                  {project.outcome && (
-                    <div className="line-clamp-3" style={styles.outcomeBox}>
-                      <strong style={{ color: "#caff46" }}>Outcome:</strong> {project.outcome}
-                    </div>
-                  )}
-
-                  {/* METRICS PILLS */}
-                  {project.metrics && project.metrics.length > 0 && (
-                    <div style={styles.metricsRow}>
-                      {project.metrics.slice(0, 3).map((m) => (
-                        <div key={m.label} style={styles.metricPill}>
-                          <span style={styles.metricPillVal}>{m.value}</span>
-                          <span style={styles.metricPillLabel}>{m.label}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
 
                   {/* TAGS */}
                   {project.tags && project.tags.length > 0 && (
                     <div style={styles.tagsRow}>
-                      {project.tags.slice(0, 5).map((tag) => (
+                      {project.tags.slice(0, 3).map((tag) => (
                         <span key={tag} style={styles.tag}>
                           {tag}
                         </span>
@@ -573,11 +551,6 @@ export default function SelectedWork({
                       )}
                     </div>
 
-                    {[project.client, project.timeline].filter(Boolean).length > 0 && (
-                      <span style={styles.clientMeta}>
-                        {[project.client, project.timeline].filter(Boolean).join(" • ")}
-                      </span>
-                    )}
                   </div>
                 </div>
               </article>

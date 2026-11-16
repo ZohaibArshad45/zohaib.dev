@@ -281,7 +281,7 @@ export default function ResourcesAdminSection({
       case "pdf":
         return { label: "PDF", bg: "rgba(239, 68, 68, 0.15)", text: "#f87171" };
       case "code":
-        return { label: "CODE", bg: "rgba(202, 255, 70, 0.15)", text: "#caff46" };
+        return { label: "CODE", bg: "rgba(83, 105, 68, 0.1)", text: "#315bc7" };
       case "zip":
         return { label: "ZIP", bg: "rgba(234, 179, 8, 0.15)", text: "#facc15" };
       default:
@@ -333,8 +333,7 @@ export default function ResourcesAdminSection({
       {/* TABLE / CARD LIST */}
       {filtered.length === 0 ? (
         <div style={styles.emptyCard}>
-          <div style={{ fontSize: "32px", marginBottom: "8px" }}>📚</div>
-          <h4 style={{ margin: "0 0 6px", color: "#ffffff" }}>No resources found</h4>
+          <h4 style={{ margin: "0 0 6px", color: "#202329" }}>No resources found</h4>
           <p style={{ margin: 0, color: "#848f86", fontSize: "14px" }}>
             Add your first PDF or code download using the button above.
           </p>
@@ -572,10 +571,10 @@ export default function ResourcesAdminSection({
                       style={styles.uploadCoverLabel}
                     >
                       {isCoverUploading ? (
-                        <span>⏳ Uploading cover image...</span>
+                        <span>Uploading cover image...</span>
                       ) : (
                         <span>
-                          🖼️ Click to Upload Cover Image / Thumbnail (PNG, JPG, WEBP)
+                          Upload cover image or thumbnail (PNG, JPG, WEBP)
                         </span>
                       )}
                     </label>
@@ -604,18 +603,18 @@ export default function ResourcesAdminSection({
                     htmlFor="resource-file-upload"
                     style={{
                       ...styles.uploadTriggerLabel,
-                      borderColor: resourceForm.fileUrl ? "#caff46" : "#2a342c",
+                      borderColor: resourceForm.fileUrl ? "#315bc7" : "#2a342c",
                     }}
                   >
                     {isFileUploading ? (
-                      <span>⏳ Uploading file to storage...</span>
+                      <span>Uploading file...</span>
                     ) : resourceForm.fileUrl ? (
                       <span>
                         ✓ File Ready: {resourceForm.fileUrl.split("/").pop()} ({resourceForm.fileSize || "Saved"}) — Click to replace
                       </span>
                     ) : (
                       <span>
-                        📁 Click to Choose PDF or ZIP File (Auto-formats type &amp; size)
+                        Choose a PDF or ZIP file
                       </span>
                     )}
                   </label>
@@ -723,13 +722,13 @@ const styles: Record<string, CSSProperties> = {
   heading: {
     fontSize: "24px",
     fontWeight: "700",
-    color: "#ffffff",
+    color: "#202329",
     margin: "0 0 6px",
   },
 
   subheading: {
     fontSize: "14px",
-    color: "#8e988f",
+    color: "#727882",
     margin: 0,
     maxWidth: "600px",
   },
@@ -737,13 +736,13 @@ const styles: Record<string, CSSProperties> = {
   addBtn: {
     padding: "12px 20px",
     borderRadius: "10px",
-    background: "#caff46",
-    color: "#0c0e0d",
+    background: "#315bc7",
+    color: "#f7f6f2",
     fontSize: "14px",
     fontWeight: "700",
     border: "none",
     cursor: "pointer",
-    boxShadow: "0 0 15px rgba(202, 255, 70, 0.25)",
+    boxShadow: "0 0 15px rgba(83, 105, 68, 0.12)",
   },
 
   controlsRow: {
@@ -757,9 +756,9 @@ const styles: Record<string, CSSProperties> = {
     flex: "1 1 300px",
     padding: "12px 16px",
     borderRadius: "10px",
-    background: "#121613",
-    border: "1px solid #232924",
-    color: "#ffffff",
+    background: "#eeece5",
+    border: "1px solid #dce3d9",
+    color: "#202329",
     fontSize: "14px",
     outline: "none",
   },
@@ -767,9 +766,9 @@ const styles: Record<string, CSSProperties> = {
   filterSelect: {
     padding: "12px 16px",
     borderRadius: "10px",
-    background: "#121613",
-    border: "1px solid #232924",
-    color: "#ffffff",
+    background: "#eeece5",
+    border: "1px solid #dce3d9",
+    color: "#202329",
     fontSize: "14px",
     outline: "none",
     cursor: "pointer",
@@ -778,7 +777,7 @@ const styles: Record<string, CSSProperties> = {
   emptyCard: {
     padding: "60px 20px",
     textAlign: "center",
-    background: "#121613",
+    background: "#eeece5",
     borderRadius: "16px",
     border: "1px dashed #283129",
   },
@@ -790,8 +789,8 @@ const styles: Record<string, CSSProperties> = {
   },
 
   itemCard: {
-    background: "#131714",
-    border: "1px solid #222923",
+    background: "#f4f6f2",
+    border: "1px solid #dce3d9",
     borderRadius: "16px",
     padding: "20px 24px",
     display: "flex",
@@ -806,8 +805,8 @@ const styles: Record<string, CSSProperties> = {
     borderRadius: "10px",
     overflow: "hidden",
     flexShrink: 0,
-    background: "#1a201b",
-    border: "1px solid #28322a",
+    background: "#dce3d9",
+    border: "1px solid #dce3d9",
   },
 
   itemCoverImg: {
@@ -840,7 +839,7 @@ const styles: Record<string, CSSProperties> = {
     padding: "3px 8px",
     borderRadius: "6px",
     background: "rgba(255, 255, 255, 0.06)",
-    color: "#9aa39b",
+    color: "#727882",
     fontSize: "11px",
     fontWeight: "600",
   },
@@ -848,21 +847,21 @@ const styles: Record<string, CSSProperties> = {
   featuredPill: {
     padding: "3px 8px",
     borderRadius: "6px",
-    background: "rgba(202, 255, 70, 0.15)",
-    color: "#caff46",
+    background: "rgba(83, 105, 68, 0.1)",
+    color: "#315bc7",
     fontSize: "10px",
     fontWeight: "800",
   },
 
   metaSize: {
     fontSize: "11px",
-    color: "#748076",
+    color: "#727882",
   },
 
   downloadsPill: {
     fontSize: "11px",
-    color: "#848f86",
-    background: "rgba(0, 0, 0, 0.3)",
+    color: "#727882",
+    background: "#eeece5",
     padding: "2px 6px",
     borderRadius: "4px",
   },
@@ -870,7 +869,7 @@ const styles: Record<string, CSSProperties> = {
   itemTitle: {
     fontSize: "17px",
     fontWeight: "700",
-    color: "#ffffff",
+    color: "#202329",
     margin: "0 0 6px",
   },
 
@@ -898,10 +897,10 @@ const styles: Record<string, CSSProperties> = {
   tagItem: {
     fontSize: "11px",
     color: "#6c786e",
-    background: "#0c0f0d",
+    background: "#f7f6f2",
     padding: "2px 6px",
     borderRadius: "4px",
-    border: "1px solid #1a201b",
+    border: "1px solid #dce3d9",
   },
 
   fileUrlInfo: {
@@ -916,7 +915,7 @@ const styles: Record<string, CSSProperties> = {
   },
 
   urlLink: {
-    color: "#caff46",
+    color: "#315bc7",
     textDecoration: "none",
     maxWidth: "240px",
     overflow: "hidden",
@@ -935,9 +934,9 @@ const styles: Record<string, CSSProperties> = {
   actionBtnPrimary: {
     padding: "8px 14px",
     borderRadius: "8px",
-    background: "#222923",
-    color: "#ffffff",
-    border: "1px solid #323d34",
+    background: "#dce3d9",
+    color: "#202329",
+    border: "1px solid #dce3d9",
     fontSize: "13px",
     fontWeight: "600",
     cursor: "pointer",
@@ -946,9 +945,9 @@ const styles: Record<string, CSSProperties> = {
   actionBtnSecondary: {
     padding: "8px 14px",
     borderRadius: "8px",
-    background: "rgba(202, 255, 70, 0.08)",
-    color: "#caff46",
-    border: "1px solid rgba(202, 255, 70, 0.2)",
+    background: "rgba(83, 105, 68, 0.08)",
+    color: "#315bc7",
+    border: "1px solid rgba(83, 105, 68, 0.12)",
     fontSize: "13px",
     fontWeight: "600",
     cursor: "pointer",
@@ -986,8 +985,8 @@ const styles: Record<string, CSSProperties> = {
     maxHeight: "90vh",
     overflowY: "auto",
     overflowX: "hidden",
-    background: "#131714",
-    border: "1px solid #28322a",
+    background: "#f4f6f2",
+    border: "1px solid #dce3d9",
     borderRadius: "20px",
     padding: "30px",
     boxShadow: "0 25px 60px rgba(0, 0, 0, 0.6)",
@@ -1003,7 +1002,7 @@ const styles: Record<string, CSSProperties> = {
   modalTitle: {
     fontSize: "20px",
     fontWeight: "700",
-    color: "#ffffff",
+    color: "#202329",
     margin: 0,
   },
 
@@ -1025,7 +1024,7 @@ const styles: Record<string, CSSProperties> = {
     display: "block",
     fontSize: "13px",
     fontWeight: "600",
-    color: "#9aa39b",
+    color: "#727882",
     marginBottom: "6px",
   },
 
@@ -1033,9 +1032,9 @@ const styles: Record<string, CSSProperties> = {
     width: "100%",
     padding: "12px 14px",
     borderRadius: "8px",
-    background: "#0c0e0d",
-    border: "1px solid #232924",
-    color: "#ffffff",
+    background: "#f7f6f2",
+    border: "1px solid #dce3d9",
+    color: "#202329",
     fontSize: "14px",
     outline: "none",
     boxSizing: "border-box",
@@ -1048,10 +1047,10 @@ const styles: Record<string, CSSProperties> = {
   },
 
   coverZone: {
-    background: "#0e110f",
+    background: "#f4f6f2",
     padding: "16px",
     borderRadius: "10px",
-    border: "1px solid #232a24",
+    border: "1px solid #dce3d9",
   },
 
   coverHeaderRow: {
@@ -1073,8 +1072,8 @@ const styles: Record<string, CSSProperties> = {
     position: "relative",
     borderRadius: "10px",
     overflow: "hidden",
-    border: "1px solid #2b352d",
-    background: "#161b17",
+    border: "1px solid #dce3d9",
+    background: "#eeece5",
   },
 
   coverPreviewImg: {
@@ -1089,18 +1088,18 @@ const styles: Record<string, CSSProperties> = {
     alignItems: "center",
     justifyContent: "space-between",
     padding: "10px 14px",
-    background: "#111612",
+    background: "#ffffff",
   },
 
   coverBadge: {
     fontSize: "12px",
-    color: "#caff46",
+    color: "#315bc7",
     fontWeight: "700",
   },
 
   changeCoverBtn: {
     fontSize: "12px",
-    color: "#ffffff",
+    color: "#202329",
     cursor: "pointer",
     textDecoration: "underline",
   },
@@ -1109,8 +1108,8 @@ const styles: Record<string, CSSProperties> = {
     display: "block",
     padding: "16px",
     borderRadius: "8px",
-    background: "#161c17",
-    color: "#9aa39b",
+    background: "#eeece5",
+    color: "#727882",
     textAlign: "center",
     fontSize: "13px",
     fontWeight: "600",
@@ -1120,10 +1119,10 @@ const styles: Record<string, CSSProperties> = {
   },
 
   uploadZone: {
-    background: "#0e110f",
+    background: "#f4f6f2",
     padding: "16px",
     borderRadius: "10px",
-    border: "1px dashed #2b352d",
+    border: "1px dashed #dce3d9",
   },
 
   uploadBox: {
@@ -1138,8 +1137,8 @@ const styles: Record<string, CSSProperties> = {
     display: "block",
     padding: "16px",
     borderRadius: "8px",
-    background: "#161c17",
-    color: "#caff46",
+    background: "#eeece5",
+    color: "#315bc7",
     textAlign: "center",
     fontSize: "13px",
     fontWeight: "600",
@@ -1170,14 +1169,14 @@ const styles: Record<string, CSSProperties> = {
     alignItems: "center",
     gap: "10px",
     fontSize: "13px",
-    color: "#cbd2cc",
+    color: "#48505a",
     cursor: "pointer",
   },
 
   checkbox: {
     width: "16px",
     height: "16px",
-    accentColor: "#caff46",
+    accentColor: "#315bc7",
     cursor: "pointer",
   },
 
@@ -1192,8 +1191,8 @@ const styles: Record<string, CSSProperties> = {
   cancelBtn: {
     padding: "10px 18px",
     borderRadius: "8px",
-    background: "#1d231e",
-    color: "#9aa39b",
+    background: "#eeece5",
+    color: "#727882",
     border: "none",
     fontWeight: "600",
     cursor: "pointer",
@@ -1202,11 +1201,11 @@ const styles: Record<string, CSSProperties> = {
   saveBtn: {
     padding: "10px 24px",
     borderRadius: "8px",
-    background: "#caff46",
-    color: "#0c0e0d",
+    background: "#315bc7",
+    color: "#f7f6f2",
     border: "none",
     fontWeight: "700",
     cursor: "pointer",
-    boxShadow: "0 0 15px rgba(202, 255, 70, 0.25)",
+    boxShadow: "0 0 15px rgba(83, 105, 68, 0.12)",
   },
 };

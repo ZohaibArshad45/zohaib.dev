@@ -1,7 +1,7 @@
 "use client";
 
-import ContactSection from "@/components/MainPage/ContactSection";
 import Link from "next/link";
+import SiteFooter from "@/components/MainPage/SiteFooter";
 import {
   useEffect,
   useState,
@@ -31,8 +31,8 @@ export default function AboutPage() {
   const styles: Record<string, CSSProperties> = {
     page: {
       minHeight: "100vh",
-      background: "#0c0e0d",
-      color: "#ffffff",
+      background: "#ffffff",
+      color: "#202329",
     },
 
     container: {
@@ -48,7 +48,7 @@ export default function AboutPage() {
     },
 
     label: {
-      color: "#caff46",
+      color: "#315bc7",
       fontSize: isMobile ? "11px" : "12px",
       fontWeight: "700",
       letterSpacing: "1px",
@@ -80,14 +80,14 @@ export default function AboutPage() {
     },
 
     accent: {
-      color: "#caff46",
+      color: "#315bc7",
       display: "block",
       marginTop: "6px",
     },
 
     intro: {
       margin: 0,
-      color: "#b9bfba",
+      color: "#48505a",
       fontSize: isMobile ? "15px" : "17px",
       lineHeight: "1.7",
       maxWidth: "430px",
@@ -96,7 +96,7 @@ export default function AboutPage() {
     divider: {
       width: "100%",
       height: "1px",
-      background: "#303530",
+      background: "#e2dfd5",
       margin: isMobile
         ? "60px 0"
         : "80px 0",
@@ -121,13 +121,13 @@ export default function AboutPage() {
     },
 
     body: {
-      color: "#c1c7c2",
+      color: "#48505a",
       fontSize: isMobile ? "14px" : "16px",
       lineHeight: "1.8",
     },
 
     bodyStrong: {
-      color: "#ffffff",
+      color: "#202329",
       fontWeight: "500",
     },
 
@@ -141,19 +141,19 @@ export default function AboutPage() {
     },
 
     infoCard: {
-      borderTop: "1px solid #303530",
+      borderTop: "1px solid #e2dfd5",
       paddingTop: "18px",
     },
 
     infoLabel: {
-      color: "#8d958e",
+      color: "#727882",
       fontSize: "10px",
       letterSpacing: "1px",
       marginBottom: "7px",
     },
 
     infoValue: {
-      color: "#ffffff",
+      color: "#202329",
       fontSize: "14px",
       lineHeight: "1.6",
     },
@@ -167,39 +167,39 @@ export default function AboutPage() {
 
     tool: {
       padding: "8px 11px",
-      border: "1px solid #3a403a",
+      border: "1px solid #e2dfd5",
       borderRadius: "20px",
       fontSize: "12px",
-      color: "#ffffff",
+      color: "#202329",
     },
 
     codingskillup: {
       padding: isMobile
         ? "28px 22px"
         : "34px",
-      border: "1px solid #35452b",
+      border: "1px solid #d6dfcf",
       borderRadius: "12px",
       background:
-        "linear-gradient(145deg, #182215 0%, #10150e 100%)",
+        "var(--surface-2)",
     },
 
     codingTitle: {
       margin: 0,
-      color: "#ffffff",
+      color: "#202329",
       fontSize: isMobile ? "24px" : "28px",
       fontWeight: "400",
     },
 
     codingText: {
       margin: "14px 0 0",
-      color: "#b6c1af",
+      color: "#727882",
       fontSize: isMobile ? "14px" : "15px",
       lineHeight: "1.7",
     },
 
     codingTag: {
       marginTop: "18px",
-      color: "#caff46",
+      color: "#315bc7",
       fontSize: "12px",
       fontWeight: "600",
     },
@@ -211,7 +211,7 @@ export default function AboutPage() {
       paddingTop: isMobile
         ? "36px"
         : "48px",
-      borderTop: "1px solid #303530",
+      borderTop: "1px solid #e2dfd5",
       display: "flex",
       flexDirection: isMobile
         ? "column"
@@ -225,7 +225,7 @@ export default function AboutPage() {
 
     ctaTitle: {
       margin: 0,
-      color: "#ffffff",
+      color: "#202329",
       fontSize: isMobile ? "28px" : "36px",
       fontWeight: "400",
       lineHeight: "1.2",
@@ -233,18 +233,18 @@ export default function AboutPage() {
 
     ctaText: {
       margin: "10px 0 0",
-      color: "#aeb5af",
+      color: "#727882",
       fontSize: "14px",
       lineHeight: "1.7",
     },
 
     ctaLink: {
-      color: "#caff46",
+      color: "#315bc7",
       textDecoration: "none",
       fontSize: "15px",
       fontWeight: "600",
       paddingBottom: "7px",
-      borderBottom: "1px solid #caff46",
+      borderBottom: "1px solid #dfe6fb",
       whiteSpace: "nowrap",
     },
   };
@@ -261,7 +261,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <main style={styles.page}>
+    <main id="top" style={styles.page}>
       <div style={styles.container}>
         <div style={styles.label}>
           ABOUT / ZOHAIB
@@ -276,10 +276,9 @@ export default function AboutPage() {
           </h1>
 
           <p style={styles.intro}>
-            I&apos;m Zohaib, a web developer and AI builder based in
-            Bahawalpur, Punjab, Pakistan. I work remotely with clients and
-            teams on web applications, AI features, automation and connected
-            workflows.
+            I&apos;m Zohaib, a web developer based in Bahawalpur, Pakistan. I work
+            remotely with clients and teams on web applications, integrations,
+            and workflow automation.
           </p>
         </section>
 
@@ -288,7 +287,7 @@ export default function AboutPage() {
         <section style={styles.sectionGrid}>
           <div>
             <div style={styles.label}>
-              01 / WHAT I DO
+              WHAT I DO
             </div>
 
             <h2 style={styles.sectionTitle}>
@@ -323,7 +322,7 @@ export default function AboutPage() {
                 </div>
 
                 <div style={styles.infoValue}>
-                  Web Developer &amp; AI Builder
+                  Web Developer · AI Integrations
                 </div>
               </div>
 
@@ -365,38 +364,7 @@ export default function AboutPage() {
         <section style={styles.sectionGrid}>
           <div>
             <div style={styles.label}>
-              02 / HOW I WORK
-            </div>
-
-            <h2 style={styles.sectionTitle}>
-              Clear scope.
-              <br />
-              Visible progress.
-            </h2>
-          </div>
-
-          <div>
-            <p style={styles.body}>
-              I prefer simple communication and clear decisions. We define the
-              problem, agree on the scope, then build in visible steps so you
-              can review progress and give feedback while there is still room
-              to adjust.
-            </p>
-
-            <p style={styles.body}>
-              You work directly with me from the first conversation through
-              delivery. There is no handoff between sales, project management
-              and development.
-            </p>
-          </div>
-        </section>
-
-        <div style={styles.divider} />
-
-        <section style={styles.sectionGrid}>
-          <div>
-            <div style={styles.label}>
-              03 / TOOLS
+              TOOLS
             </div>
 
             <h2 style={styles.sectionTitle}>
@@ -425,15 +393,13 @@ export default function AboutPage() {
         <section style={styles.sectionGrid}>
           <div>
             <div style={styles.label}>
-              04 / CODINGSKILLUP
+              CODINGSKILLUP
             </div>
 
             <h2 style={styles.sectionTitle}>
-              Learn.
+              Sharing what
               <br />
-              Build.
-              <br />
-              Repeat.
+              I&apos;m learning.
             </h2>
           </div>
 
@@ -449,7 +415,7 @@ export default function AboutPage() {
             </p>
 
             <div style={styles.codingTag}>
-              Learn. Build. Repeat.
+              Programming · Web development · AI
             </div>
           </div>
         </section>
@@ -470,7 +436,7 @@ export default function AboutPage() {
           </Link>
         </div>
       </div>
-      <ContactSection/>
+      <SiteFooter />
     </main>
   );
 }

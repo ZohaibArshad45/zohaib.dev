@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState, type CSSProperties } from "react";
-import ContactSection from "@/components/MainPage/ContactSection";
+import SiteFooter from "@/components/MainPage/SiteFooter";
 import ProjectPreviewCard from "@/components/Projects/ProjectPreviewCard";
 import type { Project } from "@/lib/projects";
 
@@ -36,7 +37,7 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
   const hasImages = validImages.length > 0;
 
   return (
-    <main style={styles.page}>
+    <main id="top" style={styles.page}>
       <div style={styles.container}>
         {/* BREADCRUMB */}
         <div style={styles.breadcrumbRow}>
@@ -57,16 +58,6 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
 
           {project.subhead && (
             <p style={styles.subhead}>{project.subhead}</p>
-          )}
-
-          {project.description && (
-            <p style={styles.fullDescription}>{project.description}</p>
-          )}
-
-          {project.outcome && (
-            <div style={styles.outcomeHighlight}>
-              <strong style={{ color: "#caff46" }}>Outcome:</strong> {project.outcome}
-            </div>
           )}
 
           {/* EXTERNAL ACTION LINKS (LIVE DEMO & GITHUB) */}
@@ -106,38 +97,6 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
             </div>
           )}
 
-          {/* PROJECT INFO GRID */}
-          <div style={styles.metaGrid}>
-            {project.client ? (
-              <div style={styles.metaCard}>
-                <div style={styles.metaLabel}>CLIENT / SCOPE</div>
-                <div style={styles.metaValue}>{project.client}</div>
-              </div>
-            ) : null}
-
-            {project.role ? (
-              <div style={styles.metaCard}>
-                <div style={styles.metaLabel}>ROLE</div>
-                <div style={styles.metaValue}>{project.role}</div>
-              </div>
-            ) : null}
-
-            {project.timeline ? (
-              <div style={styles.metaCard}>
-                <div style={styles.metaLabel}>TIMELINE</div>
-                <div style={styles.metaValue}>{project.timeline}</div>
-              </div>
-            ) : null}
-
-            <div style={styles.metaCard}>
-              <div style={styles.metaLabel}>CATEGORIES</div>
-              <div style={styles.metaValue}>
-                {Array.isArray(project.categories) && project.categories.length > 0
-                  ? project.categories.join(", ")
-                  : project.status || "Web Apps"}
-              </div>
-            </div>
-          </div>
         </header>
 
         {/* PREVIEW CONTAINER / 3-IMAGE GALLERY */}
@@ -146,9 +105,12 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
             <div style={styles.galleryWrapper}>
               <div style={styles.mainImageContainer}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src={validImages[selectedImgIdx] || validImages[0]}
                   alt={project.title}
+                  width={1600}
+                  height={900}
+                  unoptimized
                   style={styles.mainImage}
                 />
                 <div style={styles.galleryBadge}>
@@ -166,19 +128,22 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
                       style={{
                         ...styles.thumbBtn,
                         borderColor:
-                          selectedImgIdx === idx ? "#caff46" : "#28342a",
+                          selectedImgIdx === idx ? "#dfe6fb" : "#28342a",
                         transform:
                           selectedImgIdx === idx ? "scale(1.02)" : "scale(1)",
                         boxShadow:
                           selectedImgIdx === idx
-                            ? "0 0 12px rgba(202, 255, 70, 0.25)"
+                            ? "0 0 12px rgba(49, 91, 199, 0.12)"
                             : "none",
                       }}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
+                      <Image
                         src={img}
                         alt={`Screenshot ${idx + 1}`}
+                        width={240}
+                        height={152}
+                        unoptimized
                         style={styles.thumbImg}
                       />
                     </button>
@@ -206,12 +171,22 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
           </section>
         )}
 
+        {(project.description || project.outcome) && (
+          <section style={styles.summaryStrip}>
+            {project.description && <p style={styles.summaryText}>{project.description}</p>}
+            {project.outcome && <p style={styles.summaryOutcome}><strong>Result</strong> {project.outcome}</p>}
+          </section>
+        )}
+
+        <details className="case-study-details">
+          <summary>Explore the project details</summary>
+          <div className="case-study-details-content">
         {/* CORE CONTENT: PROBLEM & SOLUTION */}
         {(Boolean(project.problem) || Boolean(project.solution)) && (
           <section style={styles.sectionGrid}>
             {project.problem && (
               <div style={styles.sectionCol}>
-                <div style={styles.label}>01 / THE CHALLENGE</div>
+                <div style={styles.label}>THE CHALLENGE</div>
                 <h2 style={styles.sectionHeading}>The Problem</h2>
                 <p style={styles.bodyText}>{project.problem}</p>
               </div>
@@ -219,7 +194,7 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
 
             {project.solution && (
               <div style={styles.sectionCol}>
-                <div style={styles.label}>02 / THE APPROACH</div>
+                <div style={styles.label}>THE APPROACH</div>
                 <h2 style={styles.sectionHeading}>The Solution</h2>
                 <p style={styles.bodyText}>{project.solution}</p>
               </div>
@@ -235,7 +210,7 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
         <section style={styles.sectionGrid}>
           {project.deliverables && project.deliverables.length > 0 && (
             <div>
-              <div style={styles.label}>03 / DELIVERABLES</div>
+              <div style={styles.label}>DELIVERABLES</div>
               <h2 style={styles.sectionHeading}>What Was Built</h2>
               <ul style={styles.deliverablesList}>
                 {project.deliverables.map((item) => (
@@ -249,7 +224,7 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
           )}
 
           <div>
-            <div style={styles.label}>04 / TECHNOLOGY STACK</div>
+            <div style={styles.label}>TECHNOLOGY</div>
             <h2 style={styles.sectionHeading}>Tools &amp; Frameworks</h2>
             <p style={styles.bodyText}>
               Selected strictly for reliability, developer ergonomics, and
@@ -265,6 +240,8 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
 
           </div>
         </section>
+          </div>
+        </details>
 
         {nextProject?.slug ? (
           <Link href={`/projects/${nextProject.slug}`} style={styles.nextProjectBanner}>
@@ -278,10 +255,15 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
             <span style={styles.nextButton}>Open project</span>
           </Link>
         ) : null}
+        <div style={styles.projectContactCta}>
+          <div>
+            <div style={styles.nextLabel}>HAVE A PROJECT IN MIND?</div>
+            <h2 style={styles.nextTitle}>Let&apos;s talk about it.</h2>
+          </div>
+          <Link href="/contact" style={styles.nextButton}>Get in touch ↗</Link>
+        </div>
       </div>
-
-      {/* FOOTER CONTACT FORM */}
-      <ContactSection />
+      <SiteFooter />
     </main>
   );
 }
@@ -307,7 +289,7 @@ const styles: Record<string, CSSProperties> = {
     marginBottom: "36px",
   },
   backLink: {
-    color: "#caff46",
+    color: "#315bc7",
     textDecoration: "none",
     fontWeight: "600",
   },
@@ -315,13 +297,13 @@ const styles: Record<string, CSSProperties> = {
     color: "#4a534c",
   },
   crumbCurrent: {
-    color: "#8c968e",
+    color: "#727882",
   },
   header: {
     marginBottom: "40px",
   },
   statusEyebrow: {
-    color: "#caff46",
+    color: "#315bc7",
     fontSize: "12px",
     fontWeight: "700",
     letterSpacing: "1px",
@@ -333,32 +315,32 @@ const styles: Record<string, CSSProperties> = {
     lineHeight: "1.06",
     fontWeight: "400",
     letterSpacing: "-0.5px",
-    color: "#f6f6f4",
+    color: "#202329",
     maxWidth: "920px",
   },
   subhead: {
     margin: "18px 0 0",
     fontSize: "17px",
-    color: "#bac2bc",
+    color: "#48505a",
     lineHeight: "1.6",
     maxWidth: "760px",
   },
   fullDescription: {
     margin: "18px 0 0",
     fontSize: "15px",
-    color: "#a4b0a6",
+    color: "#727882",
     lineHeight: "1.75",
     maxWidth: "820px",
   },
   outcomeHighlight: {
     margin: "18px 0 0",
     padding: "12px 18px",
-    background: "rgba(202, 255, 70, 0.05)",
-    borderLeft: "3px solid #caff46",
+    background: "#f3f5fb",
+    borderLeft: "3px solid #dfe6fb",
     borderRadius: "0 8px 8px 0",
     fontSize: "14px",
     lineHeight: "1.6",
-    color: "#e2e8e3",
+    color: "#3e4b69",
     maxWidth: "820px",
   },
   actionButtonsRow: {
@@ -372,30 +354,30 @@ const styles: Record<string, CSSProperties> = {
     display: "inline-flex",
     alignItems: "center",
     gap: "8px",
-    background: "#caff46",
-    color: "#0c0e0d",
+    background: "#315bc7",
+    color: "#ffffff",
     padding: "11px 20px",
     borderRadius: "8px",
     fontSize: "13px",
     fontWeight: "700",
     textDecoration: "none",
     letterSpacing: "0.2px",
-    boxShadow: "0 4px 20px rgba(202, 255, 70, 0.2)",
+    boxShadow: "0 4px 20px rgba(49, 91, 199, 0.12)",
     transition: "transform 0.2s ease, opacity 0.2s ease",
   },
   liveDot: {
     width: "7px",
     height: "7px",
     borderRadius: "50%",
-    background: "#0c0e0d",
+    background: "#f7f6f2",
   },
   githubButton: {
     display: "inline-flex",
     alignItems: "center",
     gap: "8px",
-    background: "#161b17",
-    color: "#ffffff",
-    border: "1px solid #323d34",
+    background: "#eeece5",
+    color: "#202329",
+    border: "1px solid #e2dfd5",
     padding: "11px 20px",
     borderRadius: "8px",
     fontSize: "13px",
@@ -408,38 +390,59 @@ const styles: Record<string, CSSProperties> = {
     gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
     gap: "14px",
     marginTop: "36px",
-    borderTop: "1px solid #282f29",
+    borderTop: "1px solid #e2dfd5",
     paddingTop: "24px",
   },
   metaCard: {
-    background: "#121512",
-    border: "1px solid #282f29",
+    background: "#eeece5",
+    border: "1px solid #e2dfd5",
     borderRadius: "8px",
     padding: "16px 18px",
   },
   metaLabel: {
     fontSize: "10px",
     fontWeight: "700",
-    color: "#838d85",
+    color: "#727882",
     letterSpacing: "0.8px",
     marginBottom: "6px",
   },
   metaValue: {
     fontSize: "13px",
     fontWeight: "600",
-    color: "#ffffff",
+    color: "#202329",
   },
   previewSection: {
-    background: "#121512",
-    border: "1px solid #282f29",
-    borderRadius: "12px",
+    background: "#eeece5",
+    border: "1px solid var(--line)",
+    borderRadius: "16px",
     overflow: "hidden",
     padding: "16px",
     marginBottom: "16px",
   },
+  summaryStrip: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+    gap: "16px 34px",
+    alignItems: "start",
+    padding: "22px 4px 30px",
+  },
+  summaryText: {
+    margin: 0,
+    maxWidth: "720px",
+    color: "var(--text-soft)",
+    fontSize: "15px",
+    lineHeight: "1.7",
+  },
+  summaryOutcome: {
+    margin: 0,
+    maxWidth: "420px",
+    color: "var(--text)",
+    fontSize: "14px",
+    lineHeight: "1.6",
+  },
   imageActionStrip: {
-    background: "#121512",
-    border: "1px solid #283329",
+    background: "#eeece5",
+    border: "1px solid #e2dfd5",
     borderRadius: "10px",
     padding: "18px 24px",
     marginBottom: "40px",
@@ -458,12 +461,12 @@ const styles: Record<string, CSSProperties> = {
   imageActionLabel: {
     fontSize: "10px",
     fontWeight: "700",
-    color: "#caff46",
+    color: "#315bc7",
     letterSpacing: "1px",
   },
   imageActionTitle: {
     fontSize: "13px",
-    color: "#b0b8b1",
+    color: "#727882",
   },
   imageActionBtns: {
     display: "flex",
@@ -475,30 +478,30 @@ const styles: Record<string, CSSProperties> = {
     display: "inline-flex",
     alignItems: "center",
     gap: "10px",
-    background: "#caff46",
-    color: "#0c0e0d",
+    background: "#315bc7",
+    color: "#ffffff",
     padding: "12px 22px",
     borderRadius: "8px",
     fontSize: "13px",
     fontWeight: "800",
     textDecoration: "none",
     letterSpacing: "0.2px",
-    boxShadow: "0 0 20px rgba(202, 255, 70, 0.25)",
+    boxShadow: "0 0 20px rgba(49, 91, 199, 0.12)",
     transition: "transform 0.2s ease, opacity 0.2s ease",
   },
   pulseDot: {
     width: "7px",
     height: "7px",
     borderRadius: "50%",
-    background: "#0c0e0d",
+    background: "#f7f6f2",
   },
   githubSecondaryBtn: {
     display: "inline-flex",
     alignItems: "center",
     gap: "8px",
-    background: "#161b17",
-    color: "#ffffff",
-    border: "1px solid #334035",
+    background: "#eeece5",
+    color: "#202329",
+    border: "1px solid #e2dfd5",
     padding: "11px 20px",
     borderRadius: "8px",
     fontSize: "13px",
@@ -507,17 +510,17 @@ const styles: Record<string, CSSProperties> = {
     transition: "border-color 0.2s ease, background 0.2s ease",
   },
   metricsBanner: {
-    background: "#121512",
-    border: "1px solid #caff46",
+    background: "#eeece5",
+    border: "1px solid #dfe6fb",
     borderRadius: "10px",
     padding: "24px 28px",
     marginBottom: "60px",
-    boxShadow: "0 8px 30px rgba(202, 255, 70, 0.06)",
+    boxShadow: "0 8px 30px rgba(49, 91, 199, 0.06)",
   },
   metricsLabel: {
     fontSize: "10px",
     fontWeight: "700",
-    color: "#caff46",
+    color: "#315bc7",
     letterSpacing: "1px",
     marginBottom: "16px",
   },
@@ -534,11 +537,11 @@ const styles: Record<string, CSSProperties> = {
   metricValue: {
     fontSize: "30px",
     fontWeight: "800",
-    color: "#ffffff",
+    color: "#202329",
   },
   metricName: {
     fontSize: "12px",
-    color: "#9aa39c",
+    color: "#727882",
   },
   sectionGrid: {
     display: "grid",
@@ -550,7 +553,7 @@ const styles: Record<string, CSSProperties> = {
     flexDirection: "column",
   },
   label: {
-    color: "#caff46",
+    color: "#315bc7",
     fontSize: "11px",
     fontWeight: "700",
     letterSpacing: "1px",
@@ -560,24 +563,24 @@ const styles: Record<string, CSSProperties> = {
     margin: "0 0 16px",
     fontSize: "26px",
     fontWeight: "400",
-    color: "#f6f6f4",
+    color: "#202329",
   },
   bodyText: {
     margin: 0,
     fontSize: "15px",
     lineHeight: "1.7",
-    color: "#b4bcb5",
+    color: "#48505a",
   },
   bodyIntro: {
     margin: "0 0 28px",
     fontSize: "15px",
     lineHeight: "1.6",
-    color: "#9fa8a1",
+    color: "#727882",
   },
   divider: {
     width: "100%",
     height: "1px",
-    background: "#282f29",
+    background: "#e2dfd5",
     margin: "64px 0",
   },
   deepDiveSection: {
@@ -589,13 +592,13 @@ const styles: Record<string, CSSProperties> = {
     gap: "18px",
   },
   archCard: {
-    background: "#121512",
-    border: "1px solid #282f29",
+    background: "#eeece5",
+    border: "1px solid #e2dfd5",
     borderRadius: "8px",
     padding: "20px",
   },
   archNum: {
-    color: "#caff46",
+    color: "#315bc7",
     fontSize: "12px",
     fontWeight: "700",
     marginBottom: "10px",
@@ -604,7 +607,7 @@ const styles: Record<string, CSSProperties> = {
     margin: 0,
     fontSize: "13px",
     lineHeight: "1.6",
-    color: "#c0c8c1",
+    color: "#48505a",
   },
   deliverablesList: {
     listStyle: "none",
@@ -620,10 +623,10 @@ const styles: Record<string, CSSProperties> = {
     gap: "10px",
     fontSize: "14px",
     lineHeight: "1.5",
-    color: "#c0c8c1",
+    color: "#48505a",
   },
   checkIcon: {
-    color: "#caff46",
+    color: "#315bc7",
     fontWeight: "700",
   },
   tagsContainer: {
@@ -636,10 +639,10 @@ const styles: Record<string, CSSProperties> = {
   tag: {
     padding: "6px 12px",
     borderRadius: "16px",
-    border: "1px solid #363e37",
-    background: "#161b17",
+    border: "1px solid #e2dfd5",
+    background: "#eeece5",
     fontSize: "12px",
-    color: "#ffffff",
+    color: "#202329",
   },
   nextProjectBanner: {
     background: "var(--surface)",
@@ -655,10 +658,20 @@ const styles: Record<string, CSSProperties> = {
     textDecoration: "none",
     color: "inherit",
   },
+  projectContactCta: {
+    marginTop: "28px",
+    padding: "24px 4px 12px",
+    borderTop: "1px solid var(--line)",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexWrap: "wrap",
+    gap: "18px",
+  },
   nextLabel: {
     fontSize: "10px",
     fontWeight: "700",
-    color: "#caff46",
+    color: "#315bc7",
     letterSpacing: "1px",
     marginBottom: "6px",
   },
@@ -666,16 +679,16 @@ const styles: Record<string, CSSProperties> = {
     margin: "0 0 6px",
     fontSize: "22px",
     fontWeight: "500",
-    color: "#ffffff",
+    color: "#202329",
   },
   nextSub: {
     margin: 0,
     fontSize: "13px",
-    color: "#8a948c",
+    color: "#727882",
   },
   nextButton: {
-    background: "#caff46",
-    color: "#0c0e0d",
+    background: "#315bc7",
+    color: "#ffffff",
     padding: "14px 24px",
     borderRadius: "8px",
     textDecoration: "none",
@@ -698,7 +711,7 @@ const styles: Record<string, CSSProperties> = {
     minHeight: "360px",
     borderRadius: "8px",
     overflow: "hidden",
-    background: "#0c0e0d",
+    background: "#f7f6f2",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -714,10 +727,10 @@ const styles: Record<string, CSSProperties> = {
     position: "absolute",
     bottom: "16px",
     right: "16px",
-    background: "rgba(10, 14, 12, 0.85)",
+    background: "rgba(32, 40, 32, 0.78)",
     backdropFilter: "blur(6px)",
-    color: "#caff46",
-    border: "1px solid rgba(202, 255, 70, 0.3)",
+    color: "#ffffff",
+    border: "1px solid rgba(255, 255, 255, 0.3)",
     fontSize: "11px",
     fontWeight: "700",
     padding: "6px 12px",
@@ -730,8 +743,8 @@ const styles: Record<string, CSSProperties> = {
     paddingBottom: "4px",
   },
   thumbBtn: {
-    background: "#141815",
-    border: "2px solid #28342a",
+    background: "#ffffff",
+    border: "2px solid #e2dfd5",
     borderRadius: "8px",
     padding: "4px",
     cursor: "pointer",
@@ -757,8 +770,8 @@ const styles: Record<string, CSSProperties> = {
     marginTop: "20px",
   },
   saasCard: {
-    background: "#131814",
-    border: "1px solid #242f26",
+    background: "#eeece5",
+    border: "1px solid #e2dfd5",
     borderRadius: "10px",
     padding: "16px 18px",
     transition: "border-color 0.2s ease",
@@ -775,11 +788,11 @@ const styles: Record<string, CSSProperties> = {
   saasCardTitle: {
     fontSize: "14px",
     fontWeight: "700",
-    color: "#ffffff",
+    color: "#202329",
   },
   saasCardDesc: {
     fontSize: "12px",
-    color: "#a4aca6",
+    color: "#727882",
     lineHeight: "1.5",
     margin: 0,
   },

@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { Download, FileText, Search, X } from "lucide-react";
 import { useState, useMemo, type CSSProperties } from "react";
-import Navbar from "@/components/MainPage/Navbar";
-import ContactSection from "@/components/MainPage/ContactSection";
+import SiteFooter from "@/components/MainPage/SiteFooter";
 import type { Resource } from "@/lib/resources";
 
 interface ResourcesClientProps {
@@ -115,9 +115,9 @@ export default function ResourcesClient({
       case "code":
       case "zip":
         return {
-          bg: "rgba(202, 255, 70, 0.12)",
-          border: "rgba(202, 255, 70, 0.35)",
-          text: "#caff46",
+      bg: "rgba(49, 91, 199, 0.08)",
+          border: "rgba(49, 91, 199, 0.22)",
+          text: "#315bc7",
           label: type === "zip" ? "ZIP ARCHIVE" : "SOURCE CODE",
         };
       case "template":
@@ -139,47 +139,29 @@ export default function ResourcesClient({
 
   return (
     <div style={styles.page}>
-      <Navbar />
-
-      <main style={styles.main}>
+      <main id="top" style={styles.main}>
         {/* HERO SECTION */}
         <section style={styles.heroSection}>
           <div style={styles.container}>
             <div style={styles.badgeWrapper}>
               <span style={styles.eyebrowBadge}>
-                <span style={styles.pulseDot} />
-                FREE DEVELOPER RESOURCES &amp; CODE
+                DEVELOPER RESOURCES
               </span>
             </div>
 
             <h1 style={styles.heroTitle}>
-              Free Blueprints, Code &amp; <br />
-              <span style={styles.heroGradient}>Engineering Playbooks</span>
+              Practical guides and <br />
+              <span style={styles.heroGradient}>developer resources</span>
             </h1>
 
             <p style={styles.heroSubtitle}>
-              Handcrafted production starters, system architecture handbooks,
-              PostgreSQL cheatsheets, and autonomous AI blueprints. 100% free
-              for software developers and tech builders.
+              Notes, templates and code for building and maintaining software.
+              Browse the collection and download anything useful for your work.
             </p>
 
-            {/* QUICK STATS PILLS */}
-            <div style={styles.statsRow}>
-              <div style={styles.statPill}>
-                <span style={styles.statNumber}>{resources.length}+</span>
-                <span style={styles.statLabel}>Free Assets</span>
-              </div>
-              <div style={styles.statDivider} />
-              <div style={styles.statPill}>
-                <span style={styles.statNumber}>100%</span>
-                <span style={styles.statLabel}>Free &amp; Open</span>
-              </div>
-              <div style={statDividerStyle} />
-              <div style={styles.statPill}>
-                <span style={styles.statNumber}>Direct</span>
-                <span style={styles.statLabel}>PDF &amp; ZIP Downloads</span>
-              </div>
-            </div>
+            <p style={{ margin: "28px 0 0", color: "#727882", fontSize: "14px" }}>
+              {resources.length} {resources.length === 1 ? "resource" : "resources"}
+            </p>
           </div>
         </section>
 
@@ -189,7 +171,7 @@ export default function ResourcesClient({
             <div style={styles.controlsBar}>
               {/* Search Bar */}
               <div style={styles.searchWrapper}>
-                <span style={styles.searchIcon}>🔍</span>
+                <Search size={18} strokeWidth={1.75} style={styles.searchIcon} aria-hidden="true" />
                 <input
                   type="text"
                   placeholder="Search resources, topics (e.g. Next.js, AI, Supabase)..."
@@ -203,7 +185,7 @@ export default function ResourcesClient({
                     style={styles.clearSearchBtn}
                     aria-label="Clear search"
                   >
-                    ✕
+                    <X size={16} strokeWidth={1.75} aria-hidden="true" />
                   </button>
                 )}
               </div>
@@ -268,17 +250,15 @@ export default function ResourcesClient({
                       style={{
                         ...styles.card,
                         transform: isHovered
-                          ? "translateY(-8px) scale(1.01)"
-                          : "translateY(0) scale(1)",
+                          ? "translateY(-2px)"
+                          : "translateY(0)",
                         borderColor: isHovered
-                          ? "rgba(202, 255, 70, 0.45)"
-                          : "#232a24",
+                          ? "rgba(49, 91, 199, 0.22)"
+                          : "#e2dfd5",
                         boxShadow: isHovered
-                          ? "0 24px 50px -12px rgba(0, 0, 0, 0.75), 0 0 32px rgba(202, 255, 70, 0.16)"
+                          ? "0 12px 28px rgba(0, 0, 0, 0.24)"
                           : "none",
-                        background: isHovered
-                          ? "linear-gradient(180deg, #161c17 0%, #0e120f 100%)"
-                          : "linear-gradient(180deg, #131714 0%, #0f1210 100%)",
+                        background: "#ffffff",
                       }}
                     >
                       {/* COVER IMAGE THUMBNAIL */}
@@ -287,8 +267,8 @@ export default function ResourcesClient({
                           style={{
                             ...styles.coverThumbnailWrapper,
                             borderColor: isHovered
-                              ? "rgba(202, 255, 70, 0.35)"
-                              : "#232a24",
+                              ? "rgba(49, 91, 199, 0.2)"
+                              : "#e2dfd5",
                             boxShadow: isHovered
                               ? "0 8px 24px rgba(0, 0, 0, 0.5)"
                               : "none",
@@ -340,7 +320,7 @@ export default function ResourcesClient({
                       <h2
                         style={{
                           ...styles.cardTitle,
-                          color: isHovered ? "#caff46" : "#ffffff",
+                          color: isHovered ? "#315bc7" : "#202329",
                           transition: "color 0.25s ease",
                         }}
                       >
@@ -364,13 +344,13 @@ export default function ResourcesClient({
                       {/* FOOTER INFO: SIZE & DOWNLOADS */}
                       <div style={styles.cardMeta}>
                         <div style={styles.metaItem}>
-                          <span style={styles.metaIcon}>💾</span>
+                          <FileText size={14} aria-hidden="true" />
                           <span>{resource.fileSize || "Free Download"}</span>
                         </div>
 
                         {typeof resource.downloadsCount === "number" && (
                           <div style={styles.metaItem}>
-                            <span style={styles.metaIcon}>⬇</span>
+                          <Download size={14} aria-hidden="true" />
                             <span>{resource.downloadsCount} downloads</span>
                           </div>
                         )}
@@ -387,7 +367,7 @@ export default function ResourcesClient({
                               ? "translateY(-2px)"
                               : "translateY(0)",
                             boxShadow: isHovered
-                              ? "0 0 25px rgba(202, 255, 70, 0.45)"
+                              ? "0 8px 18px rgba(49, 91, 199, 0.18)"
                               : "none",
                           }}
                           title="Download Resource"
@@ -413,16 +393,16 @@ export default function ResourcesClient({
                             ...styles.copyBtn,
                             borderColor:
                               hoveredCopyId === resource.id
-                                ? "#caff46"
-                                : "#273029",
+                                ? "#315bc7"
+                                : "#e2dfd5",
                             color:
                               hoveredCopyId === resource.id
-                                ? "#caff46"
-                                : "#cbd2cc",
+                                ? "#dfe6fb"
+                                : "#48505a",
                             background:
                               hoveredCopyId === resource.id
-                                ? "rgba(202, 255, 70, 0.08)"
-                                : "#181d19",
+                                ? "rgba(49, 91, 199, 0.06)"
+                                : "#ffffff",
                           }}
                           title="Copy Download Link"
                         >
@@ -442,16 +422,16 @@ export default function ResourcesClient({
                               ...styles.externalLinkBtn,
                               borderColor:
                                 hoveredExternalId === resource.id
-                                  ? "#caff46"
-                                  : "#273029",
+                                ? "#315bc7"
+                                  : "#e2dfd5",
                               color:
                                 hoveredExternalId === resource.id
-                                  ? "#caff46"
-                                  : "#cbd2cc",
+                                  ? "#dfe6fb"
+                                  : "#48505a",
                               background:
                                 hoveredExternalId === resource.id
-                                  ? "rgba(202, 255, 70, 0.08)"
-                                  : "#181d19",
+                                ? "rgba(49, 91, 199, 0.06)"
+                                : "#ffffff",
                             }}
                             title="View on GitHub / Source"
                           >
@@ -484,7 +464,7 @@ export default function ResourcesClient({
 
               <div style={styles.ctaRight}>
                 <Link href="/contact" style={styles.ctaButton}>
-                  Request an Asset or Chat ↗
+                  Suggest a resource ↗
                 </Link>
               </div>
             </div>
@@ -492,21 +472,15 @@ export default function ResourcesClient({
         </section>
       </main>
 
-      <ContactSection />
+      <SiteFooter />
     </div>
   );
 }
 
-const statDividerStyle: CSSProperties = {
-  width: "1px",
-  height: "28px",
-  background: "#242a25",
-};
-
 const styles: Record<string, CSSProperties> = {
   page: {
-    background: "#0c0e0d",
-    color: "#ffffff",
+    background: "#ffffff",
+    color: "#202329",
     minHeight: "100vh",
     fontFamily:
       'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
@@ -526,12 +500,12 @@ const styles: Record<string, CSSProperties> = {
 
   heroSection: {
     padding: "60px 0 30px",
-    textAlign: "center",
+    textAlign: "left",
   },
 
   badgeWrapper: {
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     marginBottom: "20px",
   },
 
@@ -540,22 +514,14 @@ const styles: Record<string, CSSProperties> = {
     alignItems: "center",
     gap: "8px",
     padding: "6px 14px",
-    borderRadius: "999px",
-    background: "rgba(202, 255, 70, 0.08)",
-    border: "1px solid rgba(202, 255, 70, 0.25)",
-    color: "#caff46",
+    borderRadius: "0",
+    background: "transparent",
+    border: "none",
+    color: "#315bc7",
     fontSize: "12px",
     fontWeight: "700",
-    letterSpacing: "1px",
+    letterSpacing: "0.08em",
     textTransform: "uppercase",
-  },
-
-  pulseDot: {
-    width: "7px",
-    height: "7px",
-    borderRadius: "50%",
-    background: "#caff46",
-    boxShadow: "0 0 10px #caff46",
   },
 
   heroTitle: {
@@ -563,59 +529,18 @@ const styles: Record<string, CSSProperties> = {
     fontWeight: "800",
     lineHeight: "1.1",
     letterSpacing: "-1.5px",
-    color: "#ffffff",
+    color: "#202329",
     margin: "0 0 20px",
   },
 
-  heroGradient: {
-    background: "linear-gradient(135deg, #caff46 20%, #7ee787 100%)",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-  },
+  heroGradient: { color: "#315bc7" },
 
   heroSubtitle: {
     fontSize: "clamp(16px, 2vw, 19px)",
-    color: "#a7ada9",
+    color: "#727882",
     maxWidth: "760px",
-    margin: "0 auto 36px",
+    margin: "0 0 28px",
     lineHeight: "1.6",
-  },
-
-  statsRow: {
-    display: "inline-flex",
-    alignItems: "center",
-    gap: "24px",
-    padding: "12px 28px",
-    borderRadius: "16px",
-    background: "rgba(18, 22, 19, 0.75)",
-    border: "1px solid rgba(255, 255, 255, 0.07)",
-    backdropFilter: "blur(10px)",
-    flexWrap: "wrap",
-    justifyContent: "center",
-  },
-
-  statPill: {
-    display: "flex",
-    alignItems: "center",
-    gap: "8px",
-  },
-
-  statNumber: {
-    fontSize: "16px",
-    fontWeight: "800",
-    color: "#caff46",
-  },
-
-  statLabel: {
-    fontSize: "13px",
-    color: "#8e988f",
-    fontWeight: "500",
-  },
-
-  statDivider: {
-    width: "1px",
-    height: "24px",
-    background: "rgba(255, 255, 255, 0.1)",
   },
 
   controlsSection: {
@@ -646,9 +571,9 @@ const styles: Record<string, CSSProperties> = {
     width: "100%",
     padding: "16px 46px 16px 48px",
     borderRadius: "14px",
-    background: "#131715",
-    border: "1px solid #232924",
-    color: "#ffffff",
+    background: "#f4f6f2",
+    border: "1px solid #e2dfd5",
+    color: "#202329",
     fontSize: "15px",
     outline: "none",
     boxSizing: "border-box",
@@ -662,7 +587,7 @@ const styles: Record<string, CSSProperties> = {
     transform: "translateY(-50%)",
     background: "transparent",
     border: "none",
-    color: "#8e988f",
+    color: "#727882",
     cursor: "pointer",
     fontSize: "14px",
     padding: "4px 8px",
@@ -679,9 +604,9 @@ const styles: Record<string, CSSProperties> = {
   catButton: {
     padding: "10px 18px",
     borderRadius: "999px",
-    background: "#131715",
-    border: "1px solid #232924",
-    color: "#9aa39b",
+    background: "#f4f6f2",
+    border: "1px solid #e2dfd5",
+    color: "#727882",
     fontSize: "14px",
     fontWeight: "500",
     cursor: "pointer",
@@ -690,11 +615,11 @@ const styles: Record<string, CSSProperties> = {
   },
 
   catButtonActive: {
-    background: "#caff46",
-    borderColor: "#caff46",
-    color: "#0c0e0d",
+    background: "#315bc7",
+    borderColor: "#315bc7",
+    color: "#ffffff",
     fontWeight: "700",
-    boxShadow: "0 0 20px rgba(202, 255, 70, 0.3)",
+    boxShadow: "0 6px 16px rgba(49, 91, 199, 0.18)",
   },
 
   gridSection: {
@@ -708,8 +633,8 @@ const styles: Record<string, CSSProperties> = {
   },
 
   card: {
-    background: "linear-gradient(180deg, #131714 0%, #0f1210 100%)",
-    border: "1px solid #232a24",
+    background: "var(--surface)",
+    border: "1px solid #e2dfd5",
     borderRadius: "20px",
     padding: "24px",
     display: "flex",
@@ -726,8 +651,8 @@ const styles: Record<string, CSSProperties> = {
     borderRadius: "14px",
     overflow: "hidden",
     marginBottom: "18px",
-    background: "#161b17",
-    border: "1px solid #232a24",
+    background: "#eeece5",
+    border: "1px solid #e2dfd5",
     position: "relative",
     transition: "border-color 0.3s ease, box-shadow 0.3s ease",
   },
@@ -768,9 +693,9 @@ const styles: Record<string, CSSProperties> = {
   categoryBadge: {
     padding: "4px 10px",
     borderRadius: "6px",
-    background: "rgba(255, 255, 255, 0.05)",
-    border: "1px solid rgba(255, 255, 255, 0.09)",
-    color: "#8e988f",
+    background: "#f4f5f8",
+    border: "1px solid #e2dfd5",
+    color: "#727882",
     fontSize: "11px",
     fontWeight: "600",
   },
@@ -778,8 +703,8 @@ const styles: Record<string, CSSProperties> = {
   featuredBadge: {
     padding: "3px 8px",
     borderRadius: "6px",
-    background: "rgba(202, 255, 70, 0.15)",
-    color: "#caff46",
+    background: "rgba(49, 91, 199, 0.08)",
+    color: "#315bc7",
     fontSize: "10px",
     fontWeight: "800",
     letterSpacing: "0.5px",
@@ -788,14 +713,14 @@ const styles: Record<string, CSSProperties> = {
   cardTitle: {
     fontSize: "21px",
     fontWeight: "700",
-    color: "#ffffff",
+    color: "#202329",
     margin: "0 0 12px",
     lineHeight: "1.3",
   },
 
   cardDescription: {
     fontSize: "14px",
-    color: "#9aa39c",
+    color: "#727882",
     lineHeight: "1.6",
     margin: "0 0 20px",
     flexGrow: 1,
@@ -810,11 +735,11 @@ const styles: Record<string, CSSProperties> = {
 
   tag: {
     fontSize: "11px",
-    color: "#748076",
-    background: "rgba(0, 0, 0, 0.25)",
+    color: "#727882",
+    background: "#eeece5",
     padding: "3px 8px",
     borderRadius: "4px",
-    border: "1px solid #1c221d",
+    border: "1px solid #e2dfd5",
   },
 
   cardMeta: {
@@ -822,10 +747,10 @@ const styles: Record<string, CSSProperties> = {
     alignItems: "center",
     justifyContent: "space-between",
     paddingTop: "16px",
-    borderTop: "1px solid #1f2520",
+    borderTop: "1px solid #e2dfd5",
     marginBottom: "20px",
     fontSize: "12px",
-    color: "#7e8880",
+    color: "#727882",
   },
 
   metaItem: {
@@ -853,8 +778,8 @@ const styles: Record<string, CSSProperties> = {
     gap: "8px",
     padding: "12px 18px",
     borderRadius: "10px",
-    background: "#caff46",
-    color: "#0c0e0d",
+    background: "#315bc7",
+    color: "#ffffff",
     fontSize: "14px",
     fontWeight: "700",
     border: "none",
@@ -871,7 +796,7 @@ const styles: Record<string, CSSProperties> = {
     display: "inline-block",
     width: "12px",
     height: "12px",
-    border: "2px solid #0c0e0d",
+    border: "2px solid #ffffff",
     borderTopColor: "transparent",
     borderRadius: "50%",
     animation: "spin 0.6s linear infinite",
@@ -880,9 +805,9 @@ const styles: Record<string, CSSProperties> = {
   copyBtn: {
     padding: "12px 14px",
     borderRadius: "10px",
-    background: "#181d19",
-    border: "1px solid #273029",
-    color: "#cbd2cc",
+    background: "#ffffff",
+    border: "1px solid #e2dfd5",
+    color: "#48505a",
     fontSize: "13px",
     fontWeight: "600",
     cursor: "pointer",
@@ -892,9 +817,9 @@ const styles: Record<string, CSSProperties> = {
   externalLinkBtn: {
     padding: "12px 14px",
     borderRadius: "10px",
-    background: "#181d19",
-    border: "1px solid #273029",
-    color: "#cbd2cc",
+    background: "#ffffff",
+    border: "1px solid #e2dfd5",
+    color: "#48505a",
     fontSize: "13px",
     fontWeight: "600",
     textDecoration: "none",
@@ -906,9 +831,9 @@ const styles: Record<string, CSSProperties> = {
   emptyState: {
     textAlign: "center",
     padding: "80px 20px",
-    background: "#111412",
+    background: "#eeece5",
     borderRadius: "20px",
-    border: "1px dashed #242b25",
+    border: "1px dashed #d8d5cc",
   },
 
   emptyIcon: {
@@ -919,21 +844,21 @@ const styles: Record<string, CSSProperties> = {
   emptyTitle: {
     fontSize: "20px",
     fontWeight: "700",
-    color: "#ffffff",
+    color: "#202329",
     margin: "0 0 8px",
   },
 
   emptySub: {
     fontSize: "14px",
-    color: "#848f86",
+    color: "#727882",
     margin: "0 0 20px",
   },
 
   resetBtn: {
     padding: "10px 20px",
     borderRadius: "8px",
-    background: "#caff46",
-    color: "#0c0e0d",
+    background: "#315bc7",
+    color: "#ffffff",
     border: "none",
     fontWeight: "700",
     cursor: "pointer",
@@ -944,10 +869,10 @@ const styles: Record<string, CSSProperties> = {
   },
 
   ctaBox: {
-    background: "linear-gradient(135deg, #141a16 0%, #101411 100%)",
-    border: "1px solid rgba(202, 255, 70, 0.25)",
-    borderRadius: "24px",
-    padding: "48px 40px",
+    background: "#ffffff",
+    border: "1px solid #e2dfd5",
+    borderRadius: "12px",
+    padding: "36px 32px",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
@@ -964,7 +889,7 @@ const styles: Record<string, CSSProperties> = {
   ctaEyebrow: {
     fontSize: "11px",
     fontWeight: "800",
-    color: "#caff46",
+    color: "#315bc7",
     letterSpacing: "1.5px",
     display: "block",
     marginBottom: "10px",
@@ -973,14 +898,14 @@ const styles: Record<string, CSSProperties> = {
   ctaHeading: {
     fontSize: "clamp(22px, 3.5vw, 32px)",
     fontWeight: "800",
-    color: "#ffffff",
+    color: "#202329",
     margin: "0 0 12px",
     lineHeight: "1.25",
   },
 
   ctaText: {
     fontSize: "15px",
-    color: "#9aa39c",
+    color: "#727882",
     lineHeight: "1.6",
     margin: 0,
   },
@@ -994,12 +919,12 @@ const styles: Record<string, CSSProperties> = {
     alignItems: "center",
     padding: "16px 30px",
     borderRadius: "12px",
-    background: "#caff46",
-    color: "#0c0e0d",
+    background: "#315bc7",
+    color: "#ffffff",
     fontSize: "15px",
     fontWeight: "700",
     textDecoration: "none",
-    boxShadow: "0 0 30px rgba(202, 255, 70, 0.2)",
+    boxShadow: "none",
     transition: "transform 0.15s ease",
   },
 };

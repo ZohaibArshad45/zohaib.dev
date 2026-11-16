@@ -16,12 +16,12 @@ type TabType =
   | "settings";
 
 const PREVIEW_TYPES: { id: Project["previewType"]; label: string }[] = [
-  { id: "inbox", label: "AI Inbox & Lead Stream" },
-  { id: "automation", label: "Automation Workflow Nodes" },
-  { id: "dashboard", label: "Live Operations Dashboard" },
-  { id: "outreach", label: "Prospect Intelligence Agent" },
-  { id: "code", label: "Code Playground & Terminal" },
-  { id: "support", label: "RAG Vector Knowledge Copilot" },
+  { id: "inbox", label: "Inbox" },
+  { id: "automation", label: "Automation" },
+  { id: "dashboard", label: "Dashboard" },
+  { id: "outreach", label: "Outreach" },
+  { id: "code", label: "Code" },
+  { id: "support", label: "Support" },
 ];
 
 const EMPTY_PROJECT: Project = {
@@ -667,7 +667,7 @@ export default function AdminDashboard() {
                 }}
                 style={{
                   ...styles.authInput,
-                  borderColor: passcodeError ? "#ff5a5a" : "#2e362f",
+                  borderColor: passcodeError ? "#ff5a5a" : "#dce3d9",
                 }}
               />
               {passcodeError && (
@@ -698,20 +698,27 @@ export default function AdminDashboard() {
     <main style={styles.dashboardPage}>
       {/* TOP HEADER */}
       <header style={styles.topBar}>
-        <div style={styles.topContainer}>
+        <div
+          style={{
+            ...styles.topContainer,
+            ...(isMobile
+              ? { flexDirection: "column", alignItems: "stretch", gap: "12px" }
+              : {}),
+          }}
+        >
           <div style={styles.brandGroup}>
             <Link href="/" style={styles.brandTitle}>
-              Zohaib<span style={{ color: "#caff46" }}>.</span>
+              Zohaib<span style={{ color: "#315bc7" }}>.</span>
             </Link>
-            <span style={styles.adminTag}>PORTFOLIO ADMIN • v2.1</span>
+            <span style={styles.adminTag}>ADMIN</span>
 
             <span
               style={{
                 ...styles.statusPill,
-                color: projectsSource === "supabase" ? "#caff46" : "#fbbf24",
+                color: projectsSource === "supabase" ? "#315bc7" : "#855900",
                 borderColor:
                   projectsSource === "supabase"
-                    ? "rgba(202, 255, 70, 0.4)"
+                    ? "rgba(83, 105, 68, 0.25)"
                     : "rgba(251, 191, 36, 0.4)",
               }}
             >
@@ -719,32 +726,25 @@ export default function AdminDashboard() {
                 style={{
                   ...styles.liveDot,
                   background:
-                    projectsSource === "supabase" ? "#caff46" : "#fbbf24",
+                    projectsSource === "supabase" ? "#315bc7" : "#855900",
                   boxShadow: `0 0 6px ${
-                    projectsSource === "supabase" ? "#caff46" : "#fbbf24"
+                    projectsSource === "supabase" ? "#315bc7" : "#855900"
                   }`,
                 }}
               />
               {projectsSource === "supabase"
-                ? "SUPABASE CLOUD ACTIVE"
-                : "LOCAL STORE (SYNC READY)"}
+                ? "Cloud storage"
+                : "Local storage"}
             </span>
           </div>
 
           <div style={styles.topActions}>
             <button
               type="button"
-              onClick={openAddProjectModal}
-              style={styles.addProjectNavBtn}
-            >
-              + Add Project
-            </button>
-            <button
-              type="button"
               onClick={handleLogout}
               style={styles.logoutBtn}
             >
-              Logout 🔒
+              Logout
             </button>
           </div>
         </div>
@@ -760,12 +760,12 @@ export default function AdminDashboard() {
             style={{
               ...styles.tabItem,
               borderBottomColor:
-                activeTab === "projects" ? "#caff46" : "transparent",
-              color: activeTab === "projects" ? "#ffffff" : "#8e988f",
+                activeTab === "projects" ? "#315bc7" : "transparent",
+              color: activeTab === "projects" ? "#202329" : "#727882",
               fontWeight: activeTab === "projects" ? "700" : "500",
             }}
           >
-            📁 Projects ({projects.length})
+            Projects <span>({projects.length})</span>
           </button>
 
           <button
@@ -774,12 +774,12 @@ export default function AdminDashboard() {
             style={{
               ...styles.tabItem,
               borderBottomColor:
-                activeTab === "categories" ? "#caff46" : "transparent",
-              color: activeTab === "categories" ? "#ffffff" : "#8e988f",
+                activeTab === "categories" ? "#315bc7" : "transparent",
+              color: activeTab === "categories" ? "#202329" : "#727882",
               fontWeight: activeTab === "categories" ? "700" : "500",
             }}
           >
-            🏷️ Categories &amp; Eyebrows ({categories.length})
+            Categories <span>({categories.length})</span>
           </button>
 
           <button
@@ -788,12 +788,12 @@ export default function AdminDashboard() {
             style={{
               ...styles.tabItem,
               borderBottomColor:
-                activeTab === "resources" ? "#caff46" : "transparent",
-              color: activeTab === "resources" ? "#ffffff" : "#8e988f",
+                activeTab === "resources" ? "#315bc7" : "transparent",
+              color: activeTab === "resources" ? "#202329" : "#727882",
               fontWeight: activeTab === "resources" ? "700" : "500",
             }}
           >
-            📚 Free Resources ({resources.length})
+            Resources <span>({resources.length})</span>
           </button>
 
           <button
@@ -802,12 +802,12 @@ export default function AdminDashboard() {
             style={{
               ...styles.tabItem,
               borderBottomColor:
-                activeTab === "inquiries" ? "#caff46" : "transparent",
-              color: activeTab === "inquiries" ? "#ffffff" : "#8e988f",
+                activeTab === "inquiries" ? "#315bc7" : "transparent",
+              color: activeTab === "inquiries" ? "#202329" : "#727882",
               fontWeight: activeTab === "inquiries" ? "700" : "500",
             }}
           >
-            📬 Contact Messages ({inquiries.length})
+            Inquiries <span>({inquiries.length})</span>
             {newCount > 0 && <span style={styles.unreadCount}>{newCount}</span>}
           </button>
 
@@ -817,12 +817,12 @@ export default function AdminDashboard() {
             style={{
               ...styles.tabItem,
               borderBottomColor:
-                activeTab === "settings" ? "#caff46" : "transparent",
-              color: activeTab === "settings" ? "#ffffff" : "#8e988f",
+                activeTab === "settings" ? "#315bc7" : "transparent",
+              color: activeTab === "settings" ? "#202329" : "#727882",
               fontWeight: activeTab === "settings" ? "700" : "500",
             }}
           >
-            ⚙️ Settings
+            Settings
           </button>
         </nav>
 
@@ -878,7 +878,7 @@ export default function AdminDashboard() {
 
                     <h4 style={styles.projectCmsTitle}>{proj.title}</h4>
                     <div style={styles.projectSlugLine}>
-                      URL: <span style={{ color: "#caff46" }}>/projects/{proj.slug}</span>
+                      URL: <span style={{ color: "#315bc7" }}>/projects/{proj.slug}</span>
                     </div>
                     <p style={styles.projectCmsSub}>{proj.headline}</p>
 
@@ -891,7 +891,7 @@ export default function AdminDashboard() {
                           style={styles.projectCmsImage}
                         />
                         <span style={styles.projectCmsImageBadge}>
-                          📸 {proj.images.filter(Boolean).length} Photos
+                          {proj.images.filter(Boolean).length} images
                         </span>
                       </div>
                     )}
@@ -911,14 +911,14 @@ export default function AdminDashboard() {
                           onClick={() => openEditProjectModal(proj)}
                           style={styles.editProjBtn}
                         >
-                          ✏️ Edit
+                          Edit
                         </button>
                         <button
                           type="button"
                           onClick={() => handleDeleteProject(proj.slug)}
                           style={styles.deleteProjBtn}
                         >
-                          🗑️
+                          Delete
                         </button>
                       </div>
 
@@ -945,7 +945,7 @@ export default function AdminDashboard() {
             <div style={styles.panelCard}>
               <div style={styles.panelHeader}>
                 <div>
-                  <h3 style={styles.panelTitle}>Categories &amp; Status Eyebrows</h3>
+                  <h3 style={styles.panelTitle}>Categories</h3>
                   <p style={styles.panelSub}>
                     Categories defined here automatically appear in the project
                     creator dropdown and as filter tabs on the public Projects
@@ -1064,8 +1064,8 @@ export default function AdminDashboard() {
                     style={{
                       ...styles.filterChip,
                       background:
-                        statusFilter === flt.id ? "#caff46" : "#171c18",
-                      color: statusFilter === flt.id ? "#0c0e0d" : "#c4cbc4",
+                        statusFilter === flt.id ? "#315bc7" : "#eeece5",
+                      color: statusFilter === flt.id ? "#f7f6f2" : "#48505a",
                       fontWeight: statusFilter === flt.id ? "700" : "500",
                     }}
                   >
@@ -1085,14 +1085,11 @@ export default function AdminDashboard() {
               <div style={styles.leadsListContainer}>
                 {filteredInquiries.length === 0 ? (
                   <div style={styles.emptyInboxBox}>
-                    <div style={{ fontSize: "36px", marginBottom: "8px" }}>
-                      📭
-                    </div>
                     <div
                       style={{
                         fontSize: "15px",
                         fontWeight: "600",
-                        color: "#ffffff",
+                        color: "#202329",
                         marginBottom: "4px",
                       }}
                     >
@@ -1103,15 +1100,15 @@ export default function AdminDashboard() {
                     <p
                       style={{
                         fontSize: "12px",
-                        color: "#8a968c",
+                        color: "#727882",
                         maxWidth: "340px",
                         margin: 0,
                         lineHeight: 1.5,
                       }}
                     >
                       {inquiries.length === 0
-                        ? "Jab bhi koi visitor website ke contact form se message karega, sirf wahi real message yahan show hoga."
-                        : "Filter ya search term change kar ke check karein."}
+                        ? "Messages sent through the contact form will appear here."
+                        : "Try changing your search or status filter."}
                     </p>
                   </div>
                 ) : (
@@ -1125,15 +1122,15 @@ export default function AdminDashboard() {
                         style={{
                           ...styles.leadCard,
                           borderColor: isSelected
-                            ? "#caff46"
+                            ? "#315bc7"
                             : isUnread
-                            ? "rgba(202, 255, 70, 0.4)"
-                            : "#283029",
+                            ? "rgba(83, 105, 68, 0.25)"
+                            : "#dce3d9",
                           background: isSelected
-                            ? "#181e19"
+                            ? "#f4f6f2"
                             : isUnread
                             ? "#141914"
-                            : "#111412",
+                            : "#ffffff",
                         }}
                         onClick={() => setSelectedInquiry(inq)}
                       >
@@ -1148,8 +1145,8 @@ export default function AdminDashboard() {
                             <div
                               style={{
                                 ...styles.leadAvatar,
-                                background: isUnread ? "#caff46" : "#222923",
-                                color: isUnread ? "#0c0e0d" : "#9ba69d",
+                                background: isUnread ? "#315bc7" : "#dce3d9",
+                                color: isUnread ? "#f7f6f2" : "#727882",
                               }}
                             >
                               {inq.name.substring(0, 2).toUpperCase()}
@@ -1171,12 +1168,12 @@ export default function AdminDashboard() {
                             style={{
                               ...styles.messageStatusBadge,
                               background: isUnread
-                                ? "rgba(202, 255, 70, 0.15)"
+                                ? "rgba(83, 105, 68, 0.1)"
                                 : "#1e2420",
-                              color: isUnread ? "#caff46" : "#8a948c",
+                              color: isUnread ? "#315bc7" : "#727882",
                               borderColor: isUnread
-                                ? "rgba(202, 255, 70, 0.3)"
-                                : "#2a332c",
+                                ? "rgba(83, 105, 68, 0.15)"
+                                : "#dce3d9",
                             }}
                           >
                             {isUnread ? "● NEW" : "READ"}
@@ -1230,21 +1227,21 @@ export default function AdminDashboard() {
                   <div style={styles.messageMetaBanner}>
                     <div>
                       <span style={styles.metaKey}>PROJECT TYPE:</span>{" "}
-                      <strong style={{ color: "#ffffff" }}>
+                      <strong style={{ color: "#202329" }}>
                         {selectedInquiry.projectType}
                       </strong>
                     </div>
                     {selectedInquiry.timeline && (
                       <div>
                         <span style={styles.metaKey}>TIMELINE:</span>{" "}
-                        <strong style={{ color: "#ffffff" }}>
+                        <strong style={{ color: "#202329" }}>
                           {selectedInquiry.timeline}
                         </strong>
                       </div>
                     )}
                     <div>
                       <span style={styles.metaKey}>RECEIVED:</span>{" "}
-                      <strong style={{ color: "#ffffff" }}>
+                      <strong style={{ color: "#202329" }}>
                         {new Date(selectedInquiry.createdAt).toLocaleString()}
                       </strong>
                     </div>
@@ -1262,7 +1259,7 @@ export default function AdminDashboard() {
                       href={`mailto:${selectedInquiry.email}?subject=Re: Your inquiry on zohaib.dev`}
                       style={styles.replyEmailBtn}
                     >
-                      ✉️ Reply via Email ↗
+                      Reply by email ↗
                     </a>
 
                     <button
@@ -1277,7 +1274,7 @@ export default function AdminDashboard() {
                     >
                       {selectedInquiry.status === "New"
                         ? "✓ Mark as Read"
-                        : "✉️ Mark as New"}
+                        : "Mark as new"}
                     </button>
 
                     <button
@@ -1286,7 +1283,7 @@ export default function AdminDashboard() {
                       style={styles.deleteLeadBtn}
                       title="Delete this message"
                     >
-                      🗑️ Delete
+                      Delete
                     </button>
                   </div>
                 </div>
@@ -1323,19 +1320,19 @@ export default function AdminDashboard() {
                   ...styles.settingsMsgBanner,
                   background:
                     settingsSaveMsg.type === "success"
-                      ? "rgba(202, 255, 70, 0.12)"
+                      ? "rgba(83, 105, 68, 0.1)"
                       : "rgba(239, 68, 68, 0.12)",
                   borderColor:
                     settingsSaveMsg.type === "success"
-                      ? "rgba(202, 255, 70, 0.4)"
+                      ? "rgba(83, 105, 68, 0.25)"
                       : "rgba(239, 68, 68, 0.4)",
                   color:
                     settingsSaveMsg.type === "success"
-                      ? "#caff46"
+                      ? "#315bc7"
                       : "#fca5a5",
                 }}
               >
-                {settingsSaveMsg.type === "success" ? "✓" : "⚠️"} {settingsSaveMsg.text}
+                {settingsSaveMsg.type === "success" ? "Saved" : "Error"}: {settingsSaveMsg.text}
               </div>
             )}
 
@@ -1343,7 +1340,6 @@ export default function AdminDashboard() {
               {/* SECTION 1: PROFILE & CONTACT */}
               <div style={styles.settingsSectionCard}>
                 <div style={styles.settingsCardHeader}>
-                  <span style={styles.settingsCardIcon}>👤</span>
                   <div>
                     <h4 style={styles.settingsCardTitle}>Profile &amp; Contact Info</h4>
                     <p style={styles.settingsCardSub}>Used across the website, contact forms, and inquiries.</p>
@@ -1434,7 +1430,6 @@ export default function AdminDashboard() {
               {/* SECTION 2: SOCIAL & SCHEDULING LINKS */}
               <div style={styles.settingsSectionCard}>
                 <div style={styles.settingsCardHeader}>
-                  <span style={styles.settingsCardIcon}>🌐</span>
                   <div>
                     <h4 style={styles.settingsCardTitle}>Social &amp; Meeting Links</h4>
                     <p style={styles.settingsCardSub}>Displayed in navigation, footers, and direct CTAs.</p>
@@ -1525,7 +1520,6 @@ export default function AdminDashboard() {
               {/* SECTION 3: ADMIN SECURITY (CHANGE PASSWORD) */}
               <div style={styles.settingsSectionCard}>
                 <div style={styles.settingsCardHeader}>
-                  <span style={styles.settingsCardIcon}>🔐</span>
                   <div>
                     <h4 style={styles.settingsCardTitle}>Change Admin Password</h4>
                     <p style={styles.settingsCardSub}>Update your administrator passcode. Saved locally and in Supabase.</p>
@@ -1569,8 +1563,7 @@ export default function AdminDashboard() {
                   </div>
 
                   <div style={styles.securityHintBox}>
-                    <span>🛡️</span>
-                    <span style={{ fontSize: "11px", color: "#8a948c", lineHeight: "1.5" }}>
+                    <span style={{ fontSize: "11px", color: "#727882", lineHeight: "1.5" }}>
                       Leave blank if you do not want to change your password. Setting a new password will immediately update server authorization.
                     </span>
                   </div>
@@ -1580,7 +1573,6 @@ export default function AdminDashboard() {
               {/* SECTION 4: DATABASE & CLOUD STATUS */}
               <div style={styles.settingsSectionCard}>
                 <div style={styles.settingsCardHeader}>
-                  <span style={styles.settingsCardIcon}>⚡</span>
                   <div>
                     <h4 style={styles.settingsCardTitle}>Database &amp; Storage Engine</h4>
                     <p style={styles.settingsCardSub}>Cloud database connections and active storage engine status.</p>
@@ -1592,14 +1584,14 @@ export default function AdminDashboard() {
                     <span style={styles.infoKey}>Active Engine:</span>
                     <span
                       style={{
-                        color: projectsSource === "supabase" ? "#caff46" : "#fbbf24",
+                        color: projectsSource === "supabase" ? "#315bc7" : "#855900",
                         fontWeight: "700",
                         fontSize: "12px",
                       }}
                     >
                       {projectsSource === "supabase"
-                        ? "🟢 SUPABASE POSTGRESQL (CLOUD ACTIVE)"
-                        : "🟡 LOCAL JSON FILE STORE (STANDALONE / SYNC READY)"}
+                        ? "Supabase PostgreSQL · Cloud"
+                        : "Local JSON store · Sync ready"}
                     </span>
                   </div>
 
@@ -1645,7 +1637,7 @@ export default function AdminDashboard() {
                 <h3 style={styles.modalTitle}>
                   {isEditingProject ? "Edit Project" : "Add New Project"}
                 </h3>
-                <p style={{ margin: "4px 0 0", fontSize: "12px", color: "#8a948c" }}>
+                <p style={{ margin: "4px 0 0", fontSize: "12px", color: "#727882" }}>
                   Fill in your project details to showcase it in your portfolio.
                 </p>
               </div>
@@ -1916,13 +1908,13 @@ export default function AdminDashboard() {
               <div style={styles.imageUploadSection}>
                 <div style={styles.imageSectionHeader}>
                   <label style={styles.formLabelBold}>
-                    📸 Project Screenshots &amp; Pictures (3 Slots)
+                    Project images (up to 3)
                   </label>
                   <span style={styles.imageSectionSubtitle}>
                     Her project ki 3 photos upload kar sakhte hain. Slot 1 main cover photo banegi jo project card aur main page par display hogi.
                   </span>
                   {uploadError && (
-                    <div style={styles.uploadErrorText}>⚠️ {uploadError}</div>
+                    <div style={styles.uploadErrorText}>{uploadError}</div>
                   )}
                 </div>
 
@@ -1964,7 +1956,7 @@ export default function AdminDashboard() {
                             />
                             <div style={styles.imageSlotActions}>
                               <label style={styles.replaceBtn}>
-                                {isUploading ? "Uploading..." : "🔄 Change"}
+                                {isUploading ? "Uploading..." : "Change image"}
                                 <input
                                   type="file"
                                   accept="image/*"
@@ -1993,10 +1985,10 @@ export default function AdminDashboard() {
                               }}
                             />
                             <span style={styles.uploadIconCircle}>
-                              {isUploading ? "⏳" : "📁"}
+                              {isUploading ? "Uploading..." : "Upload image"}
                             </span>
                             <span style={styles.uploadPromptTitle}>
-                              {isUploading ? "Uploading..." : "+ Upload Image"}
+                              {isUploading ? "Uploading..." : "+ Add image"}
                             </span>
                             <span style={styles.uploadPromptSub}>
                               PNG, JPG, WEBP
@@ -2038,7 +2030,7 @@ export default function AdminDashboard() {
                     <option
                       key={pt.id}
                       value={pt.id}
-                      style={{ background: "#181d19", color: "#ffffff" }}
+                      style={{ background: "#ffffff", color: "#202329" }}
                     >
                       {pt.label}
                     </option>
@@ -2081,7 +2073,7 @@ export default function AdminDashboard() {
               {/* Modal Buttons */}
               {projectSaveError && (
                 <div style={{ ...styles.uploadErrorText, fontSize: "13px", padding: "8px 12px", background: "rgba(255, 90, 90, 0.1)", borderRadius: "6px", border: "1px solid rgba(255, 90, 90, 0.3)" }}>
-                  ⚠️ {projectSaveError}
+                  {projectSaveError}
                 </div>
               )}
 
@@ -2121,7 +2113,7 @@ export default function AdminDashboard() {
 const styles: Record<string, CSSProperties> = {
   authPage: {
     minHeight: "100vh",
-    background: "#0c0e0d",
+    background: "#f7f6f2",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -2131,8 +2123,8 @@ const styles: Record<string, CSSProperties> = {
   authCard: {
     width: "100%",
     maxWidth: "420px",
-    background: "#121512",
-    border: "1px solid #282f29",
+    background: "#eeece5",
+    border: "1px solid #dce3d9",
     borderRadius: "14px",
     padding: "44px 32px",
     boxSizing: "border-box",
@@ -2140,7 +2132,7 @@ const styles: Record<string, CSSProperties> = {
     boxShadow: "0 20px 50px rgba(0,0,0,0.5)",
   },
   authBadge: {
-    color: "#caff46",
+    color: "#315bc7",
     fontSize: "10px",
     fontWeight: "700",
     letterSpacing: "1px",
@@ -2149,13 +2141,13 @@ const styles: Record<string, CSSProperties> = {
   authTitle: {
     margin: "0 0 10px",
     fontSize: "26px",
-    color: "#ffffff",
+    color: "#202329",
     fontWeight: "500",
   },
   authSub: {
     margin: "0 0 28px",
     fontSize: "13px",
-    color: "#9aa39b",
+    color: "#727882",
     lineHeight: "1.6",
   },
   authForm: {
@@ -2167,9 +2159,9 @@ const styles: Record<string, CSSProperties> = {
     width: "100%",
     padding: "14px 16px",
     borderRadius: "8px",
-    background: "#181d19",
-    border: "1px solid #2e362f",
-    color: "#ffffff",
+    background: "#ffffff",
+    border: "1px solid #dce3d9",
+    color: "#202329",
     fontSize: "14px",
     boxSizing: "border-box",
     outline: "none",
@@ -2184,8 +2176,8 @@ const styles: Record<string, CSSProperties> = {
     width: "100%",
     padding: "14px",
     borderRadius: "8px",
-    background: "#caff46",
-    color: "#0c0e0d",
+    background: "#315bc7",
+    color: "#f7f6f2",
     fontWeight: "700",
     fontSize: "14px",
     border: "none",
@@ -2194,14 +2186,14 @@ const styles: Record<string, CSSProperties> = {
 
   dashboardPage: {
     minHeight: "100vh",
-    background: "#0c0e0d",
-    color: "#ffffff",
+    background: "#f7f6f2",
+    color: "#202329",
     fontFamily: "Arial, Helvetica, sans-serif",
     paddingBottom: "80px",
   },
   topBar: {
-    background: "#111412",
-    borderBottom: "1px solid #252c26",
+    background: "#ffffff",
+    borderBottom: "1px solid #dce3d9",
     position: "sticky",
     top: 0,
     zIndex: 900,
@@ -2222,17 +2214,17 @@ const styles: Record<string, CSSProperties> = {
   brandTitle: {
     fontSize: "20px",
     fontWeight: "800",
-    color: "#ffffff",
+    color: "#202329",
     textDecoration: "none",
   },
   adminTag: {
     fontSize: "9px",
     fontWeight: "800",
-    background: "#1c231e",
-    border: "1px solid #323d34",
+    background: "#eeece5",
+    border: "1px solid #dce3d9",
     padding: "3px 6px",
     borderRadius: "4px",
-    color: "#caff46",
+    color: "#315bc7",
   },
   statusPill: {
     display: "inline-flex",
@@ -2240,10 +2232,10 @@ const styles: Record<string, CSSProperties> = {
     gap: "6px",
     fontSize: "10px",
     fontWeight: "600",
-    background: "#161b17",
+    background: "#eeece5",
     padding: "4px 8px",
     borderRadius: "12px",
-    border: "1px solid #2a332c",
+    border: "1px solid #dce3d9",
   },
   liveDot: {
     width: "6px",
@@ -2256,8 +2248,8 @@ const styles: Record<string, CSSProperties> = {
     gap: "10px",
   },
   addProjectNavBtn: {
-    background: "#caff46",
-    color: "#0c0e0d",
+    background: "#315bc7",
+    color: "#f7f6f2",
     border: "none",
     padding: "8px 16px",
     borderRadius: "6px",
@@ -2266,9 +2258,9 @@ const styles: Record<string, CSSProperties> = {
     cursor: "pointer",
   },
   newLeadBtn: {
-    background: "#19221a",
-    color: "#caff46",
-    border: "1px solid #2e3b2f",
+    background: "#e9eee6",
+    color: "#315bc7",
+    border: "1px solid #dce3d9",
     padding: "8px 14px",
     borderRadius: "6px",
     fontSize: "12px",
@@ -2276,9 +2268,9 @@ const styles: Record<string, CSSProperties> = {
     cursor: "pointer",
   },
   logoutBtn: {
-    background: "#191f1a",
-    border: "1px solid #2d362e",
-    color: "#c4cbc4",
+    background: "#eeece5",
+    border: "1px solid #dce3d9",
+    color: "#48505a",
     padding: "8px 14px",
     borderRadius: "6px",
     fontSize: "12px",
@@ -2289,7 +2281,7 @@ const styles: Record<string, CSSProperties> = {
     borderBottom: "1px solid rgba(251, 191, 36, 0.3)",
     padding: "10px 24px",
     fontSize: "12px",
-    color: "#fbbf24",
+    color: "#855900",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
@@ -2297,8 +2289,8 @@ const styles: Record<string, CSSProperties> = {
     gap: "10px",
   },
   setupSqlBtn: {
-    background: "#fbbf24",
-    color: "#0c0e0d",
+    background: "#855900",
+    color: "#f7f6f2",
     border: "none",
     padding: "4px 12px",
     borderRadius: "4px",
@@ -2308,7 +2300,7 @@ const styles: Record<string, CSSProperties> = {
   },
   dismissBannerBtn: {
     background: "transparent",
-    color: "#fbbf24",
+    color: "#855900",
     border: "1px solid rgba(251, 191, 36, 0.4)",
     padding: "3px 8px",
     borderRadius: "4px",
@@ -2325,7 +2317,7 @@ const styles: Record<string, CSSProperties> = {
   tabNav: {
     display: "flex",
     gap: "24px",
-    borderBottom: "1px solid #252c26",
+    borderBottom: "1px solid #dce3d9",
     marginBottom: "32px",
     overflowX: "auto",
   },
@@ -2342,8 +2334,8 @@ const styles: Record<string, CSSProperties> = {
     whiteSpace: "nowrap",
   },
   unreadCount: {
-    background: "#caff46",
-    color: "#0c0e0d",
+    background: "#315bc7",
+    color: "#f7f6f2",
     fontSize: "10px",
     fontWeight: "800",
     padding: "2px 6px",
@@ -2367,16 +2359,16 @@ const styles: Record<string, CSSProperties> = {
     margin: 0,
     fontSize: "18px",
     fontWeight: "600",
-    color: "#ffffff",
+    color: "#202329",
   },
   panelSub: {
     margin: "6px 0 0",
     fontSize: "13px",
-    color: "#8e988f",
+    color: "#727882",
   },
   addProjectLargeBtn: {
-    background: "#caff46",
-    color: "#0c0e0d",
+    background: "#315bc7",
+    color: "#f7f6f2",
     border: "none",
     padding: "10px 18px",
     borderRadius: "6px",
@@ -2385,9 +2377,9 @@ const styles: Record<string, CSSProperties> = {
     cursor: "pointer",
   },
   viewLiveSiteBtn: {
-    background: "#181f19",
-    border: "1px solid #caff46",
-    color: "#caff46",
+    background: "#f4f6f2",
+    border: "1px solid #315bc7",
+    color: "#315bc7",
     padding: "10px 16px",
     borderRadius: "6px",
     textDecoration: "none",
@@ -2397,10 +2389,10 @@ const styles: Record<string, CSSProperties> = {
   emptyState: {
     padding: "40px",
     textAlign: "center",
-    color: "#8e988f",
-    background: "#121512",
+    color: "#727882",
+    background: "#eeece5",
     borderRadius: "8px",
-    border: "1px solid #262e27",
+    border: "1px solid #dce3d9",
   },
   projectsGrid: {
     display: "grid",
@@ -2408,8 +2400,8 @@ const styles: Record<string, CSSProperties> = {
     gap: "20px",
   },
   projectCmsCard: {
-    background: "#121512",
-    border: "1px solid #282f29",
+    background: "#eeece5",
+    border: "1px solid #dce3d9",
     borderRadius: "10px",
     padding: "22px",
     display: "flex",
@@ -2422,14 +2414,14 @@ const styles: Record<string, CSSProperties> = {
     marginBottom: "10px",
   },
   projectNumber: {
-    color: "#caff46",
+    color: "#315bc7",
     fontSize: "11px",
     fontWeight: "700",
   },
   projectStatusBadge: {
     fontSize: "10px",
-    color: "#caff46",
-    background: "rgba(202, 255, 70, 0.1)",
+    color: "#315bc7",
+    background: "rgba(83, 105, 68, 0.1)",
     padding: "3px 8px",
     borderRadius: "4px",
   },
@@ -2437,17 +2429,17 @@ const styles: Record<string, CSSProperties> = {
     margin: "0 0 4px",
     fontSize: "18px",
     fontWeight: "600",
-    color: "#ffffff",
+    color: "#202329",
   },
   projectSlugLine: {
     fontSize: "11px",
-    color: "#7e887f",
+    color: "#727882",
     marginBottom: "8px",
   },
   projectCmsSub: {
     margin: 0,
     fontSize: "13px",
-    color: "#8e988f",
+    color: "#727882",
     lineHeight: "1.5",
   },
   projectTagsMini: {
@@ -2459,24 +2451,24 @@ const styles: Record<string, CSSProperties> = {
   },
   miniTag: {
     fontSize: "10px",
-    color: "#cbd4cc",
-    background: "#181e19",
-    border: "1px solid #263027",
+    color: "#48505a",
+    background: "#f4f6f2",
+    border: "1px solid #dce3d9",
     padding: "3px 8px",
     borderRadius: "4px",
   },
   projectCmsFooter: {
     marginTop: "auto",
     paddingTop: "14px",
-    borderTop: "1px solid #222923",
+    borderTop: "1px solid #dce3d9",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
   },
   editProjBtn: {
-    background: "#1c241e",
-    border: "1px solid #364438",
-    color: "#caff46",
+    background: "#eeece5",
+    border: "1px solid #dce3d9",
+    color: "#315bc7",
     padding: "6px 12px",
     borderRadius: "6px",
     fontSize: "12px",
@@ -2484,8 +2476,8 @@ const styles: Record<string, CSSProperties> = {
     cursor: "pointer",
   },
   deleteProjBtn: {
-    background: "#261717",
-    border: "1px solid #4a2222",
+    background: "#fff1f0",
+    border: "1px solid #f2ceca",
     color: "#f87171",
     padding: "6px 10px",
     borderRadius: "6px",
@@ -2494,7 +2486,7 @@ const styles: Record<string, CSSProperties> = {
   },
   caseStudyLink: {
     fontSize: "12px",
-    color: "#8a968c",
+    color: "#727882",
     textDecoration: "none",
   },
 
@@ -2510,15 +2502,15 @@ const styles: Record<string, CSSProperties> = {
     flex: 1,
     padding: "10px 14px",
     borderRadius: "6px",
-    background: "#181d19",
-    border: "1px solid #2c362e",
-    color: "#ffffff",
+    background: "#ffffff",
+    border: "1px solid #dce3d9",
+    color: "#202329",
     fontSize: "13px",
     outline: "none",
   },
   addCatBtn: {
-    background: "#caff46",
-    color: "#0c0e0d",
+    background: "#315bc7",
+    color: "#f7f6f2",
     border: "none",
     padding: "10px 18px",
     borderRadius: "6px",
@@ -2533,8 +2525,8 @@ const styles: Record<string, CSSProperties> = {
     gap: "14px",
   },
   categoryCard: {
-    background: "#171c18",
-    border: "1px solid #263028",
+    background: "#eeece5",
+    border: "1px solid #dce3d9",
     borderRadius: "8px",
     padding: "14px 18px",
     display: "flex",
@@ -2544,11 +2536,11 @@ const styles: Record<string, CSSProperties> = {
   categoryNameText: {
     fontSize: "14px",
     fontWeight: "600",
-    color: "#ffffff",
+    color: "#202329",
   },
   categoryCountText: {
     fontSize: "11px",
-    color: "#839085",
+    color: "#727882",
     marginTop: "2px",
   },
   deleteCatBtn: {
@@ -2573,9 +2565,9 @@ const styles: Record<string, CSSProperties> = {
     maxWidth: "420px",
     padding: "10px 14px",
     borderRadius: "6px",
-    background: "#141815",
-    border: "1px solid #2a332b",
-    color: "#ffffff",
+    background: "#ffffff",
+    border: "1px solid #dce3d9",
+    color: "#202329",
     fontSize: "13px",
     outline: "none",
   },
@@ -2585,7 +2577,7 @@ const styles: Record<string, CSSProperties> = {
     gap: "8px",
   },
   filterChip: {
-    border: "1px solid #2a332b",
+    border: "1px solid #dce3d9",
     padding: "6px 12px",
     borderRadius: "16px",
     fontSize: "11px",
@@ -2603,7 +2595,7 @@ const styles: Record<string, CSSProperties> = {
   },
   leadCard: {
     borderRadius: "10px",
-    border: "1px solid #283029",
+    border: "1px solid #dce3d9",
     padding: "18px 20px",
     cursor: "pointer",
   },
@@ -2616,11 +2608,11 @@ const styles: Record<string, CSSProperties> = {
   leadName: {
     fontSize: "13px",
     fontWeight: "700",
-    color: "#ffffff",
+    color: "#202329",
   },
   leadEmail: {
     fontSize: "11px",
-    color: "#839085",
+    color: "#727882",
   },
   leadDetailsSnippet: {
     fontSize: "13px",
@@ -2636,8 +2628,8 @@ const styles: Record<string, CSSProperties> = {
     fontSize: "11px",
   },
   leadTag: {
-    background: "#182019",
-    border: "1px solid #2a372c",
+    background: "#f4f6f2",
+    border: "1px solid #dce3d9",
     borderRadius: "4px",
     padding: "3px 8px",
     color: "#cbd5cb",
@@ -2645,15 +2637,15 @@ const styles: Record<string, CSSProperties> = {
   },
   leadTime: {
     marginLeft: "auto",
-    color: "#748076",
+    color: "#727882",
     fontSize: "10px",
   },
   leadAvatar: {
     width: "30px",
     height: "30px",
     borderRadius: "50%",
-    background: "#242e26",
-    color: "#caff46",
+    background: "#eeece5",
+    color: "#315bc7",
     fontWeight: "700",
     fontSize: "10px",
     display: "flex",
@@ -2663,8 +2655,8 @@ const styles: Record<string, CSSProperties> = {
 
   // Drawer
   drawerCard: {
-    background: "#121512",
-    border: "1px solid #caff46",
+    background: "#eeece5",
+    border: "1px solid #315bc7",
     borderRadius: "10px",
     padding: "24px",
     position: "sticky",
@@ -2679,7 +2671,7 @@ const styles: Record<string, CSSProperties> = {
   drawerEyebrow: {
     fontSize: "9px",
     fontWeight: "700",
-    color: "#caff46",
+    color: "#315bc7",
     letterSpacing: "1px",
     marginBottom: "4px",
   },
@@ -2687,11 +2679,11 @@ const styles: Record<string, CSSProperties> = {
     margin: 0,
     fontSize: "20px",
     fontWeight: "600",
-    color: "#ffffff",
+    color: "#202329",
   },
   drawerEmailLink: {
     fontSize: "12px",
-    color: "#8e988f",
+    color: "#727882",
     textDecoration: "none",
     marginTop: "2px",
     display: "inline-block",
@@ -2699,7 +2691,7 @@ const styles: Record<string, CSSProperties> = {
   drawerCloseBtn: {
     background: "transparent",
     border: "none",
-    color: "#8e988f",
+    color: "#727882",
     fontSize: "16px",
     cursor: "pointer",
   },
@@ -2719,29 +2711,29 @@ const styles: Record<string, CSSProperties> = {
     gap: "6px",
   },
   statusActionBtn: {
-    border: "1px solid #2a332b",
+    border: "1px solid #dce3d9",
     padding: "5px 10px",
     borderRadius: "6px",
     fontSize: "11px",
     cursor: "pointer",
   },
   messageContentBox: {
-    background: "#181d19",
-    border: "1px solid #2a352c",
+    background: "#ffffff",
+    border: "1px solid #dce3d9",
     borderRadius: "6px",
     padding: "14px",
     fontSize: "13px",
     lineHeight: "1.6",
-    color: "#e2e8e2",
+    color: "#3f4a40",
     whiteSpace: "pre-wrap",
   },
   notesTextarea: {
     width: "100%",
     padding: "10px 12px",
     borderRadius: "6px",
-    background: "#181d19",
-    border: "1px solid #2e3830",
-    color: "#ffffff",
+    background: "#ffffff",
+    border: "1px solid #dce3d9",
+    color: "#202329",
     fontSize: "12px",
     lineHeight: "1.5",
     boxSizing: "border-box",
@@ -2749,9 +2741,9 @@ const styles: Record<string, CSSProperties> = {
     resize: "vertical",
   },
   saveNoteBtn: {
-    background: "#242e26",
-    color: "#caff46",
-    border: "1px solid #364438",
+    background: "#eeece5",
+    color: "#315bc7",
+    border: "1px solid #dce3d9",
     padding: "6px 14px",
     borderRadius: "6px",
     fontSize: "11px",
@@ -2763,12 +2755,12 @@ const styles: Record<string, CSSProperties> = {
     gap: "10px",
     marginTop: "24px",
     paddingTop: "18px",
-    borderTop: "1px solid #252d26",
+    borderTop: "1px solid #dce3d9",
   },
   replyEmailBtn: {
     flex: 1,
-    background: "#caff46",
-    color: "#0c0e0d",
+    background: "#315bc7",
+    color: "#f7f6f2",
     textDecoration: "none",
     padding: "10px 14px",
     borderRadius: "6px",
@@ -2777,9 +2769,9 @@ const styles: Record<string, CSSProperties> = {
     textAlign: "center",
   },
   deleteLeadBtn: {
-    background: "#1d1515",
+    background: "#fff1f0",
     color: "#f87171",
-    border: "1px solid #3d2323",
+    border: "1px solid #f2ceca",
     padding: "10px 14px",
     borderRadius: "6px",
     fontSize: "12px",
@@ -2788,8 +2780,8 @@ const styles: Record<string, CSSProperties> = {
 
   // Supabase tab
   panelCard: {
-    background: "#121512",
-    border: "1px solid #282f29",
+    background: "#eeece5",
+    border: "1px solid #dce3d9",
     borderRadius: "10px",
     padding: "24px",
   },
@@ -2800,8 +2792,8 @@ const styles: Record<string, CSSProperties> = {
     marginBottom: "20px",
   },
   copySqlBtn: {
-    background: "#caff46",
-    color: "#0c0e0d",
+    background: "#315bc7",
+    color: "#f7f6f2",
     border: "none",
     padding: "8px 16px",
     borderRadius: "6px",
@@ -2810,8 +2802,8 @@ const styles: Record<string, CSSProperties> = {
     cursor: "pointer",
   },
   sqlDetailsBox: {
-    background: "#171c18",
-    border: "1px solid #283229",
+    background: "#eeece5",
+    border: "1px solid #dce3d9",
     borderRadius: "8px",
     padding: "16px",
     marginBottom: "16px",
@@ -2824,8 +2816,8 @@ const styles: Record<string, CSSProperties> = {
     color: "#c8d0c8",
   },
   sqlCodeBlock: {
-    background: "#0d0f0e",
-    border: "1px solid #262e27",
+    background: "#f4f6f2",
+    border: "1px solid #dce3d9",
     borderRadius: "8px",
     padding: "18px",
     fontSize: "12px",
@@ -2840,14 +2832,14 @@ const styles: Record<string, CSSProperties> = {
     display: "flex",
     justifyContent: "space-between",
     padding: "12px 0",
-    borderBottom: "1px solid #222823",
+    borderBottom: "1px solid #dce3d9",
     fontSize: "13px",
   },
   infoKey: {
     color: "#889489",
   },
   infoVal: {
-    color: "#ffffff",
+    color: "#202329",
     fontWeight: "600",
   },
 
@@ -2868,8 +2860,8 @@ const styles: Record<string, CSSProperties> = {
   modalCard: {
     width: "100%",
     maxWidth: "500px",
-    background: "#121512",
-    border: "1px solid #caff46",
+    background: "#eeece5",
+    border: "1px solid #315bc7",
     borderRadius: "12px",
     padding: "28px",
     boxSizing: "border-box",
@@ -2881,8 +2873,8 @@ const styles: Record<string, CSSProperties> = {
     maxHeight: "90vh",
     overflowY: "auto",
     overflowX: "hidden",
-    background: "#121512",
-    border: "1px solid #caff46",
+    background: "#eeece5",
+    border: "1px solid #315bc7",
     borderRadius: "14px",
     padding: "28px 30px",
     boxSizing: "border-box",
@@ -2892,14 +2884,14 @@ const styles: Record<string, CSSProperties> = {
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: "20px",
-    borderBottom: "1px solid #252d26",
+    borderBottom: "1px solid #dce3d9",
     paddingBottom: "14px",
   },
   modalTitle: {
     margin: 0,
     fontSize: "18px",
     fontWeight: "600",
-    color: "#ffffff",
+    color: "#202329",
   },
   modalForm: {
     display: "flex",
@@ -2933,9 +2925,9 @@ const styles: Record<string, CSSProperties> = {
     maxWidth: "100%",
     padding: "10px 12px",
     borderRadius: "6px",
-    background: "#181d19",
-    border: "1px solid #2c362e",
-    color: "#ffffff",
+    background: "#ffffff",
+    border: "1px solid #dce3d9",
+    color: "#202329",
     fontSize: "13px",
     boxSizing: "border-box",
     outline: "none",
@@ -2946,9 +2938,9 @@ const styles: Record<string, CSSProperties> = {
     padding: "10px 14px",
     paddingRight: "36px",
     borderRadius: "6px",
-    background: "#181d19",
-    border: "1px solid #2c362e",
-    color: "#ffffff",
+    background: "#ffffff",
+    border: "1px solid #dce3d9",
+    color: "#202329",
     fontSize: "13px",
     boxSizing: "border-box",
     outline: "none",
@@ -2966,9 +2958,9 @@ const styles: Record<string, CSSProperties> = {
     maxWidth: "100%",
     padding: "10px 12px",
     borderRadius: "6px",
-    background: "#181d19",
-    border: "1px solid #2c362e",
-    color: "#ffffff",
+    background: "#ffffff",
+    border: "1px solid #dce3d9",
+    color: "#202329",
     fontSize: "13px",
     boxSizing: "border-box",
     outline: "none",
@@ -2976,10 +2968,10 @@ const styles: Record<string, CSSProperties> = {
     fontFamily: "inherit",
   },
   slugPrefix: {
-    background: "#141815",
-    border: "1px solid #2c362e",
+    background: "#ffffff",
+    border: "1px solid #dce3d9",
     borderRight: "none",
-    color: "#7e887f",
+    color: "#727882",
     padding: "10px 10px",
     fontSize: "12px",
     borderTopLeftRadius: "6px",
@@ -2988,7 +2980,7 @@ const styles: Record<string, CSSProperties> = {
   },
   inputHint: {
     fontSize: "10px",
-    color: "#748076",
+    color: "#727882",
     marginTop: "4px",
     display: "block",
   },
@@ -2998,20 +2990,20 @@ const styles: Record<string, CSSProperties> = {
     gap: "12px",
     marginTop: "16px",
     paddingTop: "16px",
-    borderTop: "1px solid #242c25",
+    borderTop: "1px solid #dce3d9",
   },
   modalCancelBtn: {
     background: "transparent",
-    border: "1px solid #2c362e",
-    color: "#9aa39b",
+    border: "1px solid #dce3d9",
+    color: "#727882",
     padding: "10px 18px",
     borderRadius: "6px",
     fontSize: "12px",
     cursor: "pointer",
   },
   modalSubmitBtn: {
-    background: "#caff46",
-    color: "#0c0e0d",
+    background: "#315bc7",
+    color: "#f7f6f2",
     border: "none",
     padding: "10px 22px",
     borderRadius: "6px",
@@ -3022,8 +3014,8 @@ const styles: Record<string, CSSProperties> = {
 
   // 3-Images Upload Styles
   imageUploadSection: {
-    background: "#161b17",
-    border: "1px solid #283329",
+    background: "#eeece5",
+    border: "1px solid #dce3d9",
     borderRadius: "10px",
     padding: "16px",
     display: "flex",
@@ -3038,7 +3030,7 @@ const styles: Record<string, CSSProperties> = {
   formLabelBold: {
     fontSize: "12px",
     fontWeight: "700",
-    color: "#caff46",
+    color: "#315bc7",
     letterSpacing: "0.4px",
   },
   imageSectionSubtitle: {
@@ -3058,8 +3050,8 @@ const styles: Record<string, CSSProperties> = {
     marginTop: "4px",
   },
   imageSlotCard: {
-    background: "#101411",
-    border: "1px solid #232c24",
+    background: "#f4f6f2",
+    border: "1px solid #dce3d9",
     borderRadius: "8px",
     padding: "10px",
     display: "flex",
@@ -3092,8 +3084,8 @@ const styles: Record<string, CSSProperties> = {
     height: "120px",
     borderRadius: "6px",
     overflow: "hidden",
-    background: "#0a0d0b",
-    border: "1px solid #2c382e",
+    background: "#f7f6f2",
+    border: "1px solid #dce3d9",
   },
   imageSlotThumb: {
     width: "100%",
@@ -3107,10 +3099,10 @@ const styles: Record<string, CSSProperties> = {
     zIndex: 2,
   },
   replaceBtn: {
-    background: "rgba(10, 14, 11, 0.85)",
+    background: "rgba(32, 40, 32, 0.82)",
     backdropFilter: "blur(4px)",
-    color: "#caff46",
-    border: "1px solid rgba(202, 255, 70, 0.4)",
+    color: "#ffffff",
+    border: "1px solid rgba(83, 105, 68, 0.25)",
     fontSize: "10px",
     fontWeight: "700",
     padding: "4px 8px",
@@ -3139,7 +3131,7 @@ const styles: Record<string, CSSProperties> = {
   uploadPromptTitle: {
     fontSize: "11px",
     fontWeight: "700",
-    color: "#caff46",
+    color: "#315bc7",
   },
   uploadPromptSub: {
     fontSize: "9px",
@@ -3149,16 +3141,16 @@ const styles: Record<string, CSSProperties> = {
     width: "100%",
     padding: "6px 8px",
     borderRadius: "4px",
-    background: "#161b17",
-    border: "1px solid #283329",
-    color: "#ffffff",
+    background: "#eeece5",
+    border: "1px solid #dce3d9",
+    color: "#202329",
     fontSize: "10px",
     boxSizing: "border-box",
     outline: "none",
   },
   fallbackMockupBox: {
-    background: "#141815",
-    border: "1px solid #242c25",
+    background: "#ffffff",
+    border: "1px solid #dce3d9",
     borderRadius: "8px",
     padding: "12px 14px",
   },
@@ -3170,7 +3162,7 @@ const styles: Record<string, CSSProperties> = {
     overflow: "hidden",
     marginTop: "10px",
     marginBottom: "10px",
-    border: "1px solid #263327",
+    border: "1px solid #dce3d9",
   },
   projectCmsImage: {
     width: "100%",
@@ -3183,12 +3175,12 @@ const styles: Record<string, CSSProperties> = {
     right: "6px",
     background: "rgba(12, 14, 13, 0.85)",
     backdropFilter: "blur(4px)",
-    color: "#caff46",
+    color: "#315bc7",
     fontSize: "9px",
     fontWeight: "700",
     padding: "3px 8px",
     borderRadius: "10px",
-    border: "1px solid rgba(202, 255, 70, 0.3)",
+    border: "1px solid rgba(83, 105, 68, 0.15)",
   },
 
   // Contact Messages Inbox styles
@@ -3201,9 +3193,9 @@ const styles: Record<string, CSSProperties> = {
     alignItems: "center",
     justifyContent: "center",
     padding: "48px 24px",
-    background: "#111412",
+    background: "#ffffff",
     borderRadius: "10px",
-    border: "1px dashed #283329",
+    border: "1px dashed #dce3d9",
     textAlign: "center",
   },
   messageStatusBadge: {
@@ -3215,8 +3207,8 @@ const styles: Record<string, CSSProperties> = {
     letterSpacing: "0.5px",
   },
   messageMetaBanner: {
-    background: "#161b17",
-    border: "1px solid #283329",
+    background: "#eeece5",
+    border: "1px solid #dce3d9",
     borderRadius: "6px",
     padding: "10px 14px",
     display: "flex",
@@ -3226,15 +3218,15 @@ const styles: Record<string, CSSProperties> = {
     marginBottom: "16px",
   },
   metaKey: {
-    color: "#839185",
+    color: "#727882",
     fontWeight: "700",
     fontSize: "9px",
     letterSpacing: "0.5px",
   },
   toggleReadBtn: {
-    background: "#1e241f",
-    border: "1px solid #323d34",
-    color: "#cbd5cc",
+    background: "#eeece5",
+    border: "1px solid #dce3d9",
+    color: "#48505a",
     padding: "10px 16px",
     borderRadius: "6px",
     fontSize: "12px",
@@ -3244,9 +3236,9 @@ const styles: Record<string, CSSProperties> = {
 
   // Settings CMS Styles
   exportBackupBtn: {
-    background: "#1c231e",
-    border: "1px solid #323f34",
-    color: "#caff46",
+    background: "#eeece5",
+    border: "1px solid #dce3d9",
+    color: "#315bc7",
     padding: "10px 16px",
     borderRadius: "8px",
     fontSize: "12px",
@@ -3271,8 +3263,8 @@ const styles: Record<string, CSSProperties> = {
     gap: "24px",
   },
   settingsSectionCard: {
-    background: "#121512",
-    border: "1px solid #222a23",
+    background: "#eeece5",
+    border: "1px solid #dce3d9",
     borderRadius: "12px",
     padding: "26px",
     display: "flex",
@@ -3284,7 +3276,7 @@ const styles: Record<string, CSSProperties> = {
     gap: "14px",
     marginBottom: "20px",
     paddingBottom: "16px",
-    borderBottom: "1px solid #1f2720",
+    borderBottom: "1px solid #dce3d9",
   },
   settingsCardIcon: {
     fontSize: "24px",
@@ -3294,12 +3286,12 @@ const styles: Record<string, CSSProperties> = {
     margin: "0 0 4px",
     fontSize: "16px",
     fontWeight: "700",
-    color: "#ffffff",
+    color: "#202329",
   },
   settingsCardSub: {
     margin: 0,
     fontSize: "12px",
-    color: "#839185",
+    color: "#727882",
     lineHeight: "1.4",
   },
   settingsFields: {
@@ -3308,8 +3300,8 @@ const styles: Record<string, CSSProperties> = {
     gap: "16px",
   },
   securityHintBox: {
-    background: "#161b17",
-    border: "1px solid #252e26",
+    background: "#eeece5",
+    border: "1px solid #dce3d9",
     borderRadius: "8px",
     padding: "12px",
     display: "flex",
@@ -3323,15 +3315,15 @@ const styles: Record<string, CSSProperties> = {
     paddingTop: "12px",
   },
   saveSettingsBtn: {
-    background: "#caff46",
-    color: "#0c0e0d",
+    background: "#315bc7",
+    color: "#f7f6f2",
     border: "none",
     padding: "14px 28px",
     borderRadius: "8px",
     fontSize: "14px",
     fontWeight: "800",
     cursor: "pointer",
-    boxShadow: "0 4px 20px rgba(202, 255, 70, 0.25)",
+    boxShadow: "0 4px 20px rgba(83, 105, 68, 0.12)",
     transition: "all 0.2s ease",
   },
 };

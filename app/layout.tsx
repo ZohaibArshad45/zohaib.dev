@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Zohaib | Web Developer & AI Builder",
+  title: "Zohaib | Web Developer",
   description:
-    "Web developer and AI builder creating web applications, AI integrations, and automation solutions.",
+    "Web developer based in Pakistan, building web applications, integrations, and practical automation for teams worldwide.",
 };
 
 export default function RootLayout({
@@ -27,7 +27,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <Navbar />
 
         {children}

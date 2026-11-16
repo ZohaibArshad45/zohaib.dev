@@ -60,7 +60,7 @@ export default function Navbar() {
   };
 
   const getNavLinkStyle = (href: string): CSSProperties => ({
-    color: isActive(href) ? "#caff46" : "#ffffff",
+    color: isActive(href) ? "#315bc7" : "#202329",
     textDecoration: "none",
     fontSize: isTablet ? "16px" : "17px",
     fontWeight: isActive(href) ? "600" : "500",
@@ -69,7 +69,7 @@ export default function Navbar() {
   });
 
   const getMobileLinkStyle = (href: string): CSSProperties => ({
-    color: isActive(href) ? "#caff46" : "#ffffff",
+    color: isActive(href) ? "#315bc7" : "#202329",
     textDecoration: "none",
     fontSize: "30px",
     fontWeight: isActive(href) ? "600" : "500",
@@ -83,42 +83,40 @@ export default function Navbar() {
       left: 0,
       right: 0,
       zIndex: 1000,
-      background: "rgba(12, 14, 13, 0.96)",
-      backdropFilter: "blur(14px)",
+      background: "rgba(255, 255, 255, 0.9)",
+      backdropFilter: "blur(16px)",
+      borderBottom: "1px solid rgba(226, 223, 213, 0.7)",
     },
 
     container: {
       width: "100%",
       maxWidth: "1280px",
       margin: "0 auto",
-      padding: isMobile
-        ? "0 20px"
-        : isTablet
-        ? "0 36px"
-        : "0 56px",
+      padding: isMobile ? "0 16px" : isTablet ? "0 26px" : "0 42px",
       boxSizing: "border-box",
     },
 
     inner: {
-      height: scrolled ? "66px" : isMobile ? "74px" : "88px",
+      height: scrolled ? "62px" : isMobile ? "62px" : "70px",
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
-      borderBottom: "1px solid #2b2e2c",
-      transition: "height 0.3s ease",
+      padding: "0 4px",
+      background: "transparent",
+      transition: "height 0.25s ease",
     },
 
     logo: {
       fontSize: isMobile ? "27px" : scrolled ? "28px" : "31px",
       fontWeight: "800",
-      color: "#ffffff",
+      color: "#202329",
       textDecoration: "none",
       letterSpacing: "-1px",
       transition: "font-size 0.3s ease",
     },
 
     dot: {
-      color: "#caff46",
+      color: "#315bc7",
     },
 
     navLinks: {
@@ -129,15 +127,15 @@ export default function Navbar() {
 
     talk: {
       display: isMobile ? "none" : "inline-block",
-      color: pathname === "/contact" ? "#caff46" : "#ffffff",
+      color: pathname === "/contact" ? "#315bc7" : "#202329",
       textDecoration: "none",
       fontSize: isTablet ? "16px" : "17px",
       fontWeight: pathname === "/contact" ? "600" : "500",
       paddingBottom: "8px",
       borderBottom:
         pathname === "/contact"
-          ? "1px solid #caff46"
-          : "1px solid #747767",
+          ? "1px solid #dfe6fb"
+          : "1px solid #c4ccc0",
       transition: "color 0.2s ease, border-color 0.2s ease",
     },
 
@@ -160,7 +158,7 @@ export default function Navbar() {
     line1: {
       width: "23px",
       height: "2px",
-      background: "#ffffff",
+      background: "#202329",
       transition: "0.3s ease",
       transform: menuOpen
         ? "translateY(4px) rotate(45deg)"
@@ -170,7 +168,7 @@ export default function Navbar() {
     line2: {
       width: "23px",
       height: "2px",
-      background: "#ffffff",
+      background: "#202329",
       transition: "0.3s ease",
       transform: menuOpen
         ? "translateY(-4px) rotate(-45deg)"
@@ -182,7 +180,7 @@ export default function Navbar() {
       inset: 0,
       width: "100%",
       height: "100dvh",
-      background: "#0c0e0d",
+      background: "#ffffff",
       zIndex: 999,
       display: menuOpen ? "flex" : "none",
       flexDirection: "column",
@@ -198,7 +196,7 @@ export default function Navbar() {
     },
 
     mobileTalk: {
-      color: pathname === "/contact" ? "#caff46" : "#ffffff",
+      color: pathname === "/contact" ? "#315bc7" : "#202329",
       textDecoration: "none",
       fontSize: "28px",
       fontWeight: pathname === "/contact" ? "600" : "500",
@@ -207,14 +205,14 @@ export default function Navbar() {
       paddingBottom: "8px",
       borderBottom:
         pathname === "/contact"
-          ? "1px solid #caff46"
+          ? "1px solid #dfe6fb"
           : "1px solid #7a7d6b",
     },
 
     mobileBottom: {
       marginTop: "auto",
       fontSize: "12px",
-      color: "#9ea39e",
+      color: "#727882",
       letterSpacing: "1.2px",
       textTransform: "uppercase",
     },
@@ -297,7 +295,7 @@ export default function Navbar() {
         </div>
 
         <div style={styles.mobileBottom}>
-          Web Developer • AI Builder • Pakistan / Remote
+          Web Developer • Pakistan / Remote
         </div>
       </div>
     </>

@@ -11,5 +11,9 @@ export const dynamic = "force-dynamic";
 
 export default async function ContactPage() {
   const { settings } = await getSiteSettings();
-  return <ContactSection settings={settings} />;
+  return (
+    <main id="top">
+      <ContactSection settings={settings} />
+    </main>
+  );
 }

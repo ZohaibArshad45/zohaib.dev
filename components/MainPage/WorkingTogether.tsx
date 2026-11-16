@@ -6,7 +6,6 @@ import {
   useState,
   type CSSProperties,
 } from "react";
-import type { SiteSettings } from "@/lib/settings";
 
 type Step = {
   number: string;
@@ -15,16 +14,13 @@ type Step = {
   description: string;
 };
 
-export default function WorkingTogether({ settings }: { settings?: SiteSettings }) {
+export default function WorkingTogether() {
   const [width, setWidth] = useState<number>(1440);
 
   const [hoveredStep, setHoveredStep] = useState<
     string | null
   >(null);
 
-  const [hoveredLink, setHoveredLink] = useState<
-    string | null
-  >(null);
 
   useEffect(() => {
     const handleResize = (): void => {
@@ -49,29 +45,29 @@ export default function WorkingTogether({ settings }: { settings?: SiteSettings 
       label: "DISCOVER",
       title: "Start with the problem.",
       description:
-        "We discuss your users, current tools and the result you need. Then we agree on a focused scope and the best way forward.",
+        "We agree on the goal, scope and the right way forward.",
     },
     {
       number: "02",
       label: "BUILD",
       title: "See the work take shape.",
       description:
-        "You review working progress, share feedback and make decisions while there is still room to adjust.",
+        "Review progress and guide decisions as the product takes shape.",
     },
     {
       number: "03",
       label: "DELIVER",
       title: "Launch with clarity.",
       description:
-        "We review the finished work together, confirm what is complete and leave you with clear next steps for your product.",
+        "Launch with a clear handover and practical next steps.",
     },
   ];
 
   const styles: Record<string, CSSProperties> = {
     section: {
       width: "100%",
-      background: "#0c0e0d",
-      color: "#ffffff",
+      background: "#ffffff",
+      color: "#202329",
       padding: isMobile
         ? "75px 20px 80px"
         : isTablet
@@ -96,7 +92,7 @@ export default function WorkingTogether({ settings }: { settings?: SiteSettings 
     },
 
     label: {
-      color: "#caff46",
+      color: "#315bc7",
       fontSize: isMobile ? "11px" : "12px",
       fontWeight: "700",
       letterSpacing: "1px",
@@ -106,7 +102,7 @@ export default function WorkingTogether({ settings }: { settings?: SiteSettings 
 
     heading: {
       margin: 0,
-      color: "#f4f5f3",
+      color: "#202329",
       fontSize: isMobile
         ? "40px"
         : isTablet
@@ -121,9 +117,9 @@ export default function WorkingTogether({ settings }: { settings?: SiteSettings 
       maxWidth: "270px",
       justifySelf: isMobile ? "start" : "end",
       margin: 0,
-      color: "#b9bfba",
-      fontSize: isMobile ? "14px" : "15px",
-      lineHeight: "1.7",
+      color: "#48505a",
+        fontSize: isMobile ? "14px" : "15px",
+      lineHeight: "1.65",
     },
 
     steps: {
@@ -141,14 +137,14 @@ export default function WorkingTogether({ settings }: { settings?: SiteSettings 
     },
 
     step: {
-      borderTop: "1px solid #303530",
+      borderTop: "1px solid #e2dfd5",
       paddingTop: isMobile ? "22px" : "26px",
       transition:
         "border-color 0.25s ease, transform 0.25s ease",
     },
 
     stepLabel: {
-      color: "#caff46",
+      color: "#315bc7",
       fontSize: "11px",
       fontWeight: "700",
       letterSpacing: "0.8px",
@@ -158,7 +154,7 @@ export default function WorkingTogether({ settings }: { settings?: SiteSettings 
 
     stepTitle: {
       margin: 0,
-      color: "#ffffff",
+      color: "#202329",
       fontSize: isMobile ? "22px" : "24px",
       fontWeight: "400",
       lineHeight: "1.2",
@@ -166,7 +162,7 @@ export default function WorkingTogether({ settings }: { settings?: SiteSettings 
 
     stepText: {
       margin: "16px 0 0",
-      color: "#b9bfba",
+      color: "#48505a",
       fontSize: isMobile ? "14px" : "15px",
       lineHeight: "1.7",
       maxWidth: "350px",
@@ -177,7 +173,7 @@ export default function WorkingTogether({ settings }: { settings?: SiteSettings 
       display: "flex",
       flexWrap: "wrap",
       gap: isMobile ? "12px 18px" : "16px 24px",
-      color: "#aeb5af",
+      color: "#727882",
       fontSize: isMobile ? "12px" : "13px",
     },
 
@@ -191,139 +187,37 @@ export default function WorkingTogether({ settings }: { settings?: SiteSettings 
       width: "5px",
       height: "5px",
       borderRadius: "50%",
-      background: "#caff46",
+      background: "#dfe6fb",
       flexShrink: 0,
     },
 
-    divider: {
-      width: "100%",
-      height: "1px",
-      background: "#303530",
-      margin: isMobile
-        ? "70px 0"
-        : "90px 0 70px",
-    },
-
-    about: {
-      display: "grid",
-      gridTemplateColumns:
-        isMobile || isTablet
-          ? "1fr"
-          : "1fr 1fr",
-      gap: isMobile
-        ? "42px"
-        : isTablet
-        ? "52px"
-        : "76px",
-      alignItems: "start",
-    },
-
-    aboutHeading: {
-      margin: 0,
-      color: "#f4f5f3",
-      fontSize: isMobile
-        ? "40px"
-        : isTablet
-        ? "50px"
-        : "58px",
-      lineHeight: "1.03",
-      fontWeight: "400",
-      letterSpacing: isMobile ? "-1px" : "-2px",
-    },
-
-    signature: {
-      marginTop: isMobile ? "30px" : "38px",
-    },
-
-    name: {
-      color: "#ffffff",
-      fontSize: isMobile ? "22px" : "24px",
-      fontWeight: "700",
-      marginBottom: "8px",
-    },
-
-    role: {
-      color: "#c9ceca",
-      fontSize: isMobile ? "12px" : "13px",
-      lineHeight: "1.5",
-    },
-
-    availability: {
-      marginTop: "14px",
+    finalCta: {
+      marginTop: isMobile ? "40px" : "54px",
+      padding: isMobile ? "20px" : "26px 30px",
       display: "flex",
       alignItems: "center",
-      gap: "8px",
-      color: "#b8beb9",
-      fontSize: isMobile ? "12px" : "13px",
+      justifyContent: "space-between",
+      gap: "22px",
+      flexWrap: "wrap",
+      border: "1px solid #e2dfd5",
+      borderRadius: "16px",
+      background: "#fffefa",
     },
-
-    availabilityDot: {
-      width: "7px",
-      height: "7px",
-      borderRadius: "50%",
-      background: "#caff46",
-      flexShrink: 0,
-    },
-
-    aboutText: {
-      paddingTop: isMobile ? "0" : "4px",
-    },
-
-    mainText: {
+    finalCtaText: {
       margin: 0,
-      color: "#ffffff",
-      fontSize: isMobile ? "16px" : "18px",
-      lineHeight: "1.65",
-      fontWeight: "500",
-    },
-
-    secondaryText: {
-      margin: "20px 0 0",
-      color: "#aeb5af",
+      color: "#48505a",
       fontSize: isMobile ? "14px" : "15px",
-      lineHeight: "1.7",
+      lineHeight: "1.6",
     },
-
-    directText: {
-      margin: "20px 0 0",
-      color: "#d5d9d5",
-      fontSize: isMobile ? "14px" : "15px",
-      lineHeight: "1.7",
-    },
-
-    accent: {
-      color: "#caff46",
-      textDecoration: "none",
-    },
-
-    buttonRow: {
-      marginTop: isMobile ? "28px" : "32px",
-      display: "flex",
-      flexDirection: isMobile ? "column" : "row",
-      alignItems: isMobile ? "flex-start" : "center",
-      gap: isMobile ? "18px" : "24px",
-    },
-
-    aboutLink: {
+    finalCtaLink: {
+      flexShrink: 0,
+      padding: "11px 16px",
+      borderRadius: "8px",
+      background: "#315bc7",
       color: "#ffffff",
+      fontSize: "13px",
+      fontWeight: "650",
       textDecoration: "none",
-      fontSize: "14px",
-      fontWeight: "500",
-      paddingBottom: "7px",
-      borderBottom: "1px solid #69705f",
-      width: "fit-content",
-      transition:
-        "color 0.2s ease, border-color 0.2s ease",
-    },
-
-    contactLink: {
-      color: "#caff46",
-      textDecoration: "none",
-      fontSize: "14px",
-      fontWeight: "600",
-      paddingBottom: "7px",
-      borderBottom: "1px solid #caff46",
-      width: "fit-content",
     },
   };
 
@@ -334,27 +228,13 @@ export default function WorkingTogether({ settings }: { settings?: SiteSettings 
 
     borderTop:
       hoveredStep === stepNumber
-        ? "1px solid #caff46"
-        : "1px solid #303530",
+        ? "1px solid #dfe6fb"
+        : "1px solid #e2dfd5",
 
     transform:
       hoveredStep === stepNumber
         ? "translateY(-3px)"
         : "translateY(0)",
-  });
-
-  const getAboutLinkStyle = (): CSSProperties => ({
-    ...styles.aboutLink,
-
-    color:
-      hoveredLink === "about"
-        ? "#caff46"
-        : "#ffffff",
-
-    borderBottom:
-      hoveredLink === "about"
-        ? "1px solid #caff46"
-        : "1px solid #69705f",
   });
 
   return (
@@ -363,7 +243,7 @@ export default function WorkingTogether({ settings }: { settings?: SiteSettings 
         <div style={styles.topHeader}>
           <div>
             <div style={styles.label}>
-              03 / WORKING TOGETHER
+              HOW I WORK
             </div>
 
             <h2 style={styles.heading}>
@@ -371,9 +251,7 @@ export default function WorkingTogether({ settings }: { settings?: SiteSettings 
             </h2>
           </div>
 
-          <p style={styles.intro}>
-            A simple process from first conversation to final delivery.
-          </p>
+          <p style={styles.intro}>Straightforward, collaborative, and focused on the result.</p>
         </div>
 
         <div style={styles.steps}>
@@ -403,114 +281,9 @@ export default function WorkingTogether({ settings }: { settings?: SiteSettings 
           ))}
         </div>
 
-        <div style={styles.reassurance}>
-          <div style={styles.reassuranceItem}>
-            <span style={styles.reassuranceDot} />
-            <span>Clear scope</span>
-          </div>
-
-          <div style={styles.reassuranceItem}>
-            <span style={styles.reassuranceDot} />
-            <span>Regular updates</span>
-          </div>
-
-          <div style={styles.reassuranceItem}>
-            <span style={styles.reassuranceDot} />
-            <span>Direct communication</span>
-          </div>
-
-          <div style={styles.reassuranceItem}>
-            <span style={styles.reassuranceDot} />
-            <span>Clear handover</span>
-          </div>
-        </div>
-
-        <div style={styles.divider} />
-
-        <div style={styles.about}>
-          <div>
-            <div style={styles.label}>
-              04 / THE PERSON BEHIND THE WORK
-            </div>
-
-            <h2 style={styles.aboutHeading}>
-              One developer.
-              <br />
-              The whole picture.
-            </h2>
-
-            <div style={styles.signature}>
-              <div style={styles.name}>
-                Zohaib
-              </div>
-
-              <div style={styles.role}>
-                {settings?.founderTitle || "Web Developer • AI Builder • Pakistan / Remote"}
-              </div>
-
-              <div style={styles.availability}>
-                <span style={styles.availabilityDot} />
-                <span>
-                  {settings?.availabilityStatus || "Available for selected projects"}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div style={styles.aboutText}>
-            <p style={styles.mainText}>
-              {settings?.bioSnippet ? (
-                <>I&apos;m Zohaib. {settings.bioSnippet}</>
-              ) : (
-                <>
-                  I&apos;m Zohaib, a web developer and AI builder focused on
-                  practical products, useful automation and connected workflows.
-                  I work across web apps, AI integrations, APIs and the systems
-                  that keep day to day work moving.
-                </>
-              )}
-            </p>
-
-            <p style={styles.directText}>
-              You work directly with me from the first conversation through
-              development and delivery, so there is less back and forth and a
-              clearer view of the whole project.
-            </p>
-
-            <p style={styles.secondaryText}>
-              I also run{" "}
-              <Link
-                href="/about"
-                style={styles.accent}
-              >
-                Codingskillup
-              </Link>
-              , where I share what I learn while building. Learn, build,
-              repeat.
-            </p>
-
-            <div style={styles.buttonRow}>
-              <Link
-                href="/about"
-                style={getAboutLinkStyle()}
-                onMouseEnter={() =>
-                  setHoveredLink("about")
-                }
-                onMouseLeave={() =>
-                  setHoveredLink(null)
-                }
-              >
-                More about me ↗ 
-              </Link>
-
-              <Link
-                href="/contact"
-                style={styles.contactLink}
-              >
-                Let&apos;s work together ↗
-              </Link>
-            </div>
-          </div>
+        <div style={styles.finalCta}>
+          <p style={styles.finalCtaText}>Have a product or workflow that could work better?</p>
+          <Link href="/contact" style={styles.finalCtaLink}>Tell me about it ↗</Link>
         </div>
       </div>
     </section>
