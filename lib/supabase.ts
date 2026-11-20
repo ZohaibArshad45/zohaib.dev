@@ -46,7 +46,6 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
 // =====================================================================
 type DbProjectRow = {
   slug?: string;
-  number?: string;
   title?: string;
   short_title?: string;
   shortTitle?: string;
@@ -58,8 +57,6 @@ type DbProjectRow = {
   outcome?: string;
   tags?: string[];
   images?: string[];
-  preview_type?: Project["previewType"];
-  previewType?: Project["previewType"];
   client?: string;
   role?: string;
   timeline?: string;
@@ -79,7 +76,6 @@ type DbProjectRow = {
 function mapDbToProject(row: DbProjectRow): Project {
   return {
     slug: row.slug || "",
-    number: row.number || "01",
     title: row.title || "",
     shortTitle: row.short_title || row.shortTitle || row.title || "",
     status: row.status || "",
@@ -90,7 +86,6 @@ function mapDbToProject(row: DbProjectRow): Project {
     outcome: row.outcome || "",
     tags: Array.isArray(row.tags) ? row.tags : [],
     images: Array.isArray(row.images) ? row.images : [],
-    previewType: row.preview_type || row.previewType || "dashboard",
     client: row.client || "",
     role: row.role || "",
     timeline: row.timeline || "",
@@ -110,7 +105,6 @@ function mapDbToProject(row: DbProjectRow): Project {
 function mapProjectToDb(proj: Project): Record<string, unknown> {
   return {
     slug: proj.slug,
-    number: proj.number,
     title: proj.title,
     short_title: proj.shortTitle,
     status: proj.status,
@@ -121,7 +115,6 @@ function mapProjectToDb(proj: Project): Record<string, unknown> {
     outcome: proj.outcome,
     tags: proj.tags,
     images: Array.isArray(proj.images) ? proj.images : [],
-    preview_type: proj.previewType,
     client: proj.client,
     role: proj.role,
     timeline: proj.timeline,
@@ -148,7 +141,7 @@ export async function getProjects(): Promise<{
     const { data, error } = await supabase
       .from("projects")
       .select("*")
-      .order("number", { ascending: true });
+      .order("created_at", { ascending: true });
 
     if (!error && Array.isArray(data)) {
       // Merge with local images in case Supabase schema does not have the 'images' column yet
@@ -243,7 +236,6 @@ export async function updateProject(
 
   try {
     const dbUpdates: Record<string, unknown> = {};
-    if (updates.number) dbUpdates.number = updates.number;
     if (updates.title) dbUpdates.title = updates.title;
     if (updates.shortTitle) dbUpdates.short_title = updates.shortTitle;
     if (updates.status) dbUpdates.status = updates.status;
@@ -254,7 +246,6 @@ export async function updateProject(
     if (updates.outcome) dbUpdates.outcome = updates.outcome;
     if (updates.tags) dbUpdates.tags = updates.tags;
     if (updates.images !== undefined) dbUpdates.images = updates.images;
-    if (updates.previewType) dbUpdates.preview_type = updates.previewType;
     if (updates.client) dbUpdates.client = updates.client;
     if (updates.role) dbUpdates.role = updates.role;
     if (updates.timeline) dbUpdates.timeline = updates.timeline;

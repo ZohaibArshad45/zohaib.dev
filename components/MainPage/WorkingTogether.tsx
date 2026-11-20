@@ -92,7 +92,7 @@ export default function WorkingTogether() {
     },
 
     label: {
-      color: "#315bc7",
+      color: "#527d13",
       fontSize: isMobile ? "11px" : "12px",
       fontWeight: "700",
       letterSpacing: "1px",
@@ -144,7 +144,7 @@ export default function WorkingTogether() {
     },
 
     stepLabel: {
-      color: "#315bc7",
+      color: "#527d13",
       fontSize: "11px",
       fontWeight: "700",
       letterSpacing: "0.8px",
@@ -187,7 +187,7 @@ export default function WorkingTogether() {
       width: "5px",
       height: "5px",
       borderRadius: "50%",
-      background: "#dfe6fb",
+      background: "#edf4e5",
       flexShrink: 0,
     },
 
@@ -213,7 +213,7 @@ export default function WorkingTogether() {
       flexShrink: 0,
       padding: "11px 16px",
       borderRadius: "8px",
-      background: "#315bc7",
+      background: "#527d13",
       color: "#ffffff",
       fontSize: "13px",
       fontWeight: "650",
@@ -228,7 +228,7 @@ export default function WorkingTogether() {
 
     borderTop:
       hoveredStep === stepNumber
-        ? "1px solid #dfe6fb"
+        ? "1px solid #edf4e5"
         : "1px solid #e2dfd5",
 
     transform:

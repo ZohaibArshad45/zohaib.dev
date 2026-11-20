@@ -50,13 +50,17 @@
 
 :root {
   --bg: #ffffff;
+  --page-atmosphere:
+    radial-gradient(ellipse at 9% 12%, rgba(200, 241, 106, 0.13), transparent 31%),
+    radial-gradient(ellipse at 92% 58%, rgba(82, 125, 19, 0.045), transparent 30%),
+    #ffffff;
   --surface: #ffffff;
-  --surface-2: #f5f6fa;
+  --surface-2: #f4f6f2;
   --line: #e2dfd5;
   --text: #202329;
   --text-soft: #48505a;
   --text-muted: #727882;
-  --accent: #315bc7;
+  --accent: #527d13;
   --accent-ink: #ffffff;
   --background: #ffffff;
   --foreground: #202329;
@@ -64,17 +68,17 @@
   --card-foreground: #202329;
   --popover: #ffffff;
   --popover-foreground: #202329;
-  --primary: #315bc7;
+  --primary: #527d13;
   --primary-foreground: #ffffff;
-  --secondary: #f5f6fa;
+  --secondary: #f4f6f2;
   --secondary-foreground: #202329;
-  --muted: #f5f6fa;
+  --muted: #f4f6f2;
   --muted-foreground: #727882;
   --accent-foreground: #202329;
   --destructive: oklch(0.704 0.191 22.216);
   --border: #e2dfd5;
   --input: #d8d5cc;
-  --ring: #315bc7;
+  --ring: #527d13;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -98,31 +102,31 @@
   --card-foreground: #202329;
   --popover: #ffffff;
   --popover-foreground: #202329;
-  --primary: #315bc7;
+  --primary: #527d13;
   --primary-foreground: #ffffff;
-  --secondary: #f5f6fa;
+  --secondary: #f4f6f2;
   --secondary-foreground: #202329;
-  --muted: #f5f6fa;
+  --muted: #f4f6f2;
   --muted-foreground: #727882;
-  --accent: #dfe6fb;
+  --accent: #edf4e5;
   --accent-foreground: #202329;
   --destructive: oklch(0.577 0.245 27.325);
   --border: #e2dfd5;
   --input: #d8d5cc;
-  --ring: #315bc7;
+  --ring: #527d13;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --sidebar: #f5f6fa;
+  --sidebar: #f4f6f2;
   --sidebar-foreground: #202820;
-  --sidebar-primary: #315bc7;
+  --sidebar-primary: #527d13;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #dfe6fb;
+  --sidebar-accent: #edf4e5;
   --sidebar-accent-foreground: #202820;
   --sidebar-border: #e0e5dc;
-  --sidebar-ring: #315bc7;
+  --sidebar-ring: #527d13;
 }
 
 @layer base {
@@ -137,12 +141,12 @@
     letter-spacing: -0.01em;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-    background: var(--bg);
+    background: var(--page-atmosphere);
     color: var(--text);
   }
   html {
     @apply font-sans;
-    background: var(--bg);
+    background: var(--page-atmosphere);
   }
   a:focus-visible,
   button:focus-visible {

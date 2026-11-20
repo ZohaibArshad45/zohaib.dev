@@ -77,7 +77,7 @@ export default function SelectedWork({
     },
 
     label: {
-      color: "#315bc7",
+      color: "#527d13",
       fontSize: isMobile ? "11px" : "12px",
       fontWeight: "700",
       letterSpacing: "1px",
@@ -134,7 +134,7 @@ export default function SelectedWork({
       padding: 0,
       aspectRatio: "16 / 9",
       overflow: "hidden",
-      background: "#f0f2f8",
+      background: "#f4f6f2",
       boxSizing: "border-box",
       position: "relative",
       zIndex: 1,
@@ -162,7 +162,7 @@ export default function SelectedWork({
     },
 
     projectEyebrow: {
-      color: "#315bc7",
+      color: "#527d13",
       fontSize: "10px",
       fontWeight: "700",
       letterSpacing: "1px",
@@ -200,7 +200,7 @@ export default function SelectedWork({
     outcomeBox: {
       margin: "10px 0 0",
       paddingLeft: "10px",
-      borderLeft: "2px solid #dfe6fb",
+      borderLeft: "2px solid #edf4e5",
       fontSize: "12px",
       lineHeight: "1.55",
       color: "#3f4a40",
@@ -230,7 +230,7 @@ export default function SelectedWork({
     metricPillVal: {
       fontSize: "11px",
       fontWeight: "700",
-      color: "#315bc7",
+      color: "#527d13",
     },
 
     metricPillLabel: {
@@ -251,7 +251,7 @@ export default function SelectedWork({
       border: "1px solid #e2dfd5",
       fontSize: "10px",
       color: "#202329",
-      background: "#f5f6fa",
+      background: "#f4f6f2",
     },
 
     actionsRow: {
@@ -299,7 +299,7 @@ export default function SelectedWork({
       width: "48px",
       height: "48px",
       borderRadius: "50%",
-      border: "1px solid #dfe6fb",
+      border: "1px solid #edf4e5",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
@@ -353,10 +353,10 @@ export default function SelectedWork({
     roadmapTag: {
       display: "inline-block",
       fontSize: "10px",
-      color: "#315bc7",
+      color: "#527d13",
       fontWeight: "800",
       letterSpacing: "1px",
-      background: "rgba(49, 91, 199, 0.08)",
+      background: "rgba(82, 125, 19, 0.08)",
       padding: "3px 8px",
       borderRadius: "4px",
       marginBottom: "8px",
@@ -378,7 +378,7 @@ export default function SelectedWork({
     },
 
     roadmapBtn: {
-      background: "#315bc7",
+      background: "#527d13",
       color: "#ffffff",
       textDecoration: "none",
       padding: "12px 22px",
@@ -457,15 +457,13 @@ export default function SelectedWork({
                   {project.images?.[0] ? (
                     <Image src={project.images[0]} alt={`${project.title || project.headline} interface`} fill sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw" unoptimized style={styles.projectImage} />
                   ) : (
-                    <ProjectPreviewCard project={project} isMobile={isMobile} />
+                    <ProjectPreviewCard project={project} />
                   )}
                 </div>
 
                 {/* CONTENT CONTAINER */}
                 <div style={styles.contentContainer}>
                   <div style={styles.projectEyebrow}>
-                    <span>{project.number || "01"}</span>
-                    <span>/</span>
                     <span>{project.status || "Web Apps"}</span>
                   </div>
 

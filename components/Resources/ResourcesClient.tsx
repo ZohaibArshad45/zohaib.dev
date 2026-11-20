@@ -115,9 +115,9 @@ export default function ResourcesClient({
       case "code":
       case "zip":
         return {
-      bg: "rgba(49, 91, 199, 0.08)",
-          border: "rgba(49, 91, 199, 0.22)",
-          text: "#315bc7",
+      bg: "rgba(82, 125, 19, 0.08)",
+          border: "rgba(82, 125, 19, 0.22)",
+          text: "#527d13",
           label: type === "zip" ? "ZIP ARCHIVE" : "SOURCE CODE",
         };
       case "template":
@@ -159,16 +159,19 @@ export default function ResourcesClient({
               Browse the collection and download anything useful for your work.
             </p>
 
-            <p style={{ margin: "28px 0 0", color: "#727882", fontSize: "14px" }}>
-              {resources.length} {resources.length === 1 ? "resource" : "resources"}
-            </p>
+            {resources.length > 0 && (
+              <p style={{ margin: "28px 0 0", color: "#727882", fontSize: "14px" }}>
+                {resources.length} {resources.length === 1 ? "resource" : "resources"}
+              </p>
+            )}
           </div>
         </section>
 
         {/* CONTROLS: SEARCH & CATEGORY PILLS */}
-        <section style={styles.controlsSection}>
-          <div style={styles.container}>
-            <div style={styles.controlsBar}>
+        {resources.length > 0 && (
+          <section style={styles.controlsSection}>
+            <div style={styles.container}>
+              <div style={styles.controlsBar}>
               {/* Search Bar */}
               <div style={styles.searchWrapper}>
                 <Search size={18} strokeWidth={1.75} style={styles.searchIcon} aria-hidden="true" />
@@ -209,30 +212,44 @@ export default function ResourcesClient({
                   );
                 })}
               </div>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* RESOURCES GRID */}
         <section style={styles.gridSection}>
           <div style={styles.container}>
             {filteredResources.length === 0 ? (
               <div style={styles.emptyState}>
-                <div style={styles.emptyIcon}>📦</div>
-                <h3 style={styles.emptyTitle}>No matching resources found</h3>
+                <div style={styles.emptyIcon}>
+                  <FileText size={28} strokeWidth={1.6} aria-hidden="true" />
+                </div>
+                <h3 style={styles.emptyTitle}>
+                  {resources.length === 0
+                    ? "The first resources are in the works"
+                    : "No matching resources found"}
+                </h3>
                 <p style={styles.emptySub}>
-                  Try clearing your search query or choosing a different
-                  category.
+                  {resources.length === 0
+                    ? "Practical guides and starter templates will be added here as they’re ready."
+                    : "Try clearing your search query or choosing a different category."}
                 </p>
-                <button
-                  onClick={() => {
-                    setSearchQuery("");
-                    setSelectedCategory("All");
-                  }}
-                  style={styles.resetBtn}
-                >
-                  Reset Filters
-                </button>
+                {resources.length === 0 ? (
+                  <Link href="/contact" style={styles.emptyLink}>
+                    Suggest a resource ↗
+                  </Link>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setSearchQuery("");
+                      setSelectedCategory("All");
+                    }}
+                    style={styles.resetBtn}
+                  >
+                    Reset Filters
+                  </button>
+                )}
               </div>
             ) : (
               <div style={styles.grid}>
@@ -253,7 +270,7 @@ export default function ResourcesClient({
                           ? "translateY(-2px)"
                           : "translateY(0)",
                         borderColor: isHovered
-                          ? "rgba(49, 91, 199, 0.22)"
+                          ? "rgba(82, 125, 19, 0.22)"
                           : "#e2dfd5",
                         boxShadow: isHovered
                           ? "0 12px 28px rgba(0, 0, 0, 0.24)"
@@ -267,7 +284,7 @@ export default function ResourcesClient({
                           style={{
                             ...styles.coverThumbnailWrapper,
                             borderColor: isHovered
-                              ? "rgba(49, 91, 199, 0.2)"
+                              ? "rgba(82, 125, 19, 0.2)"
                               : "#e2dfd5",
                             boxShadow: isHovered
                               ? "0 8px 24px rgba(0, 0, 0, 0.5)"
@@ -320,7 +337,7 @@ export default function ResourcesClient({
                       <h2
                         style={{
                           ...styles.cardTitle,
-                          color: isHovered ? "#315bc7" : "#202329",
+                          color: isHovered ? "#527d13" : "#202329",
                           transition: "color 0.25s ease",
                         }}
                       >
@@ -367,7 +384,7 @@ export default function ResourcesClient({
                               ? "translateY(-2px)"
                               : "translateY(0)",
                             boxShadow: isHovered
-                              ? "0 8px 18px rgba(49, 91, 199, 0.18)"
+                              ? "0 8px 18px rgba(82, 125, 19, 0.18)"
                               : "none",
                           }}
                           title="Download Resource"
@@ -393,15 +410,15 @@ export default function ResourcesClient({
                             ...styles.copyBtn,
                             borderColor:
                               hoveredCopyId === resource.id
-                                ? "#315bc7"
+                                ? "#527d13"
                                 : "#e2dfd5",
                             color:
                               hoveredCopyId === resource.id
-                                ? "#dfe6fb"
+                                ? "#edf4e5"
                                 : "#48505a",
                             background:
                               hoveredCopyId === resource.id
-                                ? "rgba(49, 91, 199, 0.06)"
+                                ? "rgba(82, 125, 19, 0.06)"
                                 : "#ffffff",
                           }}
                           title="Copy Download Link"
@@ -422,15 +439,15 @@ export default function ResourcesClient({
                               ...styles.externalLinkBtn,
                               borderColor:
                                 hoveredExternalId === resource.id
-                                ? "#315bc7"
+                                ? "#527d13"
                                   : "#e2dfd5",
                               color:
                                 hoveredExternalId === resource.id
-                                  ? "#dfe6fb"
+                                  ? "#edf4e5"
                                   : "#48505a",
                               background:
                                 hoveredExternalId === resource.id
-                                ? "rgba(49, 91, 199, 0.06)"
+                                ? "rgba(82, 125, 19, 0.06)"
                                 : "#ffffff",
                             }}
                             title="View on GitHub / Source"
@@ -448,7 +465,7 @@ export default function ResourcesClient({
         </section>
 
         {/* BOTTOM REQUEST RESOURCE CTA */}
-        <section style={styles.ctaSection}>
+        {resources.length > 0 && <section style={styles.ctaSection}>
           <div style={styles.container}>
             <div style={styles.ctaBox}>
               <div style={styles.ctaLeft}>
@@ -469,7 +486,7 @@ export default function ResourcesClient({
               </div>
             </div>
           </div>
-        </section>
+        </section>}
       </main>
 
       <SiteFooter />
@@ -479,7 +496,7 @@ export default function ResourcesClient({
 
 const styles: Record<string, CSSProperties> = {
   page: {
-    background: "#ffffff",
+    background: "var(--page-atmosphere)",
     color: "#202329",
     minHeight: "100vh",
     fontFamily:
@@ -487,7 +504,7 @@ const styles: Record<string, CSSProperties> = {
   },
 
   main: {
-    paddingTop: "110px",
+    paddingTop: "88px",
     position: "relative",
   },
 
@@ -499,7 +516,7 @@ const styles: Record<string, CSSProperties> = {
   },
 
   heroSection: {
-    padding: "60px 0 30px",
+    padding: "38px 0 22px",
     textAlign: "left",
   },
 
@@ -517,7 +534,7 @@ const styles: Record<string, CSSProperties> = {
     borderRadius: "0",
     background: "transparent",
     border: "none",
-    color: "#315bc7",
+    color: "#527d13",
     fontSize: "12px",
     fontWeight: "700",
     letterSpacing: "0.08em",
@@ -533,7 +550,7 @@ const styles: Record<string, CSSProperties> = {
     margin: "0 0 20px",
   },
 
-  heroGradient: { color: "#315bc7" },
+  heroGradient: { color: "#527d13" },
 
   heroSubtitle: {
     fontSize: "clamp(16px, 2vw, 19px)",
@@ -615,11 +632,11 @@ const styles: Record<string, CSSProperties> = {
   },
 
   catButtonActive: {
-    background: "#315bc7",
-    borderColor: "#315bc7",
+    background: "#527d13",
+    borderColor: "#527d13",
     color: "#ffffff",
     fontWeight: "700",
-    boxShadow: "0 6px 16px rgba(49, 91, 199, 0.18)",
+    boxShadow: "0 6px 16px rgba(82, 125, 19, 0.18)",
   },
 
   gridSection: {
@@ -693,7 +710,7 @@ const styles: Record<string, CSSProperties> = {
   categoryBadge: {
     padding: "4px 10px",
     borderRadius: "6px",
-    background: "#f4f5f8",
+    background: "#f4f6f2",
     border: "1px solid #e2dfd5",
     color: "#727882",
     fontSize: "11px",
@@ -703,8 +720,8 @@ const styles: Record<string, CSSProperties> = {
   featuredBadge: {
     padding: "3px 8px",
     borderRadius: "6px",
-    background: "rgba(49, 91, 199, 0.08)",
-    color: "#315bc7",
+    background: "rgba(82, 125, 19, 0.08)",
+    color: "#527d13",
     fontSize: "10px",
     fontWeight: "800",
     letterSpacing: "0.5px",
@@ -778,7 +795,7 @@ const styles: Record<string, CSSProperties> = {
     gap: "8px",
     padding: "12px 18px",
     borderRadius: "10px",
-    background: "#315bc7",
+    background: "#527d13",
     color: "#ffffff",
     fontSize: "14px",
     fontWeight: "700",
@@ -830,15 +847,26 @@ const styles: Record<string, CSSProperties> = {
 
   emptyState: {
     textAlign: "center",
-    padding: "80px 20px",
-    background: "#eeece5",
+    width: "100%",
+    maxWidth: "760px",
+    margin: "0 auto",
+    padding: "54px 20px",
+    background: "#ffffff",
     borderRadius: "20px",
-    border: "1px dashed #d8d5cc",
+    border: "1px solid #e2dfd5",
+    boxShadow: "0 18px 44px rgba(30, 40, 20, 0.045)",
+    boxSizing: "border-box",
   },
 
   emptyIcon: {
-    fontSize: "44px",
-    marginBottom: "16px",
+    display: "grid",
+    placeItems: "center",
+    width: "52px",
+    height: "52px",
+    margin: "0 auto 18px",
+    borderRadius: "14px",
+    background: "#edf4e5",
+    color: "#527d13",
   },
 
   emptyTitle: {
@@ -857,11 +885,24 @@ const styles: Record<string, CSSProperties> = {
   resetBtn: {
     padding: "10px 20px",
     borderRadius: "8px",
-    background: "#315bc7",
+    background: "#527d13",
     color: "#ffffff",
     border: "none",
     fontWeight: "700",
     cursor: "pointer",
+  },
+
+  emptyLink: {
+    display: "inline-flex",
+    alignItems: "center",
+    minHeight: "42px",
+    padding: "0 16px",
+    borderRadius: "8px",
+    background: "#c8f16a",
+    color: "#20251f",
+    fontSize: "14px",
+    fontWeight: "700",
+    textDecoration: "none",
   },
 
   ctaSection: {
@@ -889,7 +930,7 @@ const styles: Record<string, CSSProperties> = {
   ctaEyebrow: {
     fontSize: "11px",
     fontWeight: "800",
-    color: "#315bc7",
+    color: "#527d13",
     letterSpacing: "1.5px",
     display: "block",
     marginBottom: "10px",
@@ -919,7 +960,7 @@ const styles: Record<string, CSSProperties> = {
     alignItems: "center",
     padding: "16px 30px",
     borderRadius: "12px",
-    background: "#315bc7",
+    background: "#527d13",
     color: "#ffffff",
     fontSize: "15px",
     fontWeight: "700",

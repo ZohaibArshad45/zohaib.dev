@@ -24,7 +24,6 @@ CREATE TABLE IF NOT EXISTS public.inquiries (
 -- 2. PROJECTS TABLE
 CREATE TABLE IF NOT EXISTS public.projects (
   slug TEXT PRIMARY KEY,
-  number TEXT NOT NULL DEFAULT '01',
   title TEXT NOT NULL,
   short_title TEXT NOT NULL,
   status TEXT NOT NULL,
@@ -35,7 +34,6 @@ CREATE TABLE IF NOT EXISTS public.projects (
   outcome TEXT NOT NULL,
   tags TEXT[] NOT NULL DEFAULT '{}',
   images TEXT[] NOT NULL DEFAULT '{}',
-  preview_type TEXT NOT NULL DEFAULT 'inbox',
   client TEXT NOT NULL DEFAULT 'Personal Project',
   role TEXT NOT NULL DEFAULT 'Full-Stack Developer',
   timeline TEXT NOT NULL DEFAULT 'Completed',
@@ -255,7 +253,6 @@ WHERE NOT EXISTS (SELECT 1 FROM public.resources);
 CREATE TABLE IF NOT EXISTS public.upcoming_projects (
   id TEXT PRIMARY KEY,
   slug TEXT UNIQUE NOT NULL,
-  number TEXT NOT NULL DEFAULT '01',
   title TEXT NOT NULL,
   short_title TEXT NOT NULL,
   category TEXT NOT NULL DEFAULT 'AI Agents',
@@ -271,7 +268,6 @@ CREATE TABLE IF NOT EXISTS public.upcoming_projects (
   key_features TEXT[] NOT NULL DEFAULT '{}',
   architecture_highlights TEXT[] NOT NULL DEFAULT '{}',
   deliverables TEXT[] NOT NULL DEFAULT '{}',
-  preview_type TEXT NOT NULL DEFAULT 'dashboard',
   waitlist_count INTEGER NOT NULL DEFAULT 0,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()

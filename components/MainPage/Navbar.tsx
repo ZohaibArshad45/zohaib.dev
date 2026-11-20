@@ -60,7 +60,7 @@ export default function Navbar() {
   };
 
   const getNavLinkStyle = (href: string): CSSProperties => ({
-    color: isActive(href) ? "#315bc7" : "#202329",
+    color: isActive(href) ? "#527d13" : "#202329",
     textDecoration: "none",
     fontSize: isTablet ? "16px" : "17px",
     fontWeight: isActive(href) ? "600" : "500",
@@ -69,7 +69,7 @@ export default function Navbar() {
   });
 
   const getMobileLinkStyle = (href: string): CSSProperties => ({
-    color: isActive(href) ? "#315bc7" : "#202329",
+    color: isActive(href) ? "#527d13" : "#202329",
     textDecoration: "none",
     fontSize: "30px",
     fontWeight: isActive(href) ? "600" : "500",
@@ -116,7 +116,7 @@ export default function Navbar() {
     },
 
     dot: {
-      color: "#315bc7",
+      color: "#527d13",
     },
 
     navLinks: {
@@ -127,14 +127,14 @@ export default function Navbar() {
 
     talk: {
       display: isMobile ? "none" : "inline-block",
-      color: pathname === "/contact" ? "#315bc7" : "#202329",
+      color: pathname === "/contact" ? "#527d13" : "#202329",
       textDecoration: "none",
       fontSize: isTablet ? "16px" : "17px",
       fontWeight: pathname === "/contact" ? "600" : "500",
       paddingBottom: "8px",
       borderBottom:
         pathname === "/contact"
-          ? "1px solid #dfe6fb"
+          ? "1px solid #edf4e5"
           : "1px solid #c4ccc0",
       transition: "color 0.2s ease, border-color 0.2s ease",
     },
@@ -196,7 +196,7 @@ export default function Navbar() {
     },
 
     mobileTalk: {
-      color: pathname === "/contact" ? "#315bc7" : "#202329",
+      color: pathname === "/contact" ? "#527d13" : "#202329",
       textDecoration: "none",
       fontSize: "28px",
       fontWeight: pathname === "/contact" ? "600" : "500",
@@ -205,7 +205,7 @@ export default function Navbar() {
       paddingBottom: "8px",
       borderBottom:
         pathname === "/contact"
-          ? "1px solid #dfe6fb"
+          ? "1px solid #edf4e5"
           : "1px solid #7a7d6b",
     },
 

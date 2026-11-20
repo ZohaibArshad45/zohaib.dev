@@ -21,7 +21,6 @@ CREATE TABLE IF NOT EXISTS public.inquiries (
 -- 2. Create Projects Table
 CREATE TABLE IF NOT EXISTS public.projects (
   slug TEXT PRIMARY KEY,
-  number TEXT NOT NULL DEFAULT '01',
   title TEXT NOT NULL,
   short_title TEXT NOT NULL,
   status TEXT NOT NULL,
@@ -31,7 +30,6 @@ CREATE TABLE IF NOT EXISTS public.projects (
   description TEXT NOT NULL,
   outcome TEXT NOT NULL,
   tags TEXT[] NOT NULL DEFAULT '{}',
-  preview_type TEXT NOT NULL DEFAULT 'inbox',
   client TEXT NOT NULL DEFAULT 'Personal Project',
   role TEXT NOT NULL DEFAULT 'Full-Stack Developer',
   timeline TEXT NOT NULL DEFAULT 'Completed',
@@ -122,13 +120,12 @@ ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
 
 -- 4. Seed Initial Projects
 INSERT INTO public.projects (
-  slug, number, title, short_title, status, categories, headline, subhead,
-  description, outcome, tags, preview_type, client, role, timeline, deliverables,
+  slug, title, short_title, status, categories, headline, subhead,
+  description, outcome, tags, client, role, timeline, deliverables,
   problem, solution, architecture_highlights, metrics, demo_url
 ) VALUES
 (
   'inbox',
-  '01',
   'AI Unified Inbox & Lead Triage Assistant',
   'AI Inbox Assistant',
   'AI INTEGRATION • PRODUCTIVITY',
@@ -138,7 +135,6 @@ INSERT INTO public.projects (
   'A focused workspace that brings multiple email accounts together and uses AI to surface keywords, urgent client messages, lead scores, and team mentions in real time.',
   'Automated 85% of inbound message classification and reduced lead response latency from hours to under 4 minutes.',
   ARRAY['Next.js', 'OpenAI GPT-4o', 'Supabase', 'Tailwind CSS', 'TypeScript'],
-  'inbox',
   'Productivity Tool & SaaS Concept',
   'Full-Stack Engineer & AI Architecture',
   '3 Weeks',
@@ -161,7 +157,6 @@ INSERT INTO public.projects (
 ),
 (
   'automation',
-  '02',
   'Deal-to-Task Pipeline Automation',
   'CRM & Project Pipeline',
   'AUTOMATION SYSTEM',
@@ -171,7 +166,6 @@ INSERT INTO public.projects (
   'A multi-stage workflow connecting HubSpot deal milestones with Asana project templates through n8n webhooks, ensuring project details transition automatically as sales close.',
   'Saved 15+ hours weekly in repetitive project setup and completely eliminated client onboarding handoff delays.',
   ARRAY['n8n', 'HubSpot API', 'Asana API', 'Webhooks', 'Node.js'],
-  'automation',
   'B2B Agency Operations',
   'Automation Architect & Integration Developer',
   '2 Weeks',
@@ -194,7 +188,6 @@ INSERT INTO public.projects (
 ),
 (
   'dashboard',
-  '03',
   'Modular Operations & Team Workspace',
   'Operations Workspace',
   'WEB APPLICATION • INTERNAL TOOL',
@@ -204,7 +197,6 @@ INSERT INTO public.projects (
   'A responsive project dashboard designed to bring tasks, progress, priorities and team activity into one simple, clean workspace with granular role-based access.',
   'Centralized multi-client operations into a unified high-density workspace with instant status updates.',
   ARRAY['Next.js', 'React 19', 'Supabase', 'Server Actions', 'PostgreSQL'],
-  'dashboard',
   'Digital Production Studio',
   'Frontend Architect & Backend Developer',
   '4 Weeks',
@@ -227,7 +219,6 @@ INSERT INTO public.projects (
 ),
 (
   'outreach-ops',
-  '04',
   'Autonomous Prospect Discovery & Lead Agent',
   'Outreach Ops Agent',
   'AI AGENT • AUTOMATION',
@@ -237,7 +228,6 @@ INSERT INTO public.projects (
   'An automated lead generation and enrichment pipeline that crawls target company registries, extracts decision-maker signals, and crafts contextualized intro angles.',
   'Achieved a 3.8x increase in qualified reply rates through hyper-personalized contextual research angles.',
   ARRAY['Python', 'LangChain', 'OpenAI', 'FastAPI', 'PostgreSQL'],
-  'outreach',
   'B2B SaaS Growth Team',
   'AI Systems Engineer',
   '3 Weeks',
@@ -260,7 +250,6 @@ INSERT INTO public.projects (
 ),
 (
   'codingskillup',
-  '05',
   'Codingskillup Educational Platform & Code Engine',
   'Codingskillup',
   'WEB APPLICATION • PLATFORM',
@@ -270,7 +259,6 @@ INSERT INTO public.projects (
   'A custom developer learning hub created by Zohaib to teach modern web development, AI engineering, and automation workflows with live interactive code examples.',
   'Reached 10,000+ developers worldwide with practical guides, real-world case studies, and open-source starter repositories.',
   ARRAY['Next.js', 'MDX', 'Tailwind CSS', 'TypeScript', 'Vercel'],
-  'code',
   'Community & Education Initiative',
   'Founder, Designer & Full-Stack Developer',
   'Ongoing Platform',
@@ -293,7 +281,6 @@ INSERT INTO public.projects (
 ),
 (
   'support-copilot',
-  '06',
   'RAG-Powered Customer Support Copilot',
   'Support Copilot',
   'AI SYSTEM • INTERNAL TOOL',
@@ -303,7 +290,6 @@ INSERT INTO public.projects (
   'A Retrieval-Augmented Generation (RAG) assistant connected to internal product documentation, Notion wikis, and historical support tickets to provide verified answers.',
   'Resolved 65% of Tier-1 support tickets automatically with verified citations and zero hallucination.',
   ARRAY['Pinecone', 'LangChain', 'OpenAI', 'Next.js', 'FastAPI'],
-  'support',
   'E-Commerce & SaaS Support Teams',
   'AI & Vector Search Engineer',
   '2.5 Weeks',

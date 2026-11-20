@@ -45,7 +45,7 @@ export async function saveLocalProjects(projects: Project[]): Promise<void> {
 export async function addLocalProject(project: Project): Promise<Project> {
   const projects = await getLocalProjects();
   // Filter out any existing with same slug
-  const updated = [project, ...projects.filter((p) => p.slug !== project.slug)];
+  const updated = [...projects.filter((p) => p.slug !== project.slug), project];
   await saveLocalProjects(updated);
   return project;
 }
@@ -61,7 +61,6 @@ export async function updateLocalProject(
   if (index === -1) {
     updatedProject = {
       slug,
-      number: updates.number || "01",
       title: updates.title || slug,
       shortTitle: updates.shortTitle || updates.title || slug,
       status: updates.status || "Web Apps",
@@ -72,7 +71,6 @@ export async function updateLocalProject(
       outcome: updates.outcome || "",
       tags: updates.tags || [],
       images: updates.images || [],
-      previewType: updates.previewType || "dashboard",
       client: updates.client || "",
       role: updates.role || "",
       timeline: updates.timeline || "",

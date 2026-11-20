@@ -7,7 +7,6 @@ export type ProjectMetric = {
 
 export type Project = {
   slug: string;
-  number: string;
   title: string;
   shortTitle: string;
   status: string;
@@ -18,7 +17,6 @@ export type Project = {
   outcome: string;
   tags: string[];
   images?: string[];
-  previewType?: "inbox" | "automation" | "dashboard" | "outreach" | "code" | "support" | "image";
   client: string;
   role: string;
   timeline: string;

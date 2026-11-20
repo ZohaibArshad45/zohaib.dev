@@ -17,7 +17,7 @@ export default async function Home() {
       id="top"
       style={{
         minHeight: "100vh",
-        background: "var(--bg)",
+        background: "var(--page-atmosphere)",
         color: "var(--text)",
         fontFamily: "inherit",
       }}

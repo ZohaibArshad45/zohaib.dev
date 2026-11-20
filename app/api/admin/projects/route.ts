@@ -36,7 +36,6 @@ export async function POST(request: Request) {
 
     const newProject: Project = {
       slug: body.slug.toLowerCase().replace(/[^a-z0-9-]/g, "-"),
-      number: body.number || "01",
       title: body.title,
       shortTitle: body.shortTitle || body.title,
       status: body.status || "Web Apps",
@@ -47,7 +46,6 @@ export async function POST(request: Request) {
       outcome: body.outcome || "",
       tags: Array.isArray(body.tags) ? body.tags : [],
       images: Array.isArray(body.images) ? body.images : [],
-      previewType: body.previewType || "dashboard",
       client: body.client || "Client Project",
       role: body.role || "Full-Stack Engineer",
       timeline: body.timeline || "2-3 Weeks",

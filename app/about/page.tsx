@@ -31,7 +31,7 @@ export default function AboutPage() {
   const styles: Record<string, CSSProperties> = {
     page: {
       minHeight: "100vh",
-      background: "#ffffff",
+      background: "var(--page-atmosphere)",
       color: "#202329",
     },
 
@@ -48,7 +48,7 @@ export default function AboutPage() {
     },
 
     label: {
-      color: "#315bc7",
+      color: "#527d13",
       fontSize: isMobile ? "11px" : "12px",
       fontWeight: "700",
       letterSpacing: "1px",
@@ -80,7 +80,7 @@ export default function AboutPage() {
     },
 
     accent: {
-      color: "#315bc7",
+      color: "#527d13",
       display: "block",
       marginTop: "6px",
     },
@@ -199,7 +199,7 @@ export default function AboutPage() {
 
     codingTag: {
       marginTop: "18px",
-      color: "#315bc7",
+      color: "#527d13",
       fontSize: "12px",
       fontWeight: "600",
     },
@@ -239,12 +239,12 @@ export default function AboutPage() {
     },
 
     ctaLink: {
-      color: "#315bc7",
+      color: "#527d13",
       textDecoration: "none",
       fontSize: "15px",
       fontWeight: "600",
       paddingBottom: "7px",
-      borderBottom: "1px solid #dfe6fb",
+      borderBottom: "1px solid #edf4e5",
       whiteSpace: "nowrap",
     },
   };

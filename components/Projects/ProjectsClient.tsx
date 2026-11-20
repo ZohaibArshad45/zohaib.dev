@@ -70,6 +70,17 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
     );
   });
 
+  const visibleCategories = categoriesList.filter(
+    (category) =>
+      category === "All" ||
+      projectList.some(
+        (project) =>
+          project.status === category ||
+          (Array.isArray(project.categories) &&
+            project.categories.includes(category))
+      )
+  );
+
   const getCardStyle = (slug: string): CSSProperties => ({
     ...styles.card,
     border:
@@ -113,7 +124,7 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
         {/* CATEGORY FILTER TABS */}
         <nav aria-label="Project categories" style={styles.filterBar}>
           <div style={styles.filterTabs}>
-            {categoriesList.map((category) => {
+            {visibleCategories.map((category) => {
               const isSelected = activeCategory === category;
               const count =
                 category === "All"
@@ -132,9 +143,9 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
                   onClick={() => setActiveCategory(category)}
                   style={{
                     ...styles.tabButton,
-                    background: isSelected ? "#315bc7" : "#fffefa",
+                    background: isSelected ? "#527d13" : "#fffefa",
                     color: isSelected ? "#ffffff" : "#4b5059",
-                    borderColor: isSelected ? "#315bc7" : "#e2dfd5",
+                    borderColor: isSelected ? "#527d13" : "#e2dfd5",
                     fontWeight: isSelected ? "700" : "500",
                   }}
                 >
@@ -144,8 +155,8 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
                       ...styles.tabCount,
                       background: isSelected
                         ? "rgba(255, 255, 255, 0.18)"
-                        : "rgba(49, 91, 199, 0.08)",
-                      color: isSelected ? "#ffffff" : "#315bc7",
+                        : "rgba(82, 125, 19, 0.08)",
+                      color: isSelected ? "#ffffff" : "#527d13",
                     }}
                   >
                     {count}
@@ -198,15 +209,13 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
                 {project.images?.[0] ? (
                   <Image src={project.images[0]} alt={`${project.title || project.headline} interface`} fill sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw" unoptimized style={styles.projectImage} />
                 ) : (
-                  <ProjectPreviewCard project={project} isMobile={isMobile} />
+                  <ProjectPreviewCard project={project} />
                 )}
               </div>
 
               {/* CONTENT CONTAINER */}
               <div style={styles.contentContainer}>
                 <div style={styles.projectEyebrow}>
-                  <span>{project.number}</span>
-                  <span>/</span>
                   <span>{project.status}</span>
                 </div>
 
@@ -287,7 +296,7 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
 const styles: Record<string, CSSProperties> = {
   page: {
     minHeight: "100vh",
-    background: "var(--bg)",
+    background: "var(--page-atmosphere)",
     color: "var(--text)",
   },
   container: {
@@ -298,7 +307,7 @@ const styles: Record<string, CSSProperties> = {
     boxSizing: "border-box",
   },
   label: {
-    color: "#315bc7",
+    color: "#527d13",
     fontSize: "12px",
     fontWeight: "700",
     letterSpacing: "1px",
@@ -324,7 +333,7 @@ const styles: Record<string, CSSProperties> = {
     color: "#202329",
   },
   headingAccent: {
-    color: "#315bc7",
+    color: "#527d13",
     display: "block",
     marginTop: "4px",
   },
@@ -341,7 +350,7 @@ const styles: Record<string, CSSProperties> = {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
     gap: "16px",
-    background: "#f5f6fa",
+    background: "#f4f6f2",
     border: "1px solid #e2dfd5",
     borderRadius: "14px",
     padding: "24px 28px",
@@ -355,7 +364,7 @@ const styles: Record<string, CSSProperties> = {
   metricVal: {
     fontSize: "28px",
     fontWeight: "800",
-    color: "#315bc7",
+    color: "#527d13",
     letterSpacing: "-0.5px",
   },
   metricDesc: {
@@ -417,7 +426,7 @@ const styles: Record<string, CSSProperties> = {
     padding: 0,
     aspectRatio: "16 / 9",
     overflow: "hidden",
-    background: "#f0f2f8",
+    background: "#f4f6f2",
     boxSizing: "border-box",
     position: "relative",
     zIndex: 1,
@@ -442,7 +451,7 @@ const styles: Record<string, CSSProperties> = {
     pointerEvents: "none",
   },
   projectEyebrow: {
-    color: "#315bc7",
+    color: "#527d13",
     fontSize: "10px",
     fontWeight: "700",
     letterSpacing: "1px",
@@ -476,7 +485,7 @@ const styles: Record<string, CSSProperties> = {
   outcomeBox: {
     margin: "10px 0 0",
     paddingLeft: "10px",
-    borderLeft: "2px solid #dfe6fb",
+    borderLeft: "2px solid #edf4e5",
     fontSize: "12px",
     lineHeight: "1.55",
     color: "#3f4a40",
@@ -503,7 +512,7 @@ const styles: Record<string, CSSProperties> = {
   metricPillVal: {
     fontSize: "11px",
     fontWeight: "700",
-    color: "#315bc7",
+    color: "#527d13",
   },
   metricPillLabel: {
     fontSize: "10px",
@@ -607,7 +616,7 @@ const styles: Record<string, CSSProperties> = {
     boxSizing: "border-box",
   },
   principleNum: {
-    color: "#315bc7",
+    color: "#527d13",
     fontSize: "12px",
     fontWeight: "700",
     marginBottom: "12px",
@@ -644,7 +653,7 @@ const styles: Record<string, CSSProperties> = {
     fontSize: "10px",
     fontWeight: "700",
     letterSpacing: "1px",
-    color: "#315bc7",
+    color: "#527d13",
     marginBottom: "12px",
   },
   techCatTags: {
@@ -663,7 +672,7 @@ const styles: Record<string, CSSProperties> = {
   ctaBox: {
     marginTop: "80px",
     background: "#eeece5",
-    border: "1px solid #dfe6fb",
+    border: "1px solid #edf4e5",
     borderRadius: "12px",
     padding: "44px 38px",
     display: "flex",
@@ -671,7 +680,7 @@ const styles: Record<string, CSSProperties> = {
     justifyContent: "space-between",
     alignItems: "center",
     gap: "28px",
-    boxShadow: "0 10px 32px rgba(49, 91, 199, 0.08)",
+    boxShadow: "0 10px 32px rgba(82, 125, 19, 0.08)",
   },
   ctaHeading: {
     margin: "6px 0 10px",
@@ -687,7 +696,7 @@ const styles: Record<string, CSSProperties> = {
     maxWidth: "560px",
   },
   ctaButton: {
-    background: "#315bc7",
+    background: "#527d13",
     color: "#ffffff",
     padding: "16px 28px",
     borderRadius: "8px",

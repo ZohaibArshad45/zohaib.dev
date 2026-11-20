@@ -281,7 +281,7 @@ export default function ResourcesAdminSection({
       case "pdf":
         return { label: "PDF", bg: "rgba(239, 68, 68, 0.15)", text: "#f87171" };
       case "code":
-        return { label: "CODE", bg: "rgba(83, 105, 68, 0.1)", text: "#315bc7" };
+        return { label: "CODE", bg: "rgba(83, 105, 68, 0.1)", text: "#527d13" };
       case "zip":
         return { label: "ZIP", bg: "rgba(234, 179, 8, 0.15)", text: "#facc15" };
       default:
@@ -603,7 +603,7 @@ export default function ResourcesAdminSection({
                     htmlFor="resource-file-upload"
                     style={{
                       ...styles.uploadTriggerLabel,
-                      borderColor: resourceForm.fileUrl ? "#315bc7" : "#2a342c",
+                      borderColor: resourceForm.fileUrl ? "#527d13" : "#2a342c",
                     }}
                   >
                     {isFileUploading ? (
@@ -736,7 +736,7 @@ const styles: Record<string, CSSProperties> = {
   addBtn: {
     padding: "12px 20px",
     borderRadius: "10px",
-    background: "#315bc7",
+    background: "#527d13",
     color: "#f7f6f2",
     fontSize: "14px",
     fontWeight: "700",
@@ -848,7 +848,7 @@ const styles: Record<string, CSSProperties> = {
     padding: "3px 8px",
     borderRadius: "6px",
     background: "rgba(83, 105, 68, 0.1)",
-    color: "#315bc7",
+    color: "#527d13",
     fontSize: "10px",
     fontWeight: "800",
   },
@@ -915,7 +915,7 @@ const styles: Record<string, CSSProperties> = {
   },
 
   urlLink: {
-    color: "#315bc7",
+    color: "#527d13",
     textDecoration: "none",
     maxWidth: "240px",
     overflow: "hidden",
@@ -946,7 +946,7 @@ const styles: Record<string, CSSProperties> = {
     padding: "8px 14px",
     borderRadius: "8px",
     background: "rgba(83, 105, 68, 0.08)",
-    color: "#315bc7",
+    color: "#527d13",
     border: "1px solid rgba(83, 105, 68, 0.12)",
     fontSize: "13px",
     fontWeight: "600",
@@ -1093,7 +1093,7 @@ const styles: Record<string, CSSProperties> = {
 
   coverBadge: {
     fontSize: "12px",
-    color: "#315bc7",
+    color: "#527d13",
     fontWeight: "700",
   },
 
@@ -1138,7 +1138,7 @@ const styles: Record<string, CSSProperties> = {
     padding: "16px",
     borderRadius: "8px",
     background: "#eeece5",
-    color: "#315bc7",
+    color: "#527d13",
     textAlign: "center",
     fontSize: "13px",
     fontWeight: "600",
@@ -1176,7 +1176,7 @@ const styles: Record<string, CSSProperties> = {
   checkbox: {
     width: "16px",
     height: "16px",
-    accentColor: "#315bc7",
+    accentColor: "#527d13",
     cursor: "pointer",
   },
 
@@ -1201,7 +1201,7 @@ const styles: Record<string, CSSProperties> = {
   saveBtn: {
     padding: "10px 24px",
     borderRadius: "8px",
-    background: "#315bc7",
+    background: "#527d13",
     color: "#f7f6f2",
     border: "none",
     fontWeight: "700",

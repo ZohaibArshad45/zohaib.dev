@@ -51,7 +51,7 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
         {/* HERO HEADER */}
         <header style={styles.header}>
           <div style={styles.statusEyebrow}>
-            {project.number} / {project.status}
+            {project.status}
           </div>
 
           <h1 style={styles.title}>{project.title}</h1>
@@ -128,12 +128,12 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
                       style={{
                         ...styles.thumbBtn,
                         borderColor:
-                          selectedImgIdx === idx ? "#dfe6fb" : "#28342a",
+                          selectedImgIdx === idx ? "#edf4e5" : "#28342a",
                         transform:
                           selectedImgIdx === idx ? "scale(1.02)" : "scale(1)",
                         boxShadow:
                           selectedImgIdx === idx
-                            ? "0 0 12px rgba(49, 91, 199, 0.12)"
+                            ? "0 0 12px rgba(82, 125, 19, 0.12)"
                             : "none",
                       }}
                     >
@@ -152,7 +152,7 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
               )}
             </div>
           ) : (
-            <ProjectPreviewCard project={project} isMobile={isMobile} />
+            <ProjectPreviewCard project={project} />
           )}
         </section>
 
@@ -178,8 +178,7 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
           </section>
         )}
 
-        <details className="case-study-details">
-          <summary>Explore the project details</summary>
+        <div className="case-study-details">
           <div className="case-study-details-content">
         {/* CORE CONTENT: PROBLEM & SOLUTION */}
         {(Boolean(project.problem) || Boolean(project.solution)) && (
@@ -241,7 +240,7 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
           </div>
         </section>
           </div>
-        </details>
+        </div>
 
         {nextProject?.slug ? (
           <Link href={`/projects/${nextProject.slug}`} style={styles.nextProjectBanner}>
@@ -271,7 +270,7 @@ export default function ProjectDetailClient({ project, nextProject }: Props) {
 const styles: Record<string, CSSProperties> = {
   page: {
     minHeight: "100vh",
-    background: "var(--bg)",
+    background: "var(--page-atmosphere)",
     color: "var(--text)",
   },
   container: {
@@ -289,7 +288,7 @@ const styles: Record<string, CSSProperties> = {
     marginBottom: "36px",
   },
   backLink: {
-    color: "#315bc7",
+    color: "#527d13",
     textDecoration: "none",
     fontWeight: "600",
   },
@@ -303,7 +302,7 @@ const styles: Record<string, CSSProperties> = {
     marginBottom: "40px",
   },
   statusEyebrow: {
-    color: "#315bc7",
+    color: "#527d13",
     fontSize: "12px",
     fontWeight: "700",
     letterSpacing: "1px",
@@ -335,12 +334,12 @@ const styles: Record<string, CSSProperties> = {
   outcomeHighlight: {
     margin: "18px 0 0",
     padding: "12px 18px",
-    background: "#f3f5fb",
-    borderLeft: "3px solid #dfe6fb",
+    background: "#f4f6f2",
+    borderLeft: "3px solid #edf4e5",
     borderRadius: "0 8px 8px 0",
     fontSize: "14px",
     lineHeight: "1.6",
-    color: "#3e4b69",
+    color: "#48505a",
     maxWidth: "820px",
   },
   actionButtonsRow: {
@@ -354,7 +353,7 @@ const styles: Record<string, CSSProperties> = {
     display: "inline-flex",
     alignItems: "center",
     gap: "8px",
-    background: "#315bc7",
+    background: "#527d13",
     color: "#ffffff",
     padding: "11px 20px",
     borderRadius: "8px",
@@ -362,7 +361,7 @@ const styles: Record<string, CSSProperties> = {
     fontWeight: "700",
     textDecoration: "none",
     letterSpacing: "0.2px",
-    boxShadow: "0 4px 20px rgba(49, 91, 199, 0.12)",
+    boxShadow: "0 4px 20px rgba(82, 125, 19, 0.12)",
     transition: "transform 0.2s ease, opacity 0.2s ease",
   },
   liveDot: {
@@ -461,7 +460,7 @@ const styles: Record<string, CSSProperties> = {
   imageActionLabel: {
     fontSize: "10px",
     fontWeight: "700",
-    color: "#315bc7",
+    color: "#527d13",
     letterSpacing: "1px",
   },
   imageActionTitle: {
@@ -478,7 +477,7 @@ const styles: Record<string, CSSProperties> = {
     display: "inline-flex",
     alignItems: "center",
     gap: "10px",
-    background: "#315bc7",
+    background: "#527d13",
     color: "#ffffff",
     padding: "12px 22px",
     borderRadius: "8px",
@@ -486,7 +485,7 @@ const styles: Record<string, CSSProperties> = {
     fontWeight: "800",
     textDecoration: "none",
     letterSpacing: "0.2px",
-    boxShadow: "0 0 20px rgba(49, 91, 199, 0.12)",
+    boxShadow: "0 0 20px rgba(82, 125, 19, 0.12)",
     transition: "transform 0.2s ease, opacity 0.2s ease",
   },
   pulseDot: {
@@ -511,16 +510,16 @@ const styles: Record<string, CSSProperties> = {
   },
   metricsBanner: {
     background: "#eeece5",
-    border: "1px solid #dfe6fb",
+    border: "1px solid #edf4e5",
     borderRadius: "10px",
     padding: "24px 28px",
     marginBottom: "60px",
-    boxShadow: "0 8px 30px rgba(49, 91, 199, 0.06)",
+    boxShadow: "0 8px 30px rgba(82, 125, 19, 0.06)",
   },
   metricsLabel: {
     fontSize: "10px",
     fontWeight: "700",
-    color: "#315bc7",
+    color: "#527d13",
     letterSpacing: "1px",
     marginBottom: "16px",
   },
@@ -553,7 +552,7 @@ const styles: Record<string, CSSProperties> = {
     flexDirection: "column",
   },
   label: {
-    color: "#315bc7",
+    color: "#527d13",
     fontSize: "11px",
     fontWeight: "700",
     letterSpacing: "1px",
@@ -598,7 +597,7 @@ const styles: Record<string, CSSProperties> = {
     padding: "20px",
   },
   archNum: {
-    color: "#315bc7",
+    color: "#527d13",
     fontSize: "12px",
     fontWeight: "700",
     marginBottom: "10px",
@@ -626,7 +625,7 @@ const styles: Record<string, CSSProperties> = {
     color: "#48505a",
   },
   checkIcon: {
-    color: "#315bc7",
+    color: "#527d13",
     fontWeight: "700",
   },
   tagsContainer: {
@@ -671,7 +670,7 @@ const styles: Record<string, CSSProperties> = {
   nextLabel: {
     fontSize: "10px",
     fontWeight: "700",
-    color: "#315bc7",
+    color: "#527d13",
     letterSpacing: "1px",
     marginBottom: "6px",
   },
@@ -687,7 +686,7 @@ const styles: Record<string, CSSProperties> = {
     color: "#727882",
   },
   nextButton: {
-    background: "#315bc7",
+    background: "#527d13",
     color: "#ffffff",
     padding: "14px 24px",
     borderRadius: "8px",

@@ -184,7 +184,7 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
     },
 
     eyebrow: {
-      color: "#315bc7",
+      color: "#527d13",
       fontSize: isMobile ? "11px" : "12px",
       lineHeight: "1.5",
       fontWeight: "700",
@@ -208,7 +208,7 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
     },
 
     headingAccent: {
-      color: "#315bc7",
+      color: "#527d13",
       display: "block",
       marginTop: "6px",
     },
@@ -251,7 +251,7 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
 
     founder: {
       marginTop: "5px",
-      color: "#315bc7",
+      color: "#527d13",
       fontSize: "13px",
       lineHeight: "1.6",
     },
@@ -304,7 +304,7 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
     },
 
     nextNumber: {
-      color: "#315bc7",
+      color: "#527d13",
       fontSize: "11px",
       fontWeight: "700",
       minWidth: "24px",
@@ -407,8 +407,8 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
 
       background:
         buttonHover && !sending
-          ? "#284ba8"
-          : "#315bc7",
+          ? "#3f6110"
+          : "#527d13",
 
       color: "#ffffff",
       fontSize: "14px",
@@ -439,7 +439,7 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
 
     success: {
       margin: "12px 0 0",
-      color: "#315bc7",
+      color: "#527d13",
       fontSize: "12px",
       lineHeight: "1.6",
     },
@@ -529,7 +529,7 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
                     href={`https://wa.me/${settings.phone.replace(/[^0-9]/g, "")}`}
                     target="_blank"
                     rel="noreferrer"
-                    style={{ color: "#315bc7", textDecoration: "none", fontWeight: "600" }}
+                    style={{ color: "#527d13", textDecoration: "none", fontWeight: "600" }}
                   >
                     {settings.phone} ↗
                   </a>

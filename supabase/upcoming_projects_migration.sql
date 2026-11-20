@@ -6,7 +6,6 @@
 CREATE TABLE IF NOT EXISTS public.upcoming_projects (
   id TEXT PRIMARY KEY,
   slug TEXT UNIQUE NOT NULL,
-  number TEXT NOT NULL DEFAULT '01',
   title TEXT NOT NULL,
   short_title TEXT NOT NULL,
   category TEXT NOT NULL DEFAULT 'AI Agents',
@@ -22,7 +21,6 @@ CREATE TABLE IF NOT EXISTS public.upcoming_projects (
   key_features TEXT[] NOT NULL DEFAULT '{}',
   architecture_highlights TEXT[] NOT NULL DEFAULT '{}',
   deliverables TEXT[] NOT NULL DEFAULT '{}',
-  preview_type TEXT NOT NULL DEFAULT 'dashboard',
   waitlist_count INTEGER NOT NULL DEFAULT 0,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()

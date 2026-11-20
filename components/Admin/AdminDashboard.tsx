@@ -15,18 +15,8 @@ type TabType =
   | "inquiries"
   | "settings";
 
-const PREVIEW_TYPES: { id: Project["previewType"]; label: string }[] = [
-  { id: "inbox", label: "Inbox" },
-  { id: "automation", label: "Automation" },
-  { id: "dashboard", label: "Dashboard" },
-  { id: "outreach", label: "Outreach" },
-  { id: "code", label: "Code" },
-  { id: "support", label: "Support" },
-];
-
 const EMPTY_PROJECT: Project = {
   slug: "",
-  number: "01",
   title: "",
   shortTitle: "",
   status: "Web App",
@@ -37,7 +27,6 @@ const EMPTY_PROJECT: Project = {
   outcome: "",
   tags: ["Next.js", "React", "TypeScript"],
   images: [],
-  previewType: "dashboard",
   client: "",
   role: "Lead Full-Stack Engineer",
   timeline: "Completed",
@@ -342,16 +331,10 @@ export default function AdminDashboard() {
 
   const openAddProjectModal = () => {
     setIsEditingProject(false);
-    const nextNum =
-      projects.length >= 9
-        ? `${projects.length + 1}`
-        : `0${projects.length + 1}`;
-
     const initialCategory = categories[0] || "Web Apps";
 
     setProjectForm({
       ...EMPTY_PROJECT,
-      number: nextNum,
       status: initialCategory,
       categories: [initialCategory],
       client: "",
@@ -708,14 +691,14 @@ export default function AdminDashboard() {
         >
           <div style={styles.brandGroup}>
             <Link href="/" style={styles.brandTitle}>
-              Zohaib<span style={{ color: "#315bc7" }}>.</span>
+              Zohaib<span style={{ color: "#527d13" }}>.</span>
             </Link>
             <span style={styles.adminTag}>ADMIN</span>
 
             <span
               style={{
                 ...styles.statusPill,
-                color: projectsSource === "supabase" ? "#315bc7" : "#855900",
+                color: projectsSource === "supabase" ? "#527d13" : "#855900",
                 borderColor:
                   projectsSource === "supabase"
                     ? "rgba(83, 105, 68, 0.25)"
@@ -726,9 +709,9 @@ export default function AdminDashboard() {
                 style={{
                   ...styles.liveDot,
                   background:
-                    projectsSource === "supabase" ? "#315bc7" : "#855900",
+                    projectsSource === "supabase" ? "#527d13" : "#855900",
                   boxShadow: `0 0 6px ${
-                    projectsSource === "supabase" ? "#315bc7" : "#855900"
+                    projectsSource === "supabase" ? "#527d13" : "#855900"
                   }`,
                 }}
               />
@@ -760,7 +743,7 @@ export default function AdminDashboard() {
             style={{
               ...styles.tabItem,
               borderBottomColor:
-                activeTab === "projects" ? "#315bc7" : "transparent",
+                activeTab === "projects" ? "#527d13" : "transparent",
               color: activeTab === "projects" ? "#202329" : "#727882",
               fontWeight: activeTab === "projects" ? "700" : "500",
             }}
@@ -774,7 +757,7 @@ export default function AdminDashboard() {
             style={{
               ...styles.tabItem,
               borderBottomColor:
-                activeTab === "categories" ? "#315bc7" : "transparent",
+                activeTab === "categories" ? "#527d13" : "transparent",
               color: activeTab === "categories" ? "#202329" : "#727882",
               fontWeight: activeTab === "categories" ? "700" : "500",
             }}
@@ -788,7 +771,7 @@ export default function AdminDashboard() {
             style={{
               ...styles.tabItem,
               borderBottomColor:
-                activeTab === "resources" ? "#315bc7" : "transparent",
+                activeTab === "resources" ? "#527d13" : "transparent",
               color: activeTab === "resources" ? "#202329" : "#727882",
               fontWeight: activeTab === "resources" ? "700" : "500",
             }}
@@ -802,7 +785,7 @@ export default function AdminDashboard() {
             style={{
               ...styles.tabItem,
               borderBottomColor:
-                activeTab === "inquiries" ? "#315bc7" : "transparent",
+                activeTab === "inquiries" ? "#527d13" : "transparent",
               color: activeTab === "inquiries" ? "#202329" : "#727882",
               fontWeight: activeTab === "inquiries" ? "700" : "500",
             }}
@@ -817,7 +800,7 @@ export default function AdminDashboard() {
             style={{
               ...styles.tabItem,
               borderBottomColor:
-                activeTab === "settings" ? "#315bc7" : "transparent",
+                activeTab === "settings" ? "#527d13" : "transparent",
               color: activeTab === "settings" ? "#202329" : "#727882",
               fontWeight: activeTab === "settings" ? "700" : "500",
             }}
@@ -870,7 +853,6 @@ export default function AdminDashboard() {
                 {projects.map((proj: Project) => (
                   <div key={proj.slug} style={styles.projectCmsCard}>
                     <div style={styles.projectCmsTop}>
-                      <span style={styles.projectNumber}>{proj.number}</span>
                       <span style={styles.projectStatusBadge}>
                         {proj.status}
                       </span>
@@ -878,7 +860,7 @@ export default function AdminDashboard() {
 
                     <h4 style={styles.projectCmsTitle}>{proj.title}</h4>
                     <div style={styles.projectSlugLine}>
-                      URL: <span style={{ color: "#315bc7" }}>/projects/{proj.slug}</span>
+                      URL: <span style={{ color: "#527d13" }}>/projects/{proj.slug}</span>
                     </div>
                     <p style={styles.projectCmsSub}>{proj.headline}</p>
 
@@ -1064,7 +1046,7 @@ export default function AdminDashboard() {
                     style={{
                       ...styles.filterChip,
                       background:
-                        statusFilter === flt.id ? "#315bc7" : "#eeece5",
+                        statusFilter === flt.id ? "#527d13" : "#eeece5",
                       color: statusFilter === flt.id ? "#f7f6f2" : "#48505a",
                       fontWeight: statusFilter === flt.id ? "700" : "500",
                     }}
@@ -1122,7 +1104,7 @@ export default function AdminDashboard() {
                         style={{
                           ...styles.leadCard,
                           borderColor: isSelected
-                            ? "#315bc7"
+                            ? "#527d13"
                             : isUnread
                             ? "rgba(83, 105, 68, 0.25)"
                             : "#dce3d9",
@@ -1145,7 +1127,7 @@ export default function AdminDashboard() {
                             <div
                               style={{
                                 ...styles.leadAvatar,
-                                background: isUnread ? "#315bc7" : "#dce3d9",
+                                background: isUnread ? "#527d13" : "#dce3d9",
                                 color: isUnread ? "#f7f6f2" : "#727882",
                               }}
                             >
@@ -1170,7 +1152,7 @@ export default function AdminDashboard() {
                               background: isUnread
                                 ? "rgba(83, 105, 68, 0.1)"
                                 : "#1e2420",
-                              color: isUnread ? "#315bc7" : "#727882",
+                              color: isUnread ? "#527d13" : "#727882",
                               borderColor: isUnread
                                 ? "rgba(83, 105, 68, 0.15)"
                                 : "#dce3d9",
@@ -1328,7 +1310,7 @@ export default function AdminDashboard() {
                       : "rgba(239, 68, 68, 0.4)",
                   color:
                     settingsSaveMsg.type === "success"
-                      ? "#315bc7"
+                      ? "#527d13"
                       : "#fca5a5",
                 }}
               >
@@ -1584,7 +1566,7 @@ export default function AdminDashboard() {
                     <span style={styles.infoKey}>Active Engine:</span>
                     <span
                       style={{
-                        color: projectsSource === "supabase" ? "#315bc7" : "#855900",
+                        color: projectsSource === "supabase" ? "#527d13" : "#855900",
                         fontWeight: "700",
                         fontSize: "12px",
                       }}
@@ -1651,9 +1633,9 @@ export default function AdminDashboard() {
             </div>
 
             <form onSubmit={handleSaveProject} style={styles.projectFormGrid}>
-              {/* 1. Project Title & Order Number */}
+              {/* 1. Project Title */}
               <div style={styles.formRow2}>
-                <div>
+                <div style={{ gridColumn: "1 / -1" }}>
                   <label style={styles.formLabel}>Project Name / Title *</label>
                   <input
                     type="text"
@@ -1681,19 +1663,6 @@ export default function AdminDashboard() {
                   />
                 </div>
 
-                <div>
-                  <label style={styles.formLabel}>Project Order Number (e.g. 01, 02)</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="01"
-                    value={projectForm.number}
-                    onChange={(e) =>
-                      setProjectForm({ ...projectForm, number: e.target.value })
-                    }
-                    style={styles.formInput}
-                  />
-                </div>
               </div>
 
               {/* 2. URL SLUG - FULLY EDITABLE AS REQUESTED */}
@@ -2011,33 +1980,6 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              {/* 9. Fallback CSS Mockup Theme */}
-              <div style={styles.fallbackMockupBox}>
-                <label style={styles.formLabel}>
-                  Fallback Illustration Theme (Only active if no pictures uploaded above)
-                </label>
-                <select
-                  value={projectForm.previewType}
-                  onChange={(e) =>
-                    setProjectForm({
-                      ...projectForm,
-                      previewType: e.target.value as Project["previewType"],
-                    })
-                  }
-                  style={styles.formSelect}
-                >
-                  {PREVIEW_TYPES.map((pt) => (
-                    <option
-                      key={pt.id}
-                      value={pt.id}
-                      style={{ background: "#ffffff", color: "#202329" }}
-                    >
-                      {pt.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
               {/* 9. Live Demo & GitHub Links */}
               <div style={styles.formRow2}>
                 <div>
@@ -2132,7 +2074,7 @@ const styles: Record<string, CSSProperties> = {
     boxShadow: "0 20px 50px rgba(0,0,0,0.5)",
   },
   authBadge: {
-    color: "#315bc7",
+    color: "#527d13",
     fontSize: "10px",
     fontWeight: "700",
     letterSpacing: "1px",
@@ -2176,7 +2118,7 @@ const styles: Record<string, CSSProperties> = {
     width: "100%",
     padding: "14px",
     borderRadius: "8px",
-    background: "#315bc7",
+    background: "#527d13",
     color: "#f7f6f2",
     fontWeight: "700",
     fontSize: "14px",
@@ -2224,7 +2166,7 @@ const styles: Record<string, CSSProperties> = {
     border: "1px solid #dce3d9",
     padding: "3px 6px",
     borderRadius: "4px",
-    color: "#315bc7",
+    color: "#527d13",
   },
   statusPill: {
     display: "inline-flex",
@@ -2248,7 +2190,7 @@ const styles: Record<string, CSSProperties> = {
     gap: "10px",
   },
   addProjectNavBtn: {
-    background: "#315bc7",
+    background: "#527d13",
     color: "#f7f6f2",
     border: "none",
     padding: "8px 16px",
@@ -2259,7 +2201,7 @@ const styles: Record<string, CSSProperties> = {
   },
   newLeadBtn: {
     background: "#e9eee6",
-    color: "#315bc7",
+    color: "#527d13",
     border: "1px solid #dce3d9",
     padding: "8px 14px",
     borderRadius: "6px",
@@ -2334,7 +2276,7 @@ const styles: Record<string, CSSProperties> = {
     whiteSpace: "nowrap",
   },
   unreadCount: {
-    background: "#315bc7",
+    background: "#527d13",
     color: "#f7f6f2",
     fontSize: "10px",
     fontWeight: "800",
@@ -2367,7 +2309,7 @@ const styles: Record<string, CSSProperties> = {
     color: "#727882",
   },
   addProjectLargeBtn: {
-    background: "#315bc7",
+    background: "#527d13",
     color: "#f7f6f2",
     border: "none",
     padding: "10px 18px",
@@ -2378,8 +2320,8 @@ const styles: Record<string, CSSProperties> = {
   },
   viewLiveSiteBtn: {
     background: "#f4f6f2",
-    border: "1px solid #315bc7",
-    color: "#315bc7",
+    border: "1px solid #527d13",
+    color: "#527d13",
     padding: "10px 16px",
     borderRadius: "6px",
     textDecoration: "none",
@@ -2409,18 +2351,13 @@ const styles: Record<string, CSSProperties> = {
   },
   projectCmsTop: {
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     alignItems: "center",
     marginBottom: "10px",
   },
-  projectNumber: {
-    color: "#315bc7",
-    fontSize: "11px",
-    fontWeight: "700",
-  },
   projectStatusBadge: {
     fontSize: "10px",
-    color: "#315bc7",
+    color: "#527d13",
     background: "rgba(83, 105, 68, 0.1)",
     padding: "3px 8px",
     borderRadius: "4px",
@@ -2468,7 +2405,7 @@ const styles: Record<string, CSSProperties> = {
   editProjBtn: {
     background: "#eeece5",
     border: "1px solid #dce3d9",
-    color: "#315bc7",
+    color: "#527d13",
     padding: "6px 12px",
     borderRadius: "6px",
     fontSize: "12px",
@@ -2509,7 +2446,7 @@ const styles: Record<string, CSSProperties> = {
     outline: "none",
   },
   addCatBtn: {
-    background: "#315bc7",
+    background: "#527d13",
     color: "#f7f6f2",
     border: "none",
     padding: "10px 18px",
@@ -2645,7 +2582,7 @@ const styles: Record<string, CSSProperties> = {
     height: "30px",
     borderRadius: "50%",
     background: "#eeece5",
-    color: "#315bc7",
+    color: "#527d13",
     fontWeight: "700",
     fontSize: "10px",
     display: "flex",
@@ -2656,7 +2593,7 @@ const styles: Record<string, CSSProperties> = {
   // Drawer
   drawerCard: {
     background: "#eeece5",
-    border: "1px solid #315bc7",
+    border: "1px solid #527d13",
     borderRadius: "10px",
     padding: "24px",
     position: "sticky",
@@ -2671,7 +2608,7 @@ const styles: Record<string, CSSProperties> = {
   drawerEyebrow: {
     fontSize: "9px",
     fontWeight: "700",
-    color: "#315bc7",
+    color: "#527d13",
     letterSpacing: "1px",
     marginBottom: "4px",
   },
@@ -2742,7 +2679,7 @@ const styles: Record<string, CSSProperties> = {
   },
   saveNoteBtn: {
     background: "#eeece5",
-    color: "#315bc7",
+    color: "#527d13",
     border: "1px solid #dce3d9",
     padding: "6px 14px",
     borderRadius: "6px",
@@ -2759,7 +2696,7 @@ const styles: Record<string, CSSProperties> = {
   },
   replyEmailBtn: {
     flex: 1,
-    background: "#315bc7",
+    background: "#527d13",
     color: "#f7f6f2",
     textDecoration: "none",
     padding: "10px 14px",
@@ -2792,7 +2729,7 @@ const styles: Record<string, CSSProperties> = {
     marginBottom: "20px",
   },
   copySqlBtn: {
-    background: "#315bc7",
+    background: "#527d13",
     color: "#f7f6f2",
     border: "none",
     padding: "8px 16px",
@@ -2861,7 +2798,7 @@ const styles: Record<string, CSSProperties> = {
     width: "100%",
     maxWidth: "500px",
     background: "#eeece5",
-    border: "1px solid #315bc7",
+    border: "1px solid #527d13",
     borderRadius: "12px",
     padding: "28px",
     boxSizing: "border-box",
@@ -2874,7 +2811,7 @@ const styles: Record<string, CSSProperties> = {
     overflowY: "auto",
     overflowX: "hidden",
     background: "#eeece5",
-    border: "1px solid #315bc7",
+    border: "1px solid #527d13",
     borderRadius: "14px",
     padding: "28px 30px",
     boxSizing: "border-box",
@@ -2932,27 +2869,6 @@ const styles: Record<string, CSSProperties> = {
     boxSizing: "border-box",
     outline: "none",
   },
-  formSelect: {
-    width: "100%",
-    maxWidth: "100%",
-    padding: "10px 14px",
-    paddingRight: "36px",
-    borderRadius: "6px",
-    background: "#ffffff",
-    border: "1px solid #dce3d9",
-    color: "#202329",
-    fontSize: "13px",
-    boxSizing: "border-box",
-    outline: "none",
-    cursor: "pointer",
-    appearance: "none",
-    WebkitAppearance: "none",
-    MozAppearance: "none",
-    backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23caff46' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "right 12px center",
-    backgroundSize: "15px 15px",
-  },
   formTextarea: {
     width: "100%",
     maxWidth: "100%",
@@ -3002,7 +2918,7 @@ const styles: Record<string, CSSProperties> = {
     cursor: "pointer",
   },
   modalSubmitBtn: {
-    background: "#315bc7",
+    background: "#527d13",
     color: "#f7f6f2",
     border: "none",
     padding: "10px 22px",
@@ -3030,7 +2946,7 @@ const styles: Record<string, CSSProperties> = {
   formLabelBold: {
     fontSize: "12px",
     fontWeight: "700",
-    color: "#315bc7",
+    color: "#527d13",
     letterSpacing: "0.4px",
   },
   imageSectionSubtitle: {
@@ -3131,7 +3047,7 @@ const styles: Record<string, CSSProperties> = {
   uploadPromptTitle: {
     fontSize: "11px",
     fontWeight: "700",
-    color: "#315bc7",
+    color: "#527d13",
   },
   uploadPromptSub: {
     fontSize: "9px",
@@ -3147,12 +3063,6 @@ const styles: Record<string, CSSProperties> = {
     fontSize: "10px",
     boxSizing: "border-box",
     outline: "none",
-  },
-  fallbackMockupBox: {
-    background: "#ffffff",
-    border: "1px solid #dce3d9",
-    borderRadius: "8px",
-    padding: "12px 14px",
   },
   projectCmsImageThumb: {
     position: "relative",
@@ -3175,7 +3085,7 @@ const styles: Record<string, CSSProperties> = {
     right: "6px",
     background: "rgba(12, 14, 13, 0.85)",
     backdropFilter: "blur(4px)",
-    color: "#315bc7",
+    color: "#527d13",
     fontSize: "9px",
     fontWeight: "700",
     padding: "3px 8px",
@@ -3238,7 +3148,7 @@ const styles: Record<string, CSSProperties> = {
   exportBackupBtn: {
     background: "#eeece5",
     border: "1px solid #dce3d9",
-    color: "#315bc7",
+    color: "#527d13",
     padding: "10px 16px",
     borderRadius: "8px",
     fontSize: "12px",
@@ -3315,7 +3225,7 @@ const styles: Record<string, CSSProperties> = {
     paddingTop: "12px",
   },
   saveSettingsBtn: {
-    background: "#315bc7",
+    background: "#527d13",
     color: "#f7f6f2",
     border: "none",
     padding: "14px 28px",
