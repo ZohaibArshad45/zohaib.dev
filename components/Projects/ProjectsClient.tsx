@@ -207,7 +207,7 @@ export default function ProjectsClient({ initialProjects, initialCategories }: P
               {/* PREVIEW CONTAINER */}
               <div style={styles.previewContainer}>
                 {project.images?.[0] ? (
-                  <Image src={project.images[0]} alt={`${project.title || project.headline} interface`} fill sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw" unoptimized style={styles.projectImage} />
+                  <Image src={project.images[0]} alt={`${project.title || project.headline} interface`} fill sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw" unoptimized style={{ ...styles.projectImage, transform: hoveredProject === project.slug ? "scale(1.035)" : "scale(1)", transition: "transform 350ms ease" }} />
                 ) : (
                   <ProjectPreviewCard project={project} />
                 )}

@@ -132,7 +132,7 @@ export default function ContactSection({ settings }: { settings?: SiteSettings }
   const styles: Record<string, CSSProperties> = {
     page: {
       minHeight: "100vh",
-      background: "#ffffff",
+      background: "var(--page-atmosphere)",
       color: "#202329",
       fontFamily: "inherit",
     },

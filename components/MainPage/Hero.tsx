@@ -59,12 +59,23 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
     },
     copy: { maxWidth: "680px" },
     eyebrow: {
+      display: "flex",
+      alignItems: "center",
+      gap: "10px",
       margin: "0 0 26px",
       color: "#507b16",
       fontSize: isMobile ? "11px" : "12px",
       lineHeight: "1.7",
       fontWeight: "700",
       letterSpacing: "0.035em",
+    },
+    eyebrowDot: {
+      width: "8px",
+      height: "8px",
+      flexShrink: 0,
+      borderRadius: "50%",
+      background: "#9acb3b",
+      boxShadow: "0 0 0 4px rgba(154, 203, 59, 0.14)",
     },
     title: {
       margin: 0,
@@ -117,9 +128,16 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
     skills: {
       display: "flex",
       flexWrap: "wrap",
-      gap: "10px 24px",
-      marginTop: "30px",
-      color: "#59625b",
+      gap: "8px",
+      marginTop: "28px",
+      maxWidth: "560px",
+    },
+    skill: {
+      padding: "7px 10px",
+      color: "#52604c",
+      background: "rgba(255, 255, 255, 0.76)",
+      border: "1px solid #e4eadc",
+      borderRadius: "999px",
       fontSize: "12px",
       lineHeight: "1.5",
     },
@@ -128,19 +146,29 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
       maxWidth: isTablet ? "640px" : "500px",
       justifySelf: isTablet ? "start" : "end",
       padding: isMobile ? "26px 22px 20px" : "30px 32px 24px",
-      border: "1px solid #e1e6da",
+      border: "1px solid #dce6d0",
       borderRadius: "20px",
-      background: "#ffffff",
-      boxShadow: "0 22px 60px rgba(31, 42, 27, 0.08)",
+      background: "#fbfdf8",
+      boxShadow: "0 18px 48px rgba(49, 73, 26, 0.09)",
       boxSizing: "border-box",
     },
     cardEyebrow: {
+      display: "flex",
+      alignItems: "center",
+      gap: "9px",
       margin: "0 0 20px",
       color: "#507b16",
       fontSize: "11px",
       fontWeight: "750",
       letterSpacing: "0.12em",
       textTransform: "uppercase",
+    },
+    cardEyebrowMark: {
+      width: "7px",
+      height: "7px",
+      borderRadius: "50%",
+      background: "#9acb3b",
+      flexShrink: 0,
     },
     capability: {
       display: "grid",
@@ -150,8 +178,13 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
       borderBottom: "1px solid #e6e9e1",
     },
     capabilityNumber: {
-      paddingTop: "3px",
-      color: "#668c2f",
+      width: "28px",
+      height: "28px",
+      display: "grid",
+      placeItems: "center",
+      borderRadius: "9px",
+      background: "#edf5df",
+      color: "#527d13",
       fontSize: "11px",
       fontWeight: "750",
     },
@@ -194,7 +227,10 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
   return (
     <section style={styles.section}>
       <div style={styles.copy}>
-        <p style={styles.eyebrow}>{roleLine.join("  |  ")}</p>
+        <p style={styles.eyebrow}>
+          <span style={styles.eyebrowDot} aria-hidden="true" />
+          {roleLine.join("  |  ")}
+        </p>
         <h1 style={styles.title}>
           AI SaaS &
           <span style={styles.accent}>autonomous agents.</span>
@@ -212,12 +248,15 @@ export default function Hero({ settings }: { settings?: SiteSettings }) {
           </Link>
         </div>
         <div style={styles.skills} aria-label="Specialties">
-          {skills.map((skill) => <span key={skill}>{skill}</span>)}
+          {skills.map((skill) => <span key={skill} style={styles.skill}>{skill}</span>)}
         </div>
       </div>
 
       <aside style={styles.card} aria-label="Services">
-        <p style={styles.cardEyebrow}>What I can build for you</p>
+        <p style={styles.cardEyebrow}>
+          <span style={styles.cardEyebrowMark} aria-hidden="true" />
+          What I can build for you
+        </p>
         {capabilities.map((item) => (
           <div key={item.number} style={styles.capability}>
             <span style={styles.capabilityNumber}>{item.number}</span>

@@ -104,37 +104,20 @@ export default function ResourcesClient({
   };
 
   const getFormatBadgeColor = (type: Resource["type"]) => {
-    switch (type) {
-      case "pdf":
-        return {
-          bg: "rgba(239, 68, 68, 0.12)",
-          border: "rgba(239, 68, 68, 0.35)",
-          text: "#f87171",
-          label: "PDF GUIDE",
-        };
-      case "code":
-      case "zip":
-        return {
+    const labels: Record<Resource["type"], string> = {
+      pdf: "PDF GUIDE",
+      code: "SOURCE CODE",
+      zip: "ZIP ARCHIVE",
+      template: "TEMPLATE",
+      guide: "PLAYBOOK",
+    };
+
+    return {
       bg: "rgba(82, 125, 19, 0.08)",
-          border: "rgba(82, 125, 19, 0.22)",
-          text: "#527d13",
-          label: type === "zip" ? "ZIP ARCHIVE" : "SOURCE CODE",
-        };
-      case "template":
-        return {
-          bg: "rgba(59, 130, 246, 0.12)",
-          border: "rgba(59, 130, 246, 0.35)",
-          text: "#60a5fa",
-          label: "TEMPLATE",
-        };
-      default:
-        return {
-          bg: "rgba(168, 85, 247, 0.12)",
-          border: "rgba(168, 85, 247, 0.35)",
-          text: "#c084fc",
-          label: "PLAYBOOK",
-        };
-    }
+      border: "rgba(82, 125, 19, 0.2)",
+      text: "#527d13",
+      label: labels[type],
+    };
   };
 
   return (

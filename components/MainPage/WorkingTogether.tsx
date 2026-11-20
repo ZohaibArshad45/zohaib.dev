@@ -66,7 +66,7 @@ export default function WorkingTogether() {
   const styles: Record<string, CSSProperties> = {
     section: {
       width: "100%",
-      background: "#ffffff",
+      background: "linear-gradient(180deg, #f6f9f1 0%, #ffffff 100%)",
       color: "#202329",
       padding: isMobile
         ? "75px 20px 80px"
@@ -137,10 +137,15 @@ export default function WorkingTogether() {
     },
 
     step: {
-      borderTop: "1px solid #e2dfd5",
-      paddingTop: isMobile ? "22px" : "26px",
+      border: "1px solid #e2dfd5",
+      borderRadius: "16px",
+      padding: isMobile ? "20px 18px" : "24px 22px",
+      background: "#ffffff",
+      boxShadow: "0 10px 28px rgba(31, 42, 27, 0.035)",
+      minHeight: isMobile ? "auto" : "172px",
+      boxSizing: "border-box",
       transition:
-        "border-color 0.25s ease, transform 0.25s ease",
+        "border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease",
     },
 
     stepLabel: {
@@ -148,7 +153,12 @@ export default function WorkingTogether() {
       fontSize: "11px",
       fontWeight: "700",
       letterSpacing: "0.8px",
-      marginBottom: "22px",
+      display: "inline-flex",
+      alignItems: "center",
+      padding: "6px 9px",
+      borderRadius: "999px",
+      background: "#edf4e5",
+      marginBottom: "18px",
       transition: "color 0.25s ease",
     },
 
@@ -226,15 +236,19 @@ export default function WorkingTogether() {
   ): CSSProperties => ({
     ...styles.step,
 
-    borderTop:
+    border:
       hoveredStep === stepNumber
-        ? "1px solid #edf4e5"
+        ? "1px solid #c8dcae"
         : "1px solid #e2dfd5",
 
     transform:
       hoveredStep === stepNumber
         ? "translateY(-3px)"
         : "translateY(0)",
+    boxShadow:
+      hoveredStep === stepNumber
+        ? "0 16px 34px rgba(31, 42, 27, 0.08)"
+        : "0 10px 28px rgba(31, 42, 27, 0.035)",
   });
 
   return (

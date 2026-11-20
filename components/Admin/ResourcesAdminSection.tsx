@@ -277,16 +277,19 @@ export default function ResourcesAdminSection({
   };
 
   const getTypeBadge = (type: ResourceType) => {
-    switch (type) {
-      case "pdf":
-        return { label: "PDF", bg: "rgba(239, 68, 68, 0.15)", text: "#f87171" };
-      case "code":
-        return { label: "CODE", bg: "rgba(83, 105, 68, 0.1)", text: "#527d13" };
-      case "zip":
-        return { label: "ZIP", bg: "rgba(234, 179, 8, 0.15)", text: "#facc15" };
-      default:
-        return { label: "GUIDE", bg: "rgba(168, 85, 247, 0.15)", text: "#c084fc" };
-    }
+    const labels: Record<ResourceType, string> = {
+      pdf: "PDF",
+      code: "CODE",
+      zip: "ZIP",
+      template: "TEMPLATE",
+      guide: "GUIDE",
+    };
+
+    return {
+      label: labels[type],
+      bg: "rgba(82, 125, 19, 0.08)",
+      text: "#527d13",
+    };
   };
 
   return (
